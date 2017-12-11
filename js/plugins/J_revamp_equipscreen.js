@@ -2,7 +2,7 @@
 // J-Equip Screen Revamp v1.0
 //=============================================================================
 // Changelog:
-//  v0.1: WIP plugin creatin.
+//  v1.0: WIP plugin creatin.
 /*:
 @plugindesc Alters the equipscreen to provide greater detail about equipped items and their impacts on characters.
 @author J

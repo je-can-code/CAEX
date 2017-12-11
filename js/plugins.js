@@ -37,5 +37,6 @@ var $plugins =
 {"name":"J_RecordWindow","status":true,"description":"This plugin creates a window that acts as a log for EXP/GOLD/items acquired.","parameters":{"w_width":"400","w_height":"196","stallMod":"60","expIcon":"87","goldIcon":"314"}},
 {"name":"J_QABS_EquipSkills","status":true,"description":"Enables skills for use via hotkeybar.","parameters":{}},
 {"name":"J_XPGPvariance","status":true,"description":"Provides notetag-defined levels to give multipliers against XP/GP.","parameters":{}},
-{"name":"J_DropItem","status":true,"description":"Modifies the database drop functionality to be a percent instead of 1/N,\r\nAnd accommodates the \"Extra Drops\" notetags.","parameters":{"dropScale":"100"}}
+{"name":"J_DropItem","status":true,"description":"Modifies the database drop functionality to be a percent instead of 1/N,\r\nAnd accommodates the \"Extra Drops\" notetags.","parameters":{"dropScale":"100"}},
+{"name":"YEP_AutoPassiveStates","status":true,"description":"v1.15 This plugin allows for some states to function as\r\npassives for actors, enemies, skills, and equips.","parameters":{"---Basic---":"","Actor Passives":"0","Enemy Passives":"0","Global Passives":"0","---List---":"...Requires RPG Maker MV 1.5.0+...","Actor Passives List":"[]","Enemy Passives List":"[]","Global Passives List":"[]"}}
 ];
