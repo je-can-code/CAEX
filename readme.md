@@ -7,7 +7,9 @@ Chef Adventure! EX
 - Third, open index.html, and play! (i think).
 
 ***
-
+<details>
+stuffstuff
+</details>
 GOAL: Collect the 4 sentient crystals, somehow.
 ======
 All locations: Caves, Forest, Mountains, Lakes, Volcano, Marshlands, Prairie, Castle, Subterranean, Heaven
@@ -68,7 +70,7 @@ Treis/Xavier-love interest; The player has the optional opportunity to further/d
  - Tac(or)Mill-Carpenter,
  > (not yet implemented or details planned out).
 
-
+***
 
 Idea for plot progression:
  > [0] The duo begins the story in the initial cave where they battle and earn the first of four crystals allowing the primary element of gameplay: Distribution. The crystal then guides the player into the first Cave, where the caravan members are scattered about. Lack of tools push the player to explore the Forest where the player discovers the “wreckage”, and can save the engineer from the caravan.
@@ -81,6 +83,7 @@ Idea for plot progression:
 
  > [3b] If Alex is the leader, then the town will seek to go to the Subterrain and protect the power of the crystals by destroying the deity down there, and preventing the deity from laying waste with the crystals. Afterwards, Alex will deliver the 4 crystals to the kingdom to finish the main storyline. Doing this will free Alice from the grip of the magical attunement link to the crystals. 
 
+***
 
 - Chapter 1:	The Cave; A Den of Monsters
 	Gotta get that Tasty Stew, and other recipes learned.
@@ -89,6 +92,7 @@ Idea for plot progression:
 	Unlock the first teleportation device
 	Learn how to use a new weapon type: The Axe
 	  Access to first bonus segment is now available*
+
 - Chapter 2:	The Forest; Trees Entwined with Mystery
 	Entering the forest requires the Axe.
 	Find the Mushrooms so you can wake up the Inventor.
@@ -96,6 +100,7 @@ Idea for plot progression:
 	Also permits usage of the first teleporter to and from the caves
 	Raid the caravan wreckage for Treis’ tools.
 	[LV018]No boss for The Forest, yet.
+
 - Chapter 3:	The Mountain; Negative Peaks and Arctic Times
 	Collecting Hazelnuts is a tedious, tedious task, need 15x.
 	50x Arrowheads are easy enough to come by, Gilbert.
@@ -105,12 +110,15 @@ Idea for plot progression:
 	Providing materials will earn you… The Hookshot from Treis.
 	Next stop: claim the 2nd crystal in the Forest.
 	  Access to second bonus segment is now available**
+
 - Chapter 4:	The Forest; The Wrath of Trolls and Voodoo
 	Hookshot enables access the forest ruins, the home of the trolls.
 	
---Chapter 5:	The Volcano; Fiery Ancient Ruins
+- Chapter 5:	The Volcano; Fiery Ancient Ruins
 	  Access to third bonus segment is now available***
---Chapter 6:	The Marshlands; Plagued and Forgotten Waste
---Chapter 7:	The Prairie; Land of Titans
---Chapter 8:	The Castle; Wicked Demons of Tyranny
 
+- Chapter 6:	The Marshlands; Plagued and Forgotten Waste
+
+- Chapter 7:	The Prairie; Land of Titans
+
+- Chapter 8:	The Castle; Wicked Demons of Tyranny
