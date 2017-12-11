@@ -33,6 +33,7 @@ What do the crystals do?:
   > Enables Xavier to create passive bonus skills. __+unlocks equipment that can be leveled up__
  - Destroy;
   > Breaks the seal on the final dungeon. __+unlocks the other final dungeon and access to Alice/Alex__
+
 _Each crystal has a miniquest you can take to “feed” it and level it up, giving it +additional abilities._
 
 ***
