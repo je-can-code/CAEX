@@ -12,7 +12,8 @@ __Please note: the below content is literally the planned out content of the gam
 __If you want to see it, just hit the little arrow to open the spoiler.__
 
 <details>
-GOAL: Collect the 4 sentient crystals, somehow.
+
+GOAL: Collect the 4 sentient crystals, somehow.  
 ======
 All locations: Caves, Forest, Mountains, Lakes, Volcano, Marshlands, Prairie, Castle, Subterranean, Heaven
 Caves > Forest > Caves > Mountains > Forest > Lakes > Caves > Volcano > Mountains //
