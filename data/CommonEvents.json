@@ -1,0 +1,7 @@
+[
+null,
+{"id":1,"list":[{"code":230,"indent":0,"parameters":[30]},{"code":111,"indent":0,"parameters":[8,4]},{"code":126,"indent":1,"parameters":[4,1,0,1]},{"code":212,"indent":1,"parameters":[-1,41,false]},{"code":355,"indent":1,"parameters":["var hpHeals = $gameParty.leader().mhp * 0.2;"]},{"code":655,"indent":1,"parameters":["$gameParty.leader().gainHp(hpHeals);"]},{"code":0,"indent":1,"parameters":[]},{"code":412,"indent":0,"parameters":[]},{"code":111,"indent":0,"parameters":[8,5]},{"code":126,"indent":1,"parameters":[5,1,0,1]},{"code":212,"indent":1,"parameters":[-1,45,false]},{"code":355,"indent":1,"parameters":["var heals = $gameParty.leader().mmp * 0.2;"]},{"code":655,"indent":1,"parameters":["$gameParty.leader().gainMP(heals);"]},{"code":0,"indent":1,"parameters":[]},{"code":412,"indent":0,"parameters":[]},{"code":0,"indent":0,"parameters":[]}],"name":"Irresistable Berries.","switchId":2,"trigger":2},
+{"id":2,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
+{"id":3,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
+{"id":4,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0}
+]

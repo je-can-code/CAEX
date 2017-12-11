@@ -1,0 +1,5 @@
+[
+null,
+{"id":1,"battlerName":"Actor3_5","characterIndex":4,"characterName":"Actor3","classId":1,"equips":[1,1,3,3,0],"faceIndex":4,"faceName":"Actor3","traits":[],"initialLevel":1,"maxLevel":99,"name":"Alex","nickname":"The Warrior Guy","note":"","profile":""},
+{"id":2,"battlerName":"Actor2_6","characterIndex":5,"characterName":"Actor2","classId":2,"equips":[5,2,4,3,0],"faceIndex":5,"faceName":"Actor2","traits":[],"initialLevel":1,"maxLevel":99,"name":"Alice","nickname":"The Mage Lady","note":"","profile":""}
+]
