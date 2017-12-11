@@ -8,7 +8,7 @@ Chef Adventure! EX
 
 ***
 
-__Please note: the below content is literally the planned out content of the game.__
+__Please note: the below content is literally the planned out content of the game.__  
 __If you want to see it, just hit the little arrow to open the spoiler.__
 
 <details>
