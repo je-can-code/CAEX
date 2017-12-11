@@ -7,9 +7,11 @@ Chef Adventure! EX
 - Third, open index.html, and play! (i think).
 
 ***
+
+__Please note: the below content is literally the planned out content of the game.__
+__If you want to see it, just hit the little arrow to open the spoiler.__
+
 <details>
-stuffstuff
-</details>
 GOAL: Collect the 4 sentient crystals, somehow.
 ======
 All locations: Caves, Forest, Mountains, Lakes, Volcano, Marshlands, Prairie, Castle, Subterranean, Heaven
@@ -122,3 +124,5 @@ Idea for plot progression:
 - Chapter 7:	The Prairie; Land of Titans
 
 - Chapter 8:	The Castle; Wicked Demons of Tyranny
+</details>
+
