@@ -1,9 +1,9 @@
 [
 null,
-{"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":721.1999999999999,"scrollY":459.59999999999997},
-{"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":2,"parentId":0,"scrollX":721.1999999999999,"scrollY":459.59999999999997},
-{"id":3,"expanded":false,"name":"Zeroth Plunge","order":3,"parentId":2,"scrollX":721.1999999999999,"scrollY":459.59999999999997},
+{"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":801.3333333333334,"scrollY":541.3333333333334},
+{"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":2,"parentId":0,"scrollX":801.3333333333334,"scrollY":541.3333333333334},
+{"id":3,"expanded":false,"name":"Zeroth Plunge","order":3,"parentId":2,"scrollX":801.3333333333334,"scrollY":541.3333333333334},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":4,"parentId":0,"scrollX":605.4545454545455,"scrollY":404.72727272727275},
-{"id":5,"expanded":true,"name":"The Mainstay","order":5,"parentId":4,"scrollX":1484.3999999999999,"scrollY":986.4},
-{"id":6,"expanded":false,"name":"Inside the Inn","order":6,"parentId":5,"scrollX":816,"scrollY":626}
+{"id":5,"expanded":true,"name":"The Mainstay","order":5,"parentId":4,"scrollX":1602.6666666666667,"scrollY":1021.3333333333334},
+{"id":6,"expanded":false,"name":"Inside the Inn","order":6,"parentId":5,"scrollX":1582.6666666666667,"scrollY":1657.3333333333333}
 ]
