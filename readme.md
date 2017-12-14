@@ -40,7 +40,7 @@ What do the crystals do?:
  - Destroy;
   > Breaks the seal on the final dungeon. __+unlocks the other final dungeon and access to Alice/Alex__
 
-_Each crystal has a miniquest you can take to “feed” it and level it up, giving it +additional abilities._
+_Each crystal has a miniquest you can take to “feed” it and level it up, giving it __+additional abilities.___
 
 ***
 

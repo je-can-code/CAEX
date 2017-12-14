@@ -2603,6 +2603,8 @@ function Skill_Sequencer() {
   };
 
   Game_Action.prototype.absApply = function(target) {
+    //console.log(target._team);
+    // TODO consider teams?
     this._isAbs = true;
     var result = target.result();
     this._realSubject.clearResult();
