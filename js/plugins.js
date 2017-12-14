@@ -39,5 +39,6 @@ var $plugins =
 {"name":"J_QABS_EquipSkills","status":true,"description":"Enables skills for use via hotkeybar.","parameters":{}},
 {"name":"J_XPGPvariance","status":true,"description":"Provides notetag-defined levels to give multipliers against XP/GP.","parameters":{}},
 {"name":"J_DropItem","status":true,"description":"Modifies the database drop functionality to be a percent instead of 1/N,\r\nAnd accommodates the \"Extra Drops\" notetags.","parameters":{"dropScale":"100"}},
-{"name":"J_QABS_mod","status":true,"description":"","parameters":{}}
+{"name":"J_QABS_RespawnConditions","status":true,"description":"Sets a switch or variable conditional to respawning enemies.","parameters":{}},
+{"name":"J_QABS_CollectAndUse","status":true,"description":"Automatically uses a skill on item-pickup.","parameters":{}}
 ];
