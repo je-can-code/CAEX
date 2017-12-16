@@ -1,20 +1,69 @@
 /* -------------------------------------------------------------------------- */
 // J_Difficulty
-// V: 1.0
+// V: 1.1
 //
+
 
 /*:@plugindesc Provides difficulty options for the the player that modify enemy stats.
 @author J
 
-@help In short, this adds a command to the main menu that sends the player to
-        another scene that lets them change the difficulty to one of a few preset
-        difficulties that modify enemy parameters making enemies either
-        tougher or wimpier. This can affect literally any of the default
-        parameters, s-parameters, and x-parameters, and also their XP/GP rates,
-        and also item drop rates. I included three difficulties by default, but
-        if you can see the pattern, you are free to add/subtract/change the
-        difficulties as you see fit. I did not create any plugin parameters
-        because lets be real, that would just be a pain for something like this.
+@help This plugin adds a new command to the main menu that represents the game's
+  difficulty. "Difficulty"s are named, and act as multipliers against the
+  enemies' various b/s/x parameters. It can also impact their exp/gold and
+  even their drop rates.
+
+  There are five plugin commands you can use to manipulate this plugin:
+
+  ADD:
+  JDIFF add param0 param1 param2 etc... param26
+
+  example:
+    JDIFF add 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+  translates to:
+    basically the normal mode down below, lol.
+
+  No commas necessary.
+  Just a space between each parameter.
+  Be careful not to miss one or it could break the plugin and crash the game.
+
+  REMOVE:
+  JDIFF remove [number of difficulty or name of difficulty]
+
+  example:
+    JDIFF remove 1
+  translates to:
+    remove the first difficulty in the list (easy by default)
+  
+  example:
+    JDIFF remove Normal
+  translates to:
+    remove the difficulty named "Normal".
+    (name of difficulty IS case sensitive)
+  
+  CHANGE:
+  JDIFF change [name of difficulty]
+
+  example:
+    JDIFF change Easy
+  translates to:
+    change the current difficulty mode to "Easy" mode.
+    (name of difficulty IS case sensitive)
+
+  SHOW:
+  JDIFF show
+
+  HIDE:
+  JDIFF hide
+
+  show and hide will do exactly what you think: show and hide the difficulty
+  menu item.
+  
+  NOTE: if you decide to hide the difficulty, it does not disable the them.
+    If you hide it while at "Hard", and enemies are stronger, they will just 
+    stay stronger.
+
+  This plugin is standalone and has no dependencies.
+  Just let me know if you plan on using it for anything serious :)
 */
 
 var Imported = Imported || {};
@@ -54,12 +103,12 @@ J.AddOns.Difficulty.makeDifficulty("Easy", 50, 25, 25,
   100, 0, 50, 50, 0, 0, 50, 50, 50, 50, 
   0, 100, 100, 100);
 
-  J.AddOns.Difficulty.makeDifficulty("Normal", 100, 100, 100,
+J.AddOns.Difficulty.makeDifficulty("Normal", 100, 100, 100,
   100, 100, 100, 100, 100, 100, 100, 100,
   100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
   100, 100, 100, 100);
 
-  J.AddOns.Difficulty.makeDifficulty("Hard", 150, 200, 200,
+J.AddOns.Difficulty.makeDifficulty("Hard", 150, 200, 200,
   150, 100, 125, 150, 125, 150,
   150, 100, 150, 150, 150, 100, 150, 150, 150, 150,
   200, 150, 150, 150);
@@ -215,23 +264,22 @@ Game_Enemy.prototype.gold = function() {
 var _Scene_Menu_jde_createCommandWindow = Scene_Menu.prototype.createCommandWindow;
 Scene_Menu.prototype.createCommandWindow = function() {
   _Scene_Menu_jde_createCommandWindow.call(this);
-  this._commandWindow.setHandler('difficulty', this.commandDifficulty.bind(this));
+  if (J.AddOns.Difficulty.visibility == true) {
+    this._commandWindow.setHandler('difficulty', this.commandDifficulty.bind(this));
+  }
 };
 
 // when command selected, pulls up the new scene.
 Scene_Menu.prototype.commandDifficulty = function() {
-    SceneManager.push(Scene_Difficulty);
+  SceneManager.push(Scene_Difficulty);
 };
 
 // adds the commands into the menu
 var _Menu_jdf_addDifficulties = Window_MenuCommand.prototype.makeCommandList;
 Window_MenuCommand.prototype.makeCommandList = function() {
-  if (J.AddOns.Difficulty.visibility) {
-    _Menu_jdf_addDifficulties.call(this);
+  _Menu_jdf_addDifficulties.call(this);
+  if (J.AddOns.Difficulty.visibility == true) {
     this.addDifficulties();
-  } else {
-    J.AddOns.Difficulty.visibility.call(this);
-    // nothing.
   }
 };
 
@@ -495,9 +543,11 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
     if (command === 'JDIFF') {
       switch (args[0].toLowerCase()) {
         case 'hide':
-          J.Difficulty.AddOns.visibility = false;
+          J.AddOns.Difficulty.visibility = false;
+          break;
         case 'show':
-          J.Difficulty.AddOns.visibility = true;
+          J.AddOns.Difficulty.visibility = true;
+          break;
         break;
         case 'add':
         case 'ADD':
@@ -527,8 +577,18 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
               break;
             }
             J.AddOns.Difficulty.Modes.splice(id, 1);
-            J.AddOns.Difficulty.changeDifficulty(0);  
+            J.AddOns.Difficulty.changeDifficulty(0);
           }
+          break;
+        case 'change':
+        case 'CHANGE':
+          var id = J.AddOns.Difficulty.findDifficulty(args[1]);
+          if (id == -1) {
+            console.warn("can't find that difficulty.");
+            break;
+          }
+          J.AddOns.Difficulty.changeDifficulty(id);
+          console.log("Difficulty changed to: " + J.AddOns.Difficulty.getDifficultyName(id) + ".");
           break;
         default: break;
       }
