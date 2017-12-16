@@ -226,10 +226,11 @@ Scene_Menu.prototype.commandDifficulty = function() {
 // adds the commands into the menu
 var _Menu_jdf_addDifficulties = Window_MenuCommand.prototype.makeCommandList;
 Window_MenuCommand.prototype.makeCommandList = function() {
-  _Menu_jdf_addDifficulties.call(this);
-  if (J.Difficulty.AddOns.visibility == true)
+  if (J.AddOns.Difficulty.visibility) {
+    _Menu_jdf_addDifficulties.call(this);
     this.addDifficulties();
-  else {
+  } else {
+    J.AddOns.Difficulty.visibility.call(this);
     // nothing.
   }
 };
