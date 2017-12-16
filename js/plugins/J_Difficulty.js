@@ -23,6 +23,7 @@ Imported.J_Difficulty = true;
 J.AddOns = J.AddOns || {};
 J.AddOns.Difficulty =   J.AddOns.Difficulty || {};
 J.AddOns.Difficulty.Modes = [];
+J.AddOns.Difficulty.visibility = true;
 
 // creates a new Difficulty mode based on the provided parameters.
 J.AddOns.Difficulty.makeDifficulty = function(namediff, exprate, goldrate, droprate, 
@@ -226,7 +227,11 @@ Scene_Menu.prototype.commandDifficulty = function() {
 var _Menu_jdf_addDifficulties = Window_MenuCommand.prototype.makeCommandList;
 Window_MenuCommand.prototype.makeCommandList = function() {
   _Menu_jdf_addDifficulties.call(this);
-  this.addDifficulties();
+  if (J.Difficulty.AddOns.visibility == true)
+    this.addDifficulties();
+  else {
+    // nothing.
+  }
 };
 
 // the command for adding difficulties to the main menu
@@ -488,6 +493,11 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
   try {
     if (command === 'JDIFF') {
       switch (args[0].toLowerCase()) {
+        case 'hide':
+          J.Difficulty.AddOns.visibility = false;
+        case 'show':
+          J.Difficulty.AddOns.visibility = true;
+        break;
         case 'add':
         case 'ADD':
         J.AddOns.Difficulty.makeDifficulty(args[1], args[2], args[3], args[4], 
