@@ -22,6 +22,6 @@ null,
 {"id":20,"expanded":true,"name":"The Mainstay v5","order":21,"parentId":18,"scrollX":1477.0909090909092,"scrollY":868.3636363636364},
 {"id":21,"expanded":true,"name":"The Mainstay v3","order":19,"parentId":18,"scrollX":1477.0909090909092,"scrollY":868.3636363636364},
 {"id":22,"expanded":true,"name":"The Mainstay v6","order":22,"parentId":18,"scrollX":1477.5,"scrollY":868.5},
-{"id":23,"expanded":true,"name":"First Dungeon","order":23,"parentId":4,"scrollX":868,"scrollY":539.3333333333334},
-{"id":24,"expanded":false,"name":"Entrance","order":24,"parentId":23,"scrollX":857.3333333333334,"scrollY":660.6666666666666}
+{"id":23,"expanded":true,"name":"First Dungeon","order":23,"parentId":4,"scrollX":832,"scrollY":640},
+{"id":24,"expanded":false,"name":"Entrance","order":24,"parentId":23,"scrollX":857.3333333333334,"scrollY":624.6666666666666}
 ]
