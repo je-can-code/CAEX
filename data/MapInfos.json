@@ -1,8 +1,8 @@
 [
 null,
-{"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":868,"scrollY":539.3333333333334},
-{"id":2,"expanded":false,"name":"Chapter 0: Initiation","order":2,"parentId":0,"scrollX":868,"scrollY":539.3333333333334},
-{"id":3,"expanded":false,"name":"Jaws of the Beast","order":3,"parentId":2,"scrollX":868,"scrollY":539.3333333333334},
+{"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":868,"scrollY":541.3333333333334},
+{"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":2,"parentId":0,"scrollX":868,"scrollY":541.3333333333334},
+{"id":3,"expanded":false,"name":"Jaws of the Beast","order":3,"parentId":2,"scrollX":868,"scrollY":541.3333333333334},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":14,"parentId":0,"scrollX":868,"scrollY":539.3333333333334},
 {"id":5,"expanded":true,"name":"The Mainstay v2","order":18,"parentId":18,"scrollX":1478,"scrollY":868},
 {"id":6,"expanded":false,"name":"Inside: Inn","order":16,"parentId":18,"scrollX":1579.5,"scrollY":1824.75},
@@ -23,5 +23,5 @@ null,
 {"id":21,"expanded":true,"name":"The Mainstay v3","order":19,"parentId":18,"scrollX":1477.0909090909092,"scrollY":868.3636363636364},
 {"id":22,"expanded":true,"name":"The Mainstay v6","order":22,"parentId":18,"scrollX":1477.5,"scrollY":869.25},
 {"id":23,"expanded":true,"name":"A Monster's Den","order":23,"parentId":4,"scrollX":976.5,"scrollY":606.75},
-{"id":24,"expanded":false,"name":"Entrance","order":24,"parentId":23,"scrollX":857.3333333333334,"scrollY":605.3333333333334}
+{"id":24,"expanded":false,"name":"Entrance","order":24,"parentId":23,"scrollX":857.3333333333334,"scrollY":669.3333333333334}
 ]

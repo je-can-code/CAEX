@@ -1,8 +1,9 @@
 //=============================================================================
-// J-Equip Screen Revamp v1.0
+// J-Equip Screen Revamp v1.1
 //=============================================================================
 // Changelog:
-//  v1.0: WIP plugin creatin.
+//  v1.0: plugin creation.
+//  v1.1: updated to fix wildly long floating point number imprecision.
 /*:
 @plugindesc Alters the equipscreen to provide greater detail about equipped items and their impacts on characters.
 @author J
@@ -251,13 +252,16 @@ Window_EquipStatus.prototype.drawCurrentParam = function (x, y, paramId, pType) 
     this.resetTextColor();
 	switch (pType) {
 		case 0:
-			this.drawText(this._actor.param(paramId), x, y, 48, 'right');
+			var curBparam = Math.floor(this._actor.param(paramId));
+			this.drawText(curBparam, x, y, 48, 'right');
 			break;
 		case 1:
-			this.drawText(this._actor.sparam(paramId)*100 -100, x, y, 48, 'right');
+			var curSparam = Math.floor(this._actor.sparam(paramId)*100-100);
+			this.drawText(curSparam, x, y, 48, 'right');
 			break;
 		case 2:
-			this.drawText(this._actor.xparam(paramId)*100, x, y, 48, 'right');
+			var curXparam = Math.floor(this._actor.xparam(paramId)*100);
+			this.drawText(curXparam, x, y, 48, 'right');
 			break;
 		default:
 			break;
@@ -285,22 +289,22 @@ Window_EquipStatus.prototype.drawRightArrow = function (x, y, pType) {
 Window_EquipStatus.prototype.drawNewParam = function (x, y, paramId, pType) {
 	switch (pType) {
 		case 0:
-    var newValue = this._tempActor.param(paramId);
-    var diffvalue = newValue - this._actor.param(paramId);
+    var newValue = Math.floor(this._tempActor.param(paramId));
+    var diffvalue = newValue - Math.floor(this._actor.param(paramId));
     this.changeTextColor(this.paramchangeTextColor(diffvalue));
     this.drawText(newValue, x, y, 48, 'left');
 			break;
 		case 1:
-    var newValue = this._tempActor.sparam(paramId);
-    var diffvalue = newValue - this._actor.sparam(paramId);
+    var newValue = Math.floor(this._tempActor.sparam(paramId)*100-100);
+    var diffvalue = newValue - Math.floor(this._actor.sparam(paramId)*100-100);
     this.changeTextColor(this.paramchangeTextColor(diffvalue));
-    this.drawText(newValue*100 -100, x, y, 48, 'left');
+    this.drawText(newValue, x, y, 48, 'left');
 			break;
 		case 2:
-    var newValue = this._tempActor.xparam(paramId);
-    var diffvalue = newValue - this._actor.xparam(paramId);
+    var newValue = Math.floor(this._tempActor.xparam(paramId)*100);
+    var diffvalue = newValue - Math.floor(this._actor.xparam(paramId)*100);
     this.changeTextColor(this.paramchangeTextColor(diffvalue));
-    this.drawText(newValue*100, x, y, 48, 'left');
+    this.drawText(newValue, x, y, 48, 'left');
 			break;
 		default:
 			break;
