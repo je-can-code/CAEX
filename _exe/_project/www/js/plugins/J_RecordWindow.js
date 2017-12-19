@@ -107,7 +107,7 @@ Scene_Map.prototype.handleRecordBox = function() {
     this._recordWindow = new Window_Record(wx, hy, J.Records.winWidth, J.Records.winHeight);
     this.addWindow(this._recordWindow);
   };
-  if (J.Records.visibility == false) {
+  if (J.Records.visibility == false || this.hideExtras()) {
     this._recordWindow.close();
   }
   else {

@@ -1275,6 +1275,7 @@ Window_Distribute.prototype.drawNormalItem = function(index, symbol) {
 	const data = $dataDistributeStats[symbol];
 	const cost = eval(data.cost);
 	let add = 0;
+	
 	if(this._bonuses[symbol] && this._bonuses[symbol] > 0) add = this._bonuses[symbol];
 	const current = (actor.getDistribute(symbol) + add);
 	const max = eval(data.max);
@@ -1284,7 +1285,9 @@ Window_Distribute.prototype.drawNormalItem = function(index, symbol) {
 		rate = current / max;
 		this.drawGauge(rect.x, rect.y, rect.width, rate, data.min_col, data.max_col);
 	}
-	this.drawText(name, rect.x, rect.y, nameWidth, 'left');
+    var iconIndex = IconManager.textForIcon(name);
+    this.drawIcon(iconIndex, rect.x, rect.y); // NEW- adds in an icon.
+	this.drawText(name, rect.x+36, rect.y, nameWidth, 'left');
 	this.drawNormalItemNumbers(stat, symbol, nameWidth, statWidth, rect);
 };
 
@@ -1366,7 +1369,6 @@ Window_Distribute.prototype.cursorRight = function(wrap) {
 	if(this._bonuses[symbol] === undefined) this._bonuses[symbol] = 0;
 	const prev = this._bonuses[symbol];
 	this._bonuses[symbol] += eval(data.gain);
-	console.log(eval(data.gain));
 	if (eval(data.gain) > 0)
 		this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
 	else

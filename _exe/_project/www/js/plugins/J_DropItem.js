@@ -57,20 +57,20 @@ J.AddOns.DropItems.dropScale = Number(J.AddOns.DropItems.pluginParams['dropScale
 // OVERWRITES [Game_Enemy.makeDropItems]
 // Also to incorporate percentage drop, and additional notetag drops.
 Game_Enemy.prototype.makeDropItems = function() {
-    var dropList = this.enemy().dropItems;
-    // if J_Base plugin is in use, then it'll add in the extra notetag drops, too.
-    if (Imported.J_Base) { dropList = this.enemy().dropItems.concat(this.enemy().extraDrops); }
-    var itemsFound = [];
-    for (var i = 0; i < dropList.length; i++) {
-      var di = dropList[i];
-      var dropRate = di.denominator;
-      if (Imported.J_Difficulty) { dropRate = di.denominator * (J.AddOns.Difficulty.convertBparams(10) / 100); }
-      if (di.kind > 0) {
-        var rand = Math.random() * J.AddOns.DropItems.dropScale;
-        if (rand < dropRate) {
-          itemsFound.push(this.itemObject(di.kind, di.dataId));
-        }
+  var dropList = this.enemy().dropItems;
+  // if J_Base plugin is in use, then it'll add in the extra notetag drops, too.
+  if (Imported.J_Base) { dropList = this.enemy().dropItems.concat(this.enemy().extraDrops); }
+  var itemsFound = [];
+  for (var i = 0; i < dropList.length; i++) {
+    var di = dropList[i];
+    var dropRate = di.denominator;
+    if (Imported.J_Difficulty) { dropRate = di.denominator * (J.AddOns.Difficulty.convertBparams(10) / 100); }
+    if (di.kind > 0) {
+      var rand = Math.random() * J.AddOns.DropItems.dropScale;
+      if (rand < dropRate) {
+        itemsFound.push(this.itemObject(di.kind, di.dataId));
       }
     }
-    return itemsFound;
+  }
+  return itemsFound;
 };

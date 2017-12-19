@@ -78,7 +78,7 @@ J.AddOns.Difficulty =   J.AddOns.Difficulty || {};
 J.AddOns.Difficulty.Modes = [];
 J.AddOns.Difficulty.visibility = true;
 J.AddOns.Difficulty.Parameters = PluginManager.parameters('J_HUD');
-J.AddOns.Difficulty.dVariable = Number(J.HUD.Parameters['Difficulty Variable']);
+J.AddOns.Difficulty.dVariable = Number(J.AddOns.Difficulty.Parameters['Difficulty Variable']);
 
 
 // creates a new Difficulty mode based on the provided parameters.
