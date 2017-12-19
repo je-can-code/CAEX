@@ -5,7 +5,7 @@ Chef Adventure! EX
 ![how2dl](https://github.com/jragyn/CAEX/raw/master/img/how2download.png "Logo Title Text 1")
 - Second, open the zip, and drop the files into a directory of your choice.
 - Third, open the project in RPG Maker MV, and just hit run to play!
-- Alternatively, if you do not have RPG Maker MV, you will have to wait till I release a deployed version of this for stand-alone playing.
+- Alternatively, if you do not have RPG Maker MV, access the CAEX/_exe/CAEX folder, and run Game.exe. (this might not be as up to date as the rest of the project, it is basically like, milestones.)
 
 ***
 
