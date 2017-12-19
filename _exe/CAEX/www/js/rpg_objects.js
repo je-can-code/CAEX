@@ -9811,7 +9811,6 @@ Game_Interpreter.prototype.command212 = function() {
 // Show Balloon Icon
 Game_Interpreter.prototype.command213 = function() {
     this._character = this.character(this._params[0]);
-    console.log(this._params);
     if (this._character) {
         this._character.requestBalloon(this._params[1]);
         if (this._params[2]) {
