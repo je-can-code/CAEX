@@ -507,10 +507,10 @@ DataManager.jadd_readNotes = function(data) {
                     dataId: 1,      // default: ID 1
                 };
                 switch (String(RegExp.$1).toLowerCase()) {
-                    case "i": drop.kind = 1;
-                    case "w": drop.kind = 2;
-                    case "a": drop.kind = 3;
-                    default: drop.kind = 1;
+                    case "i": drop.kind = 1; break;
+                    case "w": drop.kind = 2; break;
+                    case "a": drop.kind = 3; break;
+                    default: drop.kind = 1; break;
                 };
                 drop.dataId = Number(RegExp.$2); // ID of drop
                 drop.denominator = Number(RegExp.$3); // rate of drop

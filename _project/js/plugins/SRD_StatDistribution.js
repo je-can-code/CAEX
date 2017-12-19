@@ -1366,7 +1366,6 @@ Window_Distribute.prototype.cursorRight = function(wrap) {
 	if(this._bonuses[symbol] === undefined) this._bonuses[symbol] = 0;
 	const prev = this._bonuses[symbol];
 	this._bonuses[symbol] += eval(data.gain);
-	console.log(eval(data.gain));
 	if (eval(data.gain) > 0)
 		this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
 	else

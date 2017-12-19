@@ -79,7 +79,7 @@ J.HUD.visibility = true;
       this.addWindow(this._HUDWindow);
       this._HUDWindow.opacity = J.HUD.HUDopacity;
     };
-    if (J.HUD.visibility == false) {
+    if (J.HUD.visibility == false || this.hideExtras()) {
       this._HUDWindow.close();
     }
     else {
