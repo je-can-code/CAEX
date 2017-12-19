@@ -40,6 +40,7 @@ Game_Event.prototype.setupBattler = function() {
 		this._aiMode = null;
 		this._balloon = null;
 		this._baseMove = this._moveSpeed;
+		this._canFlee = this.canFlee();
 	}
 };
 
@@ -217,7 +218,7 @@ Game_Event.prototype.basicAIwait = function() {
 // get closer till a suitable action is available.
 Game_Event.prototype.basicAIready = function() {
 	var diff = $gameParty.leader().level - $dataEnemies[this._battlerId].level;
-	if (diff > 9) {
+	if (diff > 9 && this._canFlee) {
 		this._aiMode = 'FLEE';
 		return;
 	}
@@ -250,6 +251,16 @@ Game_Event.prototype.basicAIflee = function() {
 		this._moveSpeed = this._baseMove;
 		return;
 	}.bind(this));
+};
+
+// if enemy has special tag in notes, prevent fleeing.
+Game_Event.prototype.canFlee = function() {
+	// note data of the given enemy AND regexp structure
+	var nd = this.battler().enemy().note.split(/[\r\n]+/);
+	var rgx = /<noFlee>/i;
+	for (var n = 0; n < nd.length; n++) { if (nd[n].match(rgx)) { return false; } }
+	return true;
+
 };
 
 // reads the notedata of enemies on creation

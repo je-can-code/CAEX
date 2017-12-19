@@ -1240,11 +1240,11 @@ Window_Distribute.prototype.updateHelp = function() {
 		const actor = this._actor;
 		this._pointsWindow.setValue(eval(data.cost));
 		this._helpWindow.setText(data.description);
-		console.log(data.cost);
 	}
 };
 
 Window_Distribute.prototype.makeCommandList = function() {
+	this.addCommand("Finish", 'finish');
 	if(this._actor) {
 		const stats = this._actor.actor()._sd_stats || _.stats;
 		stats.forEach(function(stat) {
@@ -1253,7 +1253,6 @@ Window_Distribute.prototype.makeCommandList = function() {
 			}
 		}, this);
 	}
-	this.addCommand("Finish", 'finish');
 };
 
 Window_Distribute.prototype.drawItem = function(index) {
@@ -1279,7 +1278,7 @@ Window_Distribute.prototype.drawNormalItem = function(index, symbol) {
 	if(this._bonuses[symbol] && this._bonuses[symbol] > 0) add = this._bonuses[symbol];
 	const current = (actor.getDistribute(symbol) + add);
 	const max = eval(data.max);
-	this.changePaintOpacity((current < max && this.hasPoints(cost)) || (this._bonuses[symbol] && this._bonuses[symbol] > 0));
+	//this.changePaintOpacity((current < max && this.hasPoints(cost)) || (this._bonuses[symbol] && this._bonuses[symbol] > 0));
 	if(_.drawGauges) {
 		let rate = 0;
 		rate = current / max;
@@ -1295,7 +1294,7 @@ Window_Distribute.prototype.drawNormalItemNumbers = function(stat, symbol, nameW
 		let bonusWidth = -12;
 		this.contents.fontSize = 22;
 		if(this._bonuses[symbol]) {
-			const bonusText = percent ? `(+${Math.round(this._bonuses[symbol]*1000) / 10}%)` : `(+${this._bonuses[symbol]})`;
+			const bonusText = percent ? `(+ ${Math.round(this._bonuses[symbol]*1000) / 10}%)` : `(+${this._bonuses[symbol]})`;
 			bonusWidth = this.textWidth(bonusText);
 			this.changeTextColor("#66ff66");
 			this.drawText(bonusText, nameWidth, rect.y, statWidth, 'right');
@@ -1367,7 +1366,11 @@ Window_Distribute.prototype.cursorRight = function(wrap) {
 	if(this._bonuses[symbol] === undefined) this._bonuses[symbol] = 0;
 	const prev = this._bonuses[symbol];
 	this._bonuses[symbol] += eval(data.gain);
-	this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
+	console.log(eval(data.gain));
+	if (eval(data.gain) > 0)
+		this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
+	else
+		this._bonuses[symbol] = this._bonuses[symbol].clamp(eval(data.max) - current, 0);
 	if(this._bonuses[symbol] !== prev) {
 		this.removePoint(cost);
 		this.refreshEverything();
@@ -1389,7 +1392,7 @@ Window_Distribute.prototype.cursorLeft = function(wrap) {
 	if(this._bonuses[symbol] === undefined) this._bonuses[symbol] = 0;
 	const prev = this._bonuses[symbol];
 	this._bonuses[symbol] -= eval(data.gain);
-	this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
+	//this._bonuses[symbol] = this._bonuses[symbol].clamp(0, eval(data.max) - current);
 	if(this._bonuses[symbol] !== prev) {
 		this.addPoint(cost);
 		this.refreshEverything();

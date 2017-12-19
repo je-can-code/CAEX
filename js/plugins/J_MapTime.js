@@ -33,12 +33,6 @@ NOTE: TRG's regeneration is updated 10x faster (1 tick = 3 frames = 0.05s)
   Try making a skill cost like, 15 TP or something and use it as a basic
   attack limiter to prevent the player from swinging excessively.
   If you don't like it, you can just turn it off, too.
-  For reference, it takes 15% TRG to cancel out TP depletion while dashing.
-
- If you intend to use this, I highly recommend you make use of a couple other
- plugins as well:
-    > Some ABS (qABS works, but I don't have a link to the original code)
-    > A functional HUD: http://pastebin.com/53UjUNiZ (I made it myself :] )
 */
 /* -------------------------------------------------------------------------- */
 var Imported = Imported || {};
@@ -109,10 +103,11 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
   // and also deplete TP while dashing.
   Game_Map.prototype.doTPregen = function(actor) {
     var mod = 0;
-    if (J.mapTime.useTPforDash)
-      mod = Game_Player.prototype.isDashButtonPressed() ? 2.5 : 0.0;
-    var tpRegen = (((actor.trg + 0.1) * 100) / 10) - mod;
-    actor.gainTp(tpRegen);
+    var tpRegen = (((actor.trg + 0.1) * 100) / 10);
+    if (J.mapTime.useTPforDash) {
+      mod = Game_Player.prototype.isDashButtonPressed() ? -0.5 : tpRegen;
+    }
+    actor.gainTp(mod);
   };
 
   // this forces the player to be unable to run while out of TP.
