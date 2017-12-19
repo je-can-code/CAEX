@@ -62,6 +62,10 @@
     If you hide it while at "Hard", and enemies are stronger, they will just 
     stay stronger.
 
+@param Difficulty Variable
+@desc Assigns the difficulty to this variable. 0 = no assignment.
+@default 10
+
   This plugin is standalone and has no dependencies.
   Just let me know if you plan on using it for anything serious :)
 */
@@ -73,6 +77,9 @@ J.AddOns = J.AddOns || {};
 J.AddOns.Difficulty =   J.AddOns.Difficulty || {};
 J.AddOns.Difficulty.Modes = [];
 J.AddOns.Difficulty.visibility = true;
+J.AddOns.Difficulty.Parameters = PluginManager.parameters('J_HUD');
+J.AddOns.Difficulty.dVariable = Number(J.HUD.Parameters['Difficulty Variable']);
+
 
 // creates a new Difficulty mode based on the provided parameters.
 J.AddOns.Difficulty.makeDifficulty = function(namediff, exprate, goldrate, droprate, 
@@ -192,6 +199,8 @@ J.AddOns.Difficulty.getDifficultyName = function(diffMode) {
 
 // sets the difficulty to a fixed difficulty.
 J.AddOns.Difficulty.changeDifficulty = function(newDifficulty) {
+  if (J.AddOns.Difficulty.dVariable > 0)
+    $gameVariables.setValue(J.AddOns.Difficulty.dVariable, newDifficulty);
   J.AddOns.Difficulty.currentMode = newDifficulty;
 };
 
