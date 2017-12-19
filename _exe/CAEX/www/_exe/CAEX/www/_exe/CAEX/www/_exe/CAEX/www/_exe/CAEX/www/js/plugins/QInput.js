@@ -543,6 +543,7 @@ function QInput() {
 
   // Checks if any press is pressed with .onkeypress()
   Input.anyPressed = function(keys) {
+    console.log(this._lastPressed);
     if (this._ranPress) {
       // should filter the input here based of the keys argument
       // the key that was pressed can be grabbed with this._lastPressed

@@ -202,17 +202,17 @@ Window_Param_Choice.prototype.drawItem = function (index) {
     if (index == 0 || index == 3 || index == 6 || index == 9 || index == 12 || index == 15 || index == 18 || index == 21) {
         this.drawIcon(IconManager.bParams(grid), rect.x, rect.y)
         this.drawText(TextManager.param(grid), rect.x + 36, rect.y, rect.width, align);
-        this.drawText(Math.round(actor.param(grid)), rect.x, rect.y, rect.width, 'right');
+        this.drawText(Math.floor(actor.param(grid)), rect.x, rect.y, rect.width, 'right');
     };
     if (index == 1 || index == 4 || index == 7 || index == 10 || index == 13 || index == 16 || index == 19 || index == 22 || index == 25 || index == 28) {
         this.drawIcon(IconManager.sParams(grid), rect.x, rect.y)
         this.drawText(TextManager.sparam(grid), rect.x + 36, rect.y, rect.width, align);
-        this.drawText(Math.round((actor.sparam(grid)*100)-100), rect.x, rect.y, rect.width, 'right');
+        this.drawText(Math.floor((actor.sparam(grid)*100)-100), rect.x, rect.y, rect.width, 'right');
     }
     if (index == 2 || index == 5 || index == 8 || index == 11 || index == 14 || index == 17 || index == 20 || index == 23 || index == 26 || index == 29) {
         this.drawIcon(IconManager.xParams(grid), rect.x, rect.y)
         this.drawText(TextManager.xparam(grid), rect.x + 36, rect.y, rect.width, align);
-        this.drawText(Math.round(actor.xparam(grid)*100), rect.x, rect.y, rect.width, 'right');
+        this.drawText(Math.floor(actor.xparam(grid)*100), rect.x, rect.y, rect.width, 'right');
     }
 };
 

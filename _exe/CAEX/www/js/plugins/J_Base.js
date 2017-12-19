@@ -233,8 +233,8 @@ IconManager.textForIcon = function (text) {
     case TextManager.options: return 83;
     case TextManager.save: return 79;
     case TextManager.gameEnd: return 91;
-    case TextManager.newGame: return 225;
-    case TextManager.continue_: return 189;
+    case TextManager.newGame: return 480;
+    case TextManager.continue_: return 342;
     case TextManager.weapon: return 501;
     case TextManager.armor: return 548;
     case TextManager.keyItem: return 195;
