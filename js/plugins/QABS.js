@@ -3590,13 +3590,6 @@ function Skill_Sequencer() {
     this.AISimpleAction(bestTarget, this.AISimpleGetAction(bestTarget));
   };
 
-  Game_Event.prototype.AISimpleDecideAction = function() {
-    var counter = this._aiWait;
-
-
-
-  }
-
   Game_Event.prototype.AISimpleInRange = function(bestTarget) {
     var targetId = bestTarget.charaId();
     if (this.isTargetInRange(bestTarget)) {
@@ -3621,12 +3614,10 @@ function Skill_Sequencer() {
         this._endWait = this.wait(90).then(function() {
           this._endWait = null;
           this.endCombat();
-          //console.log("lost sight.");
         }.bind(this));
       }
       if (this._endWait && this.canMove()) {
         this.moveTowardCharacter(bestTarget);
-        //console.log("chasing!");
       }
       return false;
     }
@@ -3668,84 +3659,6 @@ function Skill_Sequencer() {
         }
     }
   };
-/*
-  Game_Event.prototype.updateAISimple = function() {
-    var bestTarget = this.bestTarget();
-    if (!bestTarget) return;
-    var targetId = bestTarget.charaId();
-    if (!this.AISimpleInRange(bestTarget)) return;
-    this.AISimpleAction(bestTarget, this.AISimpleGetAction(bestTarget));
-  };
-
-  Game_Event.prototype.AISimpleInRange = function(bestTarget) {
-    var targetId = bestTarget.charaId();
-    if (this.isTargetInRange(bestTarget)) {
-      if (!this._agroList.hasOwnProperty(targetId)) {
-        this._aiWait = QABS.aiWait;
-        this.addAgro(targetId);
-        if (this._aiPathfind) {
-          this.clearPathfind();
-        }
-      }
-      if (this._endWait) {
-        this.removeWaitListener(this._endWait);
-        this._endWait = null;
-      }
-      return true;
-    } else {
-      if (!this._endWait && this.inCombat()) {
-        bestTarget.removeAgro(this.charaId());
-        if (this._aiPathfind) {
-          this.clearPathfind();
-        }
-        this._endWait = this.wait(90).then(function() {
-          this._endWait = null;
-          this.endCombat();
-        }.bind(this));
-      }
-      if (this._endWait && this.canMove()) {
-        this.moveTowardCharacter(bestTarget);
-      }
-      return false;
-    }
-    return false;
-  };
-
-  Game_Event.prototype.AISimpleGetAction = function(bestTarget) {
-    var bestAction = null;
-    if (this._aiWait >= QABS.aiWait) {
-      this.turnTowardCharacter(bestTarget);
-      bestAction = QABSManager.bestAction(this.charaId());
-      this._aiWait = 0;
-    } else {
-      this._aiWait++;
-    }
-    return bestAction;
-  };
-
-  Game_Event.prototype.AISimpleAction = function(bestTarget, bestAction) {
-    if (bestAction) {
-      var skill = this.useSkill(bestAction);
-      if (skill) skill._target = bestTarget;
-    } else if (this.canMove()) {
-        if (this._aiPathfind) {
-          var dx = bestTarget.cx() - this.cx();
-          var dy = bestTarget.cy() - this.cy();
-          var mw = this.collider('collision').width + bestTarget.collider('collision').width;
-          var mh = this.collider('collision').height + bestTarget.collider('collision').height;
-          if (Math.abs(dx) <= mw && Math.abs(dy) <= mh) {
-            this.clearPathfind();
-            this.moveTowardCharacter(bestTarget);
-          } else {
-            this.initChase(bestTarget.charaId());
-          }
-        } else {
-          this.moveTowardCharacter(bestTarget);
-        }
-    }
-  };
-*/
-
 
   Game_Event.prototype.isTargetInRange = function(target) {
     if (!target) return false;
