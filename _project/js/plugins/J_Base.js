@@ -242,6 +242,27 @@ IconManager.textForIcon = function (text) {
     case J.AddOns.Difficulty.getDifficultyName(0): return 497;
     case J.AddOns.Difficulty.getDifficultyName(1): return 498;
     case J.AddOns.Difficulty.getDifficultyName(2): return 501;
+
+    // for handling SRD_StatDistribution
+    case "Life Improver": return J.Icon.MHP_icon;
+    case "Yggdrasil Force": return J.Icon.HRG_icon;
+    case "Mind Expansion": return J.Icon.MMP_icon;
+    case "Meditation": return J.Icon.MRG_icon;
+    case "Power Blows": return J.Icon.ATK_icon;
+    case "Prowess": return J.Icon.TRG_icon;
+    case "Warrior's Eye": return J.Icon.TCR_icon;
+    case "Critical Edge": return J.Icon.CRI_icon;
+    case "Endurance Up": return J.Icon.DEF_icon;
+    case "Golem Heart": return J.Icon.PDR_icon;
+    case "Healing Amp": return J.Icon.REC_icon;
+    case "Force Focus": return J.Icon.MAT_icon;
+    case "Mage's Eye": return J.Icon.MCR_icon;
+    case "Magic Defense": return J.Icon.MDF_icon;
+    case "Planar Shield": return J.Icon.MDR_icon;
+    case "Good Fortune": return J.Icon.LUK_icon;
+    case "Sage's Wisdom": return J.Icon.EXP_icon;
+    case "Trap Guard": return J.Icon.FDR_icon;
+
     default: return 0;
   }
 }
@@ -467,7 +488,7 @@ Scene_Map.prototype.hideExtras = function() {
 
 /* -------------------------------------------------------------------------- */
 //    NOTE READING
-// Rather than blitz through the notes multiple times, I opted to put all the
+// Rather than blitz through the notes multiple times, I opted to put much of the
 // note reading into this function, so other plugins like J_XPGPvariance will
 // need this to function. Since otherwise, this does basically nothing by
 // itself, it shouldn't be too harmful. (right?)
