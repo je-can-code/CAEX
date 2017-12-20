@@ -36,9 +36,9 @@ Game_Battler.prototype.updateStateSteps = function(state) {
 	}
 };
 
-// now removes "_stateDuration", too.
-Game_Actor.prototype.clearStates = function() {
-	Game_Battler.prototype.clearStates.call(this);
+var j_Game_BattlerBase_clearStates = Game_BattlerBase.prototype.clearStates;
+Game_BattlerBase.prototype.clearStates = function() {
+	j_Game_BattlerBase_clearStates.call(this);
 	this._stateSteps = {};
 	this._stateDuration = {};
 };
