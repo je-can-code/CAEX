@@ -55,5 +55,5 @@ var $plugins =
 {"name":"J_QABS_DeathAnim","status":true,"description":"Adds in an animation from the database when an enemy is defeated.","parameters":{}},
 {"name":"J_QABS_Popups_Teams","status":true,"description":"Differentiates team popups.","parameters":{}},
 {"name":"J_QABS_CustomAI","status":true,"description":"Adds in a new AI \"basic\" to the QABS.","parameters":{}},
-{"name":"J_QABS_mod","status":true,"description":"","parameters":{}}
+{"name":"J_QABS_DOTdurations","status":true,"description":"Extends the duration of states when re-afflicted.","parameters":{}}
 ];
