@@ -235,7 +235,7 @@ Game_Event.prototype.basicAIready = function() {
 // reset back to wait time.
 Game_Event.prototype.basicAIattack = function() {
 	var skill = this.useSkill(QABSManager.bestAction(this.charaId()));
-	if (skill == null) return;
+	if (skill == null || skill === undefined) return;
 	skill._target = this.bestTarget();
 	this._aiMode = 'START';
 };
