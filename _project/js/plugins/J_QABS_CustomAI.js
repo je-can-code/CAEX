@@ -41,6 +41,7 @@ Game_Event.prototype.setupBattler = function() {
 		this._balloon = null;
 		this._baseMove = this._moveSpeed;
 		this._canFlee = this.canFlee();
+		this._skillDecided = null;
 	}
 };
 
@@ -164,6 +165,8 @@ Game_Event.prototype.hasTarget = function() {
 
 // the state-based AI.
 // the six states of action that enemies can be in.
+// typically: ENGAGE > START > WAIT > READY > DECIDE > REPOSITION > ATTACK
+// 	then restart @START, if enemy loses sight of target, restart at ENGAGE.
 Game_Event.prototype.basicAImode = function() {
 	if (this._aiMode == null) this._aiMode = 'ENGAGE';
 	if (!this.hasTarget()) { return; };
@@ -180,6 +183,12 @@ Game_Event.prototype.basicAImode = function() {
 		case 'READY':
 			this.basicAIready();
 			break;
+		case 'DECIDE':
+			this.basicAIdecide();
+			break;
+		case 'REPOSITION':
+			this.basicAIreposition();
+			break;
 		case 'ATTACK':
 			this.basicAIattack();
 			break;
@@ -190,21 +199,23 @@ Game_Event.prototype.basicAImode = function() {
 	}
 };
 
-// this state only occurs once per encounter with the enemy.
+// beings the encounter between this event and the target.
+// pops an alert balloon, and moves to start mode.
 Game_Event.prototype.basicAIengage = function() {
 	this.requestBalloon(1);
 	this._aiMode = 'START';
 };
 
-// create wait timer.
-// either pulls from notes or from QABS.aiWait default.
+// create wait timer and clears decided skill.
+// once finished, moves to wait mode.
 Game_Event.prototype.basicAIstart = function() {
+	this._skill = 0;
 	this._aiWait = this.getAIwait();
 	this._aiMode = 'WAIT';
 };
 
-// count up enemy's wait timer.
-// move away if possible.
+// counts down the aiWait timer for the enemy.
+// when ready, moves to ready mode.
 Game_Event.prototype.basicAIwait = function() {
 	if (this._aiWait > 0) {
 		this._aiWait--;
@@ -215,27 +226,42 @@ Game_Event.prototype.basicAIwait = function() {
 	}
 };
 
-// get closer till a suitable action is available.
+// decides whether or not the target is too strong to fight.
+// if it is, flees from the target, otherwise moves to decide mode.
 Game_Event.prototype.basicAIready = function() {
 	var diff = $gameParty.leader().level - $dataEnemies[this._battlerId].level;
 	if (diff > 9 && this._canFlee) {
 		this._aiMode = 'FLEE';
 		return;
 	}
-	if (QABSManager.bestAction(this.charaId())) {
-		this._aiMode = 'ATTACK';
-		return;
+	this._aiMode = 'DECIDE';
+};
+
+// makes the decision here as to what skill should be used.
+// then moves to reposition mode if not in range of skill.
+Game_Event.prototype.basicAIdecide = function() {
+	var skill = this.decideSkill(this.charaId());
+	this._skillDecided = skill;
+	this._aiMode = 'REPOSITION';
+};
+
+// if not in range to use decided skill, get closer, or move to attack mode.
+Game_Event.prototype.basicAIreposition = function() {
+	var targets = QABSManager.skillWillHit(this._skillDecided, this.charaId());
+	if (targets.length < 1) {
+		this.closeDistance();
 	}
 	else {
-		this.closeDistance();
+		this._aiMode = 'ATTACK';
 	}
 };
 
 // execute "best action".
 // reset back to wait time.
 Game_Event.prototype.basicAIattack = function() {
-	var skill = this.useSkill(QABSManager.bestAction(this.charaId()));
+	var skill = this._skillDecided;
 	if (skill == null || skill === undefined) return;
+	this.useSkill(skill);
 	skill._target = this.bestTarget();
 	this._aiMode = 'START';
 };
@@ -251,6 +277,16 @@ Game_Event.prototype.basicAIflee = function() {
 		this._moveSpeed = this._baseMove;
 		return;
 	}.bind(this));
+};
+
+// picks a skill at random from the list of skills available.
+Game_Event.prototype.decideSkill = function(userId) {
+	var chara = QPlus.getCharacter(userId);
+	if (!chara.battler()) return null;
+	var targets;
+	var skills = chara.usableSkills();
+	if (skills.length === 0) return null;
+	return skills[Math.floor(Math.random() * skills.length)];
 };
 
 // if enemy has special tag in notes, prevent fleeing.

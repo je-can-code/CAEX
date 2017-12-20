@@ -281,6 +281,8 @@ Scene_Map.prototype.update = function() {
       xIcon = J.Icon.EXP_icon;
       gIcon = J.Icon.GOLD_icon;
     }
+    var oldSize = this.contents.fontSize;
+    this.contents.fontSize = 12;
     switch (i._type) {
       case 0: // for items
         this.drawIcon(i._iconIndex, x, y);
@@ -296,6 +298,7 @@ Scene_Map.prototype.update = function() {
       break;
       default: break; // there shouldn't be a need default case
     }
+    this.contents.fontSize = oldSize;
   };
 /* -------------------------------------------------------------------------- */
 // type 0 = item

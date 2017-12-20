@@ -3981,7 +3981,10 @@ function Game_Loot() {
     }
     for (var name in display) {
       var iconIndex = display[name].iconIndex;
-      var string = 'x' + display[name].total + ' ' + name;
+      if (display[name].total == 1)
+        var string = name;
+      else
+        var string = 'x' + display[name].total + ' ' + name;
       if (iconIndex) {
         string = '\\I[' + iconIndex + ']' + string;
       }
