@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------- */
 // J_MapTime
-// V: 1.0
+// V: 1.1
 
 /*:@plugindesc Provides functionality for HRG/MRG/TRG while on the map.
 @author J
@@ -84,19 +84,55 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
     }
   };
 
+  Game_Battler.prototype.regenerateAll = function() {
+    // do nothing and disable MV regeneration
+  };
+
   // Here, HP/MP regeneration is handled based on HRG/MRG.
   // It is significantly slower than TP Regeneration.
+  // if "poisoned" state is inflicted, natural regen stops.
   Game_Map.prototype.doHPMPregen = function(actor) {
     var hRegen, mRegen = 0;
+    var details = this.isPoisoned(actor);
     if (J.mapTime.flatHealing) {
       hRegen = ((actor.hrg * 100) / 2) / 5;
       mRegen = ((actor.mrg * 100) / 2) / 5;  
     } else {
-      hRegen = ((actor.hrg * actor.mhp) / 2) / 5;
-      mRegen = ((actor.mrg * actor.mmp) / 2) / 5;
+      if (details && details[0] == "HP") {
+        hRegen = (details[1] * 100 / 2 / 5);
+      } else {
+        hRegen = ((actor.hrg * actor.mhp) / 2) / 5;
+      }
+      if (details && details[0] == "MP") {
+        mRegen = ((details[1] * 100) / 2) / 5;
+      } else {
+        mRegen = ((actor.mrg * actor.mmp) / 2) / 5;
+      }
+      if (details && details[0] == "BOTH") {
+        hRegen = ((details[1] * 100) / 2) / 5;
+        mRegen = ((details[1] * 100) / 2) / 5;
+      }
     }
     actor.gainHp(hRegen);
     actor.gainMp(mRegen);
+  };
+
+  Game_Map.prototype.isPoisoned = function(actor) {
+    var structure = /<poison:(HP|MP|BOTH)>/i;
+    var aStates = actor.states();
+    var details = [];
+    if (aStates.length <= 0) return false;
+    for (var i = 0; i < aStates.length; i++) {
+      var notedata = aStates[i].note.split(/[\r\n]+/);
+      for (var n = 0; n < notedata.length; n++) {
+        var line = notedata[n];
+        if (line.match(structure)) {
+          details = [RegExp.$1, aStates[i].traits[0].value];
+          return details;
+        }
+      }
+    }
+    return false;
   };
 
   // this rapidly regenerates the player's TP.

@@ -6,29 +6,29 @@
 @author J
 
 @help Enables the new "basic" AI for use with QABS.
-				It isn't actually that much smarter than the original, but it deals with
-				a few nuances that needed help.
+		It isn't actually that much smarter than the original, but it deals with
+		a few nuances that needed help.
 
-			Details:
-				Enemies now use use custom AI wait timers to given unique durations
-				between actions. This can be setup with the following notetags:
-					<aiWait:###>
-				example:
-					<aiWait:40>
-				translates to:
-					waits 40 frames (2/3 of a second) between actions.
+	Details:
+		Enemies now use use custom AI wait timers to given unique durations
+		between actions. This can be setup with the following notetags:
+			<aiWait:###>
+		example:
+			<aiWait:40>
+		translates to:
+			waits 40 frames (2/3 of a second) between actions.
 
-				If no notetag is included on the enemy, they will use the default aiWait
-				setup within the QABS itself.
+		If no notetag is included on the enemy, they will use the default aiWait
+		setup within the QABS itself.
 
-			Additionally:
-				Enemies will now attempt to hold a distance between their target while
-				they await their turn. Their skill designation is still determined by
-				the QABS itself, but if the enemy deems it best to use a melee skill,
-				they will approach the target till in range before executing the skill.
-				If an enemy is too many levels below the target, instead of just
-				continuing the attack, they will run the opposite direction at an
-				increased move-rate.
+	Additionally:
+		Enemies will now attempt to hold a distance between their target while
+		they await their turn. Their skill designation is still determined by
+		the QABS itself, but if the enemy deems it best to use a melee skill,
+		they will approach the target till in range before executing the skill.
+		If an enemy is too many levels below the target, instead of just
+		continuing the attack, they will run the opposite direction at an
+		increased move-rate.
 
 */
 

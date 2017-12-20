@@ -2677,7 +2677,7 @@ function Skill_Sequencer() {
     for (var i = 0; i < states.length; i++) {
       this.updateStateSteps(states[i]);
     }
-    //this.showAddedStates();   //Currently does nothing, so no need to run it
+    this.showAddedStates();   //Currently does nothing, so no need to run it
     //this.showRemovedStates(); //Currently does nothing, so no need to run it
   };
 

@@ -2690,8 +2690,8 @@ function Skill_Sequencer() {
     if (this._stateSteps[state.id] >= 0) {
       if (this._stateSteps[state.id] % this.stepsForTurn() === 0) {
         this.onTurnEnd();
-        //this.result().damageIcon = $dataStates[state.id].iconIndex;
-        //this.startDamagePopup();
+				this.result().damageIcon = $dataStates[state.id].iconIndex;
+				this.startDamagePopup();
         if (this._stateSteps[state.id] === 0) this.removeState(state.id);
       }
       this._stateSteps[state.id]--;
