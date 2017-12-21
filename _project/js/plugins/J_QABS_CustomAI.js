@@ -197,6 +197,7 @@ Game_Event.prototype.basicAImode = function() {
 			break;
 		default: break;
 	}
+	//console.log(this._aiMode);
 };
 
 // beings the encounter between this event and the target.
@@ -209,7 +210,7 @@ Game_Event.prototype.basicAIengage = function() {
 // create wait timer and clears decided skill.
 // once finished, moves to wait mode.
 Game_Event.prototype.basicAIstart = function() {
-	this._skill = 0;
+	this._skill = null;
 	this._aiWait = this.getAIwait();
 	this._aiMode = 'WAIT';
 };
@@ -247,6 +248,9 @@ Game_Event.prototype.basicAIdecide = function() {
 
 // if not in range to use decided skill, get closer, or move to attack mode.
 Game_Event.prototype.basicAIreposition = function() {
+	if (!this._skillDecided)
+		this._aiMode = 'DECIDE';
+	if (this._skillDecided == null || this._skillDecided == undefined) return;
 	var targets = QABSManager.skillWillHit(this._skillDecided, this.charaId());
 	if (targets.length < 1) {
 		this.closeDistance();
@@ -261,9 +265,13 @@ Game_Event.prototype.basicAIreposition = function() {
 Game_Event.prototype.basicAIattack = function() {
 	var skill = this._skillDecided;
 	if (skill == null || skill === undefined) return;
-	this.useSkill(skill);
+	this.turnTowardCharacter(this.bestTarget());
 	skill._target = this.bestTarget();
+	this.useSkill(skill);
 	this._aiMode = 'START';
+
+
+	
 };
 
 // if the difference in levels between target and self is too great, flee!

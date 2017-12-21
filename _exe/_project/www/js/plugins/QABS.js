@@ -2677,7 +2677,7 @@ function Skill_Sequencer() {
     for (var i = 0; i < states.length; i++) {
       this.updateStateSteps(states[i]);
     }
-    this.showAddedStates();   //Currently does nothing, so no need to run it
+    //this.showAddedStates();   //Currently does nothing, so no need to run it
     //this.showRemovedStates(); //Currently does nothing, so no need to run it
   };
 
@@ -2690,8 +2690,8 @@ function Skill_Sequencer() {
     if (this._stateSteps[state.id] >= 0) {
       if (this._stateSteps[state.id] % this.stepsForTurn() === 0) {
         this.onTurnEnd();
-        //this.result().damageIcon = $dataStates[state.id].iconIndex;
-        //this.startDamagePopup();
+				this.result().damageIcon = $dataStates[state.id].iconIndex;
+        this.startDamagePopup();
         if (this._stateSteps[state.id] === 0) this.removeState(state.id);
       }
       this._stateSteps[state.id]--;
@@ -3630,10 +3630,8 @@ function Skill_Sequencer() {
       this.turnTowardCharacter(bestTarget);
       bestAction = QABSManager.bestAction(this.charaId());
       this._aiWait = 0;
-      //console.log("acting!");
     } else {
       this._aiWait++;
-      //console.log("waiting...");
     }
     return bestAction;
   };
@@ -3981,7 +3979,10 @@ function Game_Loot() {
     }
     for (var name in display) {
       var iconIndex = display[name].iconIndex;
-      var string = 'x' + display[name].total + ' ' + name;
+      if (display[name].total == 1)
+        var string = name;
+      else
+        var string = 'x' + display[name].total + ' ' + name;
       if (iconIndex) {
         string = '\\I[' + iconIndex + ']' + string;
       }

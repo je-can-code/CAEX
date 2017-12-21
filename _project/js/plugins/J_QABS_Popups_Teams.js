@@ -43,7 +43,6 @@ Sprite_Character.prototype.setupDamagePopup = function() {
     if (result.critical) {
       type += '-CRIT';
     }
-
     if (type.includes('DMG')) {
       switch (this._character.team()) {
         case 0: // Neutral
@@ -58,7 +57,6 @@ Sprite_Character.prototype.setupDamagePopup = function() {
         default: break; // 3+ requires unique handling.
       }
     }
-
     QABSManager.startPopup('QABS-' + type, {
       string: string,
       oy: this._battler._popupOY,
@@ -68,4 +66,34 @@ Sprite_Character.prototype.setupDamagePopup = function() {
     this._battler.clearDamagePopup();
     this._battler.clearResult();
   }
+};
+
+// also updated to include an icon for experience on gain.
+Game_Event.prototype.onDeath = function() {
+  if (this._onDeath) {
+    try {
+      eval(this._onDeath);
+    } catch (e) {
+      var id = this.battler()._enemyId;
+      console.error('Error with `onDeath` meta inside enemy ' + id, e);
+    }
+  }
+  if (this._agroList[0] > 0) {
+    var exp = this.battler().exp();
+    $gamePlayer.battler().gainExp(exp);
+    if (Imported.J_Base) {
+      var xIcon = J.Icon.EXP_icon;
+    }
+    if (exp > 0) {
+      QABSManager.startPopup('QABS-EXP', {
+        x: $gamePlayer.cx(), y: $gamePlayer.cy(),
+        string: '\\I[' + xIcon + ']' + exp
+      });
+    }
+    this.setupLoot();
+  }
+  this.clearABS();
+  this._respawn = Number(this.battler().enemy().meta.respawn) || -1;
+  this._isDead = true;
+  if (!this._dontErase) this.erase();
 };

@@ -99,9 +99,7 @@ J.HUD.visibility = true;
   Window_HUD.prototype.initialize = function(x, y) {
     Window_Base.prototype.initialize.call(this, x, y,
       J.HUD.width, J.HUD.height);
-//    Window_Base.prototype.initialize.call(this, x, Graphics.height - J.HUD.height,
-//      J.HUD.width, J.HUD.height);
-        this._updateWait = 0;
+      this._updateWait = 0;
       this.refresh();
       this.activate();
     };
@@ -167,7 +165,21 @@ J.HUD.visibility = true;
       this.drawActorLevel(actor, x2 + 128, y);
 
       // draws icons for status buff/debuffs
-      this.drawActorIcons(actor, x + 256, y);
+      this.drawActorIcons(actor, x + 298, y);
+    };
+
+    Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
+      width = width || 144;
+      var states = actor.states();
+      var icons = actor.stateIcons().slice(0, Math.floor(width / Window_Base._iconWidth));
+      for (var i = 0; i < icons.length; i++) {
+        this.drawIcon(icons[i], x + Window_Base._iconWidth * i, y + 2);
+        var oldSize = this.contentsHeight.fontSize;
+        this.contents.fontSize = 12;
+        var timer = Number(actor._stateDuration[states[i].id] / 60).toFixed(1);
+        this.drawText(timer, x + Window_Base._iconWidth * i, y + 2)
+        this.contents.fontSize = oldSize;
+      }
     };
 
     // custom method for drawing a gauge for the leader's EXP.

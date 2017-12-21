@@ -3630,10 +3630,8 @@ function Skill_Sequencer() {
       this.turnTowardCharacter(bestTarget);
       bestAction = QABSManager.bestAction(this.charaId());
       this._aiWait = 0;
-      //console.log("acting!");
     } else {
       this._aiWait++;
-      //console.log("waiting...");
     }
     return bestAction;
   };
