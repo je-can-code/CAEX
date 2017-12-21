@@ -67,6 +67,7 @@ J.AddOns.XPGPvariance.doSexp = function(a, e) { // a = actor, e = enemy
 // The switch that handles level difference and multipliers.
 // Edit here if you want to change the multipliers.
 J.AddOns.XPGPvariance.getXPmult = function(a, e) { // a = actor, e = enemy
+  if (a.level == 0 || e.level == 0) return 1.0;
   var compared = e.level - a.level;
   var diff = compared;
   if (diff > 9) return 4.0;
@@ -101,6 +102,7 @@ J.AddOns.XPGPvariance.getXPmult = function(a, e) { // a = actor, e = enemy
 // The switch that handles level difference and multipliers.
 // Edit here if you want to change the multipliers.
 J.AddOns.XPGPvariance.getDMGmult = function(d, a) {
+  if (d.level == 0 || a.level == 0) return 1.0;
   var compared = a.level - d.level;
   var diff = compared;
   if (diff > 9) return 1.5;
@@ -155,7 +157,6 @@ Game_Action.prototype.makeDamageValue = function(target, critical) {
   var defender = !this.subject().isEnemy() ? target.enemy() : target;
   var mult = 1.0;
   mult = J.AddOns.XPGPvariance.getDMGmult(defender, attacker);
-  console.log(mult);
   return Math.floor(mult * originalResult);
 };
 
