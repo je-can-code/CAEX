@@ -1,7 +1,7 @@
 Chef Adventure! EX
 ======
 ### How do I play?
- - First first, enter the _project directory above.
+ - First first, enter the _project directory above (not _exe / _project !).
  - Then, download the game like this:  
 ![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "Logo Title Text 1")
 - Second, open the zip, and drop the files into a directory of your choice.
