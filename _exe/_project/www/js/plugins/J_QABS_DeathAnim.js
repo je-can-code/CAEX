@@ -18,6 +18,7 @@ Game_Event.prototype.onDeath = function() {
 
 // new method
 Game_Event.prototype.deathAnimation = function() {
+	if (this._aiPathfind)	this.clearPathfind();
 	var deathAnimId = 0;
 	var nd = this.battler().enemy().note.split(/[\r\n]+/);
 	var rgx = /<death anim:(\d+)>/i;
