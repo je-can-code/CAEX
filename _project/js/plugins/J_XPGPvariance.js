@@ -59,24 +59,27 @@ J.AddOns.XPGPvariance.doSexp = function(a, e) { // a = actor, e = enemy
   }
   if (e.level == 0) {} // if enemy level isn't set just return normal XP.
   else {
-    multiplier = J.AddOns.XPGPvariance.getMult(a, e);
+    multiplier = J.AddOns.XPGPvariance.getXPmult(a, e);
   }
   return multiplier;
 };
 
 // The switch that handles level difference and multipliers.
 // Edit here if you want to change the multipliers.
-J.AddOns.XPGPvariance.getMult = function(a, e) { // a = actor, e = enemy
+J.AddOns.XPGPvariance.getXPmult = function(a, e) { // a = actor, e = enemy
   var compared = e.level - a.level;
   var diff = compared;
+  if (diff > 9) return 4.0;
+  else if (diff < -9) return 0.05;
+  
   switch (compared) {
-    case diff>9: return 5.0; // 10 or more levels lower than the enemy.
-    case 9: return 4.0;
-    case 8: return 3.0;
-    case 7: return 2.5;
-    case 6: return 2.0;
-    case 5: return 1.75; // five levels below the enemy.
-    case 4: return 1.5;
+    case diff>9: return 4.0; // 10 or more levels lower than the enemy.
+    case 9: return 3.0;
+    case 8: return 2.5;
+    case 7: return 2.0;
+    case 6: return 1.8;
+    case 5: return 1.6; // five levels below the enemy.
+    case 4: return 1.4;
     case 3: return 1.3;
     case 2: return 1.2;
     case 1: return 1.1;
@@ -91,6 +94,38 @@ J.AddOns.XPGPvariance.getMult = function(a, e) { // a = actor, e = enemy
     case -8: return 0.2;
     case -9: return 0.1;
     case (diff<-9): return 0.05; // 10 or more levels higher than the enemy.
+    default: return 1.0; // if no notetag is set, use only base experience.
+  }
+}
+
+// The switch that handles level difference and multipliers.
+// Edit here if you want to change the multipliers.
+J.AddOns.XPGPvariance.getDMGmult = function(d, a) {
+  var compared = a.level - d.level;
+  var diff = compared;
+  if (diff > 9) return 1.5;
+  else if (diff < -9) return 0.5;
+
+  switch (compared) {
+    case 9: return 1.45;
+    case 8: return 1.4;
+    case 7: return 1.35;
+    case 6: return 1.3;
+    case 5: return 1.25; // five levels below the enemy.
+    case 4: return 1.2;
+    case 3: return 1.15;
+    case 2: return 1.1;
+    case 1: return 1.05;
+    case 0: return 1.0; // same level as the enemy.
+    case -1: return 0.95;
+    case -2: return 0.9;
+    case -3: return 0.85;
+    case -4: return 0.8;
+    case -5: return 0.75; // five levels higher than the enemy.
+    case -6: return 0.7;
+    case -7: return 0.65;
+    case -8: return 0.6;
+    case -9: return 0.55;
     default: return 1.0; // if no notetag is set, use only base experience.
   }
 }
@@ -110,5 +145,44 @@ Game_Enemy.prototype.gold = function() {
   var baseGold = _Game_Enemy_jxpgp_gold.call(this);
   if (Imported.J_Base) baseGold += J.AddOns.XPGPvariance.getGPvar(this.enemy());
   return Math.round(baseGold);
+};
+
+var j_Game_Action_makeDamageValue = Game_Action.prototype.makeDamageValue;
+Game_Action.prototype.makeDamageValue = function(target, critical) {
+  var originalResult = j_Game_Action_makeDamageValue.call(this, target, critical);
+  if (!this.subject().isEnemy() && !target.isEnemy()) return originalResult;
+  var attacker = this.subject().isEnemy() ? this.subject().enemy() : this.subject();
+  var defender = !this.subject().isEnemy() ? target.enemy() : target;
+  var mult = 1.0;
+  mult = J.AddOns.XPGPvariance.getDMGmult(defender, attacker);
+  console.log(mult);
+  return Math.floor(mult * originalResult);
+};
+
+Game_Enemy.prototype.getLevel = function() {
+  var structure = /<level: (\d+)>/i;
+  var lvl = 0;
+  var notedata = this.enemy().note.split(/[\r\n]+/);
+  for (var n = 0; n < notedata.length; n++) {
+    var line = notedata[n];
+    if (line.match(structure)) { lvl = Number(RegExp.$1); }    
+  }
+  return lvl;
+};
+
+var j_Game_Enemy_initMembers = Game_Enemy.prototype.initMembers;
+Game_Enemy.prototype.initMembers = function() {
+  j_Game_Enemy_initMembers.call(this);
+  this._level = 0;
+};
+
+var j_Game_Enemy_setup = Game_Enemy.prototype.setup; 
+Game_Enemy.prototype.setup = function(enemyId, x, y) {
+  j_Game_Enemy_setup.call(this, enemyId, x, y);
+  this._level = this.getLevel();
+};
+
+Game_Actor.prototype.isEnemy = function() {
+  return false;
 };
 /* -------------------------------------------------------------------------- */
