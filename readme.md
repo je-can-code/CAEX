@@ -1,7 +1,8 @@
 Chef Adventure! EX
 ======
 ### How do I play?
- - First, download the game like this:  
+ - First first, enter the _project directory above.
+ - Then, download the game like this:  
 ![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "Logo Title Text 1")
 - Second, open the zip, and drop the files into a directory of your choice.
 - Third, open the project in RPG Maker MV, and just hit run to play!
