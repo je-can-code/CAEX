@@ -126,7 +126,20 @@ J.HUD.visibility = true;
         this.contents.clear();
         if (actor) {
           this.drawHUDstatus(actor, 0, 0, 300);
+          //this.drawVariable();
         }
+      }
+    };
+
+    // TODO draw "serum" gauge.
+    Window_HUD.prototype.drawVariable = function() {
+      var drawValue = 0;
+      var x = 50;
+      var y = 50;
+      drawValue = $gameVariables.value(1);
+      var active = $gameSwitches.value(10);
+      if (active) {
+        this.drawText(drawValue, x, y, 100, 'right');
       }
     };
 
@@ -160,7 +173,7 @@ J.HUD.visibility = true;
       this.drawText(actor.tp.toFixed(0), x3, y + lh * 3, 100, 'left');
 
       // draws exp and gauge
-      this.drawEXPgauge(actor, x, y + 10 + lh * 3, barWidth);
+      this.drawEXPgauge(actor, x + 10, y + 10 + lh * 3, barWidth);
       this.drawText(actor.nextRequiredExp(), x, y + 10 + lh * 3, 44);
       this.drawActorLevel(actor, x2 + 128, y);
 
@@ -168,6 +181,7 @@ J.HUD.visibility = true;
       this.drawActorIcons(actor, x + 298, y);
     };
 
+    // modifies for the QABS state timer drawing.
     Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
       width = width || 144;
       var states = actor.states();
@@ -190,7 +204,7 @@ J.HUD.visibility = true;
       var xp4next = actor.nextLevelExp() - actor.currentLevelExp();
       var cExp = actor.currentExp() - actor.currentLevelExp();
       var expRate = cExp / xp4next;
-      this.drawGaugeMod(x, y+10, width, 12, expRate, color1, color2);
+      this.drawGaugeMod(x, y+10, width, 6, expRate, color1, color2);
     };
 
     // a custom variant of the drawGauge function.
@@ -198,6 +212,7 @@ J.HUD.visibility = true;
     Window_Base.prototype.drawGaugeMod = function(x, y, width, height, rate, color1, color2) {
       var fillW = Math.floor(width * rate);
       var gaugeY = y + height;
+      this.contents.fillRect(x-2, gaugeY-2, width+4, height+4, this.gaugeBackColor());
       this.contents.fillRect(x, gaugeY, width, height, this.gaugeBackColor());
       this.contents.gradientFillRect(x, gaugeY, fillW, height, color1, color2);
     };

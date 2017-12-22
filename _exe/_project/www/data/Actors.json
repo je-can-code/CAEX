@@ -1,5 +1,9 @@
 [
 null,
 {"id":1,"battlerName":"Actor3_5","characterIndex":4,"characterName":"Actor3","classId":1,"equips":[1,1,21,0,0],"faceIndex":4,"faceName":"Actor3","traits":[],"initialLevel":1,"maxLevel":99,"name":"Alex","nickname":"The Warrior Guy","note":"","profile":""},
-{"id":2,"battlerName":"Actor2_6","characterIndex":5,"characterName":"Actor2","classId":2,"equips":[81,12,31,3,0],"faceIndex":5,"faceName":"Actor2","traits":[],"initialLevel":1,"maxLevel":99,"name":"Alice","nickname":"The Mage Lady","note":"","profile":""}
+{"id":2,"battlerName":"Actor2_6","characterIndex":5,"characterName":"Actor2","classId":2,"equips":[81,12,31,3,0],"faceIndex":5,"faceName":"Actor2","traits":[],"initialLevel":1,"maxLevel":99,"name":"Alice","nickname":"The Mage Lady","note":"","profile":""},
+{"id":3,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":4,"faceName":"People3","traits":[],"initialLevel":1,"maxLevel":99,"name":"Gilbert","nickname":"The Fatty","note":"","profile":"Not an actual character. Just here for easy access to\nthe name."},
+{"id":4,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":6,"faceName":"Actor3","traits":[],"initialLevel":1,"maxLevel":99,"name":"Leos","nickname":"The Alchemist","note":"","profile":"Not an actual character. Just here for easy access to\nthe name."},
+{"id":5,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":99,"name":"","nickname":"","note":"","profile":""},
+{"id":6,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":99,"name":"","nickname":"","note":"","profile":""}
 ]
