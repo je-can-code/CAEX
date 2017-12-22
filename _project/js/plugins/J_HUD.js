@@ -126,7 +126,20 @@ J.HUD.visibility = true;
         this.contents.clear();
         if (actor) {
           this.drawHUDstatus(actor, 0, 0, 300);
+          //this.drawVariable();
         }
+      }
+    };
+
+    // TODO draw "serum" gauge.
+    Window_HUD.prototype.drawVariable = function() {
+      var drawValue = 0;
+      var x = 50;
+      var y = 50;
+      drawValue = $gameVariables.value(1);
+      var active = $gameSwitches.value(10);
+      if (active) {
+        this.drawText(drawValue, x, y, 100, 'right');
       }
     };
 
@@ -168,6 +181,7 @@ J.HUD.visibility = true;
       this.drawActorIcons(actor, x + 298, y);
     };
 
+    // modifies for the QABS state timer drawing.
     Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
       width = width || 144;
       var states = actor.states();

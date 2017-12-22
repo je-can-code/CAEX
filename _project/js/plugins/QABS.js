@@ -2014,6 +2014,9 @@ function Skill_Sequencer() {
   Skill_Sequencer.prototype.targetJump = function(action, targets) {
     var dist = Number(action[1]) || 0;
     for (var i = 0; i < targets.length; i++) {
+      if (targets[i]._battler)
+        if (targets[i]._battler.isHeavy(targets[i]._battlerId)) return;
+
       var dist2 = dist - dist * eval('targets[i].battler().' + QABS.mrst);
       if (dist2 <= 0) return;
       var dx = targets[i].cx() - this._character.cx();
