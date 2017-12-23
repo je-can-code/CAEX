@@ -9,7 +9,7 @@ if (!Imported.QABS || !QPlus.versionCheck(Imported.QABS, '1.4.0')) {
   throw new Error('Error: QABS+Skillbar requires QABS 1.4.0 or newer to work.');
 }
 
-Imported.QABS_Skillbar = '1.0.2';
+Imported.QABS_Skillbar = '1.0.2'; 
 
 //=============================================================================
 /*:
