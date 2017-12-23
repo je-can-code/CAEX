@@ -242,6 +242,8 @@ IconManager.textForIcon = function (text) {
     case J.AddOns.Difficulty.getDifficultyName(0): return 497;
     case J.AddOns.Difficulty.getDifficultyName(1): return 498;
     case J.AddOns.Difficulty.getDifficultyName(2): return 501;
+    case "Load": return 342;
+    case "Delete": return 91;
 
     // for handling SRD_StatDistribution
     case "Life Improver": return J.Icon.MHP_icon;

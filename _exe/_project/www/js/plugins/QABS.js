@@ -2980,6 +2980,7 @@ function Skill_Sequencer() {
   };
 
   Game_CharacterBase.prototype.removeAgro = function(charaId) {
+    if (charaId == null || charaId == undefined) return;
     delete this._agroList[charaId];
     var i = this._agrodList.indexOf(charaId);
     if (i !== -1) {
