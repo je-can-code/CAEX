@@ -9,14 +9,14 @@ if (!Imported.QMovement || !QPlus.versionCheck(Imported.QMovement, '1.4.0')) {
   throw new Error('Error: QABS requires QMovement 1.4.0 or newer to work.');
 }
 
-Imported.QABS = '1.6.0';
+Imported.QABS = '1.6.1';
 
 //=============================================================================
 /*:
  * @plugindesc <QABS>
  * Action Battle System for QMovement
- * @version 1.6.0
- * @author Quxios  | Version 1.6.0
+ * @version 1.6.1
+ * @author Quxios  | Version 1.6.1
  * @site https://quxios.github.io/
  * @updateurl https://quxios.github.io/data/pluginsMin.json
  *
@@ -2606,8 +2606,6 @@ function Skill_Sequencer() {
   };
 
   Game_Action.prototype.absApply = function(target) {
-    //console.log(target._team);
-    // TODO consider teams?
     this._isAbs = true;
     var result = target.result();
     this._realSubject.clearResult();
@@ -2693,7 +2691,7 @@ function Skill_Sequencer() {
     if (this._stateSteps[state.id] >= 0) {
       if (this._stateSteps[state.id] % this.stepsForTurn() === 0) {
         this.onTurnEnd();
-				this.result().damageIcon = $dataStates[state.id].iconIndex;
+        this.result().damageIcon = $dataStates[state.id].iconIndex;
         this.startDamagePopup();
         if (this._stateSteps[state.id] === 0) this.removeState(state.id);
       }
@@ -2980,7 +2978,7 @@ function Skill_Sequencer() {
   };
 
   Game_CharacterBase.prototype.removeAgro = function(charaId) {
-    if (charaId == null || charaId == undefined) return;
+    if (this._agroList == null || this._agroList == undefined) return;
     delete this._agroList[charaId];
     var i = this._agrodList.indexOf(charaId);
     if (i !== -1) {
@@ -3513,10 +3511,12 @@ function Skill_Sequencer() {
   };
 
   Game_Event.prototype.canSeeThroughChara = function(chara) {
-    if (typeof chara.team === 'function' && chara.team() === this.team()) {
-      return true;
-    } else if (this._isDead || (typeof chara.battler === 'function' && chara.battler() && chara.battler().isDead())) {
-      return true;
+    if (this._battler) {
+      if (chara.team() === this.team()) {
+        return true;
+      } else if (this._isDead || (chara.battler() && chara.battler().isDead())) {
+        return true;
+      }
     }
     return Game_CharacterBase.prototype.canSeeThroughChara.call(this, chara);
   };
@@ -3642,23 +3642,24 @@ function Skill_Sequencer() {
 
   Game_Event.prototype.AISimpleAction = function(bestTarget, bestAction) {
     if (bestAction) {
+
       var skill = this.useSkill(bestAction);
       if (skill) skill._target = bestTarget;
     } else if (this.canMove()) {
-        if (this._aiPathfind) {
-          var dx = bestTarget.cx() - this.cx();
-          var dy = bestTarget.cy() - this.cy();
-          var mw = this.collider('collision').width + bestTarget.collider('collision').width;
-          var mh = this.collider('collision').height + bestTarget.collider('collision').height;
-          if (Math.abs(dx) <= mw && Math.abs(dy) <= mh) {
-            this.clearPathfind();
-            this.moveTowardCharacter(bestTarget);
-          } else {
-            this.initChase(bestTarget.charaId());
-          }
-        } else {
+      if (this._aiPathfind) {
+        var dx = bestTarget.cx() - this.cx();
+        var dy = bestTarget.cy() - this.cy();
+        var mw = this.collider('collision').width + bestTarget.collider('collision').width;
+        var mh = this.collider('collision').height + bestTarget.collider('collision').height;
+        if (Math.abs(dx) <= mw && Math.abs(dy) <= mh) {
+          this.clearPathfind();
           this.moveTowardCharacter(bestTarget);
+        } else {
+          this.initChase(bestTarget.charaId());
         }
+      } else {
+        this.moveTowardCharacter(bestTarget);
+      }
     }
   };
 
@@ -3983,10 +3984,7 @@ function Game_Loot() {
     }
     for (var name in display) {
       var iconIndex = display[name].iconIndex;
-      if (display[name].total == 1)
-        var string = name;
-      else
-        var string = 'x' + display[name].total + ' ' + name;
+      var string = 'x' + display[name].total + ' ' + name;
       if (iconIndex) {
         string = '\\I[' + iconIndex + ']' + string;
       }
