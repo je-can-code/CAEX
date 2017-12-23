@@ -35,8 +35,8 @@ null,
 {"id":33,"expanded":true,"name":"F1","order":24,"parentId":23,"scrollX":1163.142857142857,"scrollY":696},
 {"id":34,"expanded":true,"name":"F2","order":32,"parentId":23,"scrollX":1628.3999999999999,"scrollY":974.4},
 {"id":35,"expanded":false,"name":"Need Help","order":39,"parentId":37,"scrollX":1163.142857142857,"scrollY":696},
-{"id":36,"expanded":false,"name":"MINIBOSS","order":34,"parentId":34,"scrollX":1236.857142857143,"scrollY":682.2857142857142},
+{"id":36,"expanded":false,"name":"MINIBOSS","order":34,"parentId":34,"scrollX":1163.142857142857,"scrollY":682.2857142857142},
 {"id":37,"expanded":true,"name":"F3","order":35,"parentId":23,"scrollX":1628.3999999999999,"scrollY":974.4},
-{"id":38,"expanded":false,"name":"One More Down","order":33,"parentId":34,"scrollX":1628.3999999999999,"scrollY":974.4},
+{"id":38,"expanded":false,"name":"One More Down","order":33,"parentId":34,"scrollX":1163.142857142857,"scrollY":696},
 {"id":39,"expanded":false,"name":"Danger Sense","order":38,"parentId":37,"scrollX":1149.4285714285713,"scrollY":973.7142857142857}
 ]
