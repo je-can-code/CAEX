@@ -2,7 +2,7 @@
 null,
 {"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":1247.142857142857,"scrollY":651.4285714285713},
 {"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":2,"parentId":0,"scrollX":904.6666666666666,"scrollY":541.3333333333334},
-{"id":3,"expanded":false,"name":"Jaws of the Beast","order":3,"parentId":2,"scrollX":904.6666666666666,"scrollY":541.3333333333334},
+{"id":3,"expanded":false,"name":"Jaws of the Beast","order":3,"parentId":2,"scrollX":1247.142857142857,"scrollY":651.4285714285713},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":14,"parentId":0,"scrollX":904.6666666666666,"scrollY":541.3333333333334},
 {"id":5,"expanded":true,"name":"The Mainstay v2","order":18,"parentId":18,"scrollX":1628.3999999999999,"scrollY":974.4},
 {"id":6,"expanded":false,"name":"Inside: Inn","order":16,"parentId":18,"scrollX":1751.142857142857,"scrollY":1774.2857142857142},
