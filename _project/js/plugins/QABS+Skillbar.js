@@ -9,7 +9,7 @@ if (!Imported.QABS || !QPlus.versionCheck(Imported.QABS, '1.4.0')) {
   throw new Error('Error: QABS+Skillbar requires QABS 1.4.0 or newer to work.');
 }
 
-Imported.QABS_Skillbar = '1.0.2'; 
+Imported.QABS_Skillbar = '2.0.0'; 
 
 //=============================================================================
 /*:
@@ -213,7 +213,7 @@ function Sprite_SkillInfo() {
       return;
     }
     this.visible = true;
-    QABSSkillbar.over = false;
+    QABSSkillbar.over = true;
     if (this._actorId !== $gameParty.leader()._actorId) {
       this._actorId = $gameParty.leader()._actorId;
       QABSSkillbar.requestRefresh = true;
