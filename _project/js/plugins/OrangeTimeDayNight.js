@@ -50,6 +50,12 @@ if (Imported["OrangeTimeSystem"] === undefined) {
 
 var OrangeDayAndNight = OrangeDayAndNight || MVC.shallowClone(OrangeEventManager);
 
+OrangeDayAndNight.Parameters = PluginManager.parameters('OrangeDayAndNight');
+OrangeDayAndNight.morningTint = OrangeDayAndNight.Parameters['morningTint'] || "-34, -17, 10, 68";
+OrangeDayAndNight.middayTint = OrangeDayAndNight.Parameters['middayTint'] || "0, 0, 0, 0";
+OrangeDayAndNight.eveningTint = OrangeDayAndNight.Parameters['eveningTint'] || "17, -34, -68, 17";
+OrangeDayAndNight.nightTint = OrangeDayAndNight.Parameters['nightTint'] || "-102, -85, 0, 170";
+
 (function($) {
   "use strict";
 
@@ -72,6 +78,7 @@ var OrangeDayAndNight = OrangeDayAndNight || MVC.shallowClone(OrangeEventManager
   };
 
   $.updateTint = function(speed) {
+    console.log("screen update!");
     var dataStr = "";
     var data = [0, 0, 0, 0];
 

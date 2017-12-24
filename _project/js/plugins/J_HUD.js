@@ -179,6 +179,18 @@ J.HUD.visibility = true;
 
       // draws icons for status buff/debuffs
       this.drawActorIcons(actor, x + 298, y);
+
+      // draws the time from the Orange Time System.
+      //this.drawTime(x + 298, y + lh * 4);
+    };
+
+    Window_HUD.prototype.drawTime = function(x, y) {
+      var seconds = $gameVariables.value(21);
+      var minutes = $gameVariables.value(22);
+      var hours   = $gameVariables.value(23);
+      if (hours > 12) hours -= 12;
+      var timeString = hours + ":" + minutes + ":" + seconds;
+      this.drawText(timeString, x, y, 'right');
     };
 
     // modifies for the QABS state timer drawing.
