@@ -1,13 +1,13 @@
 /* -------------------------------------------------------------------------- */
 // J_HUD_Item
-// V: 1.1
+// V: 1.0
 
 /*:@plugindesc Shows an item in the lower right corner
 @author J
 
 @param visible
 @desc The item HUD extension is shown/hidden by a Game_Switch.
-@default 20
+@default 101
 */
 /* -------------------------------------------------------------------------- */
 var Imported = Imported || {};
@@ -38,11 +38,9 @@ Scene_Map.prototype.handleItem = function() {
 	};
 	if (J.HUD.visibility == false || this.hideExtras() || !$gameSwitches.value(itemVisible) ) {
 		this._ItemWindow.close();
-		console.log("close!");
 	}
 	else {
 		this._ItemWindow.open();
-		console.log("open!");
 	}
 };
 

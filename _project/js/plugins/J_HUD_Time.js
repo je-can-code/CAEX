@@ -1,28 +1,47 @@
-	
-	// hooks into Scene_Map.update and gets the ball rolling.
-  var JTIME_Scene_Map_update = Scene_Map.prototype.update;
-  Scene_Map.prototype.update = function() {
-    this.handleTime();
-    JTIME_Scene_Map_update.call(this);
-  };
+/* -------------------------------------------------------------------------- */
+// J_HUD_Time
+// V: 1.0
 
-  // if the window on the map doesn't exist, make it.
-  // if it does exist, update it.
-  // if there is stuff going on, hide window.
-  Scene_Map.prototype.handleTime = function() {
-		if (this._TimeWindow) { this._TimeWindow.update; } 
-		else {
-      this._TimeWindow = new Window_Time(Graphics.width-176,0);
-      this.addWindow(this._TimeWindow);
-      //this._TimeWindow.opacity = J.HUD.HUDopacity;
-    };
-    if (J.HUD.visibility == false || this.hideExtras()) {
-      this._TimeWindow.close();
-    }
-    else {
-      this._TimeWindow.open();
-    }
-  };
+/*:@plugindesc Shows the current time in the upper right corner.
+@author J
+
+@param visible
+@desc The time HUD extension is shown/hidden by a Game_Switch.
+@default 102
+*/
+/* -------------------------------------------------------------------------- */
+var Imported = Imported || {};
+Imported.J_HUD_Time = true;
+
+var hudItemParams = PluginManager.parameters('J_HUD_Time');
+var itemVisible = Number(hudItemParams['visible']);
+var timeWidth 	= 224;
+var timeHeight 	= 48;
+
+// hooks into Scene_Map.update and gets the ball rolling.
+var JTIME_Scene_Map_update = Scene_Map.prototype.update;
+Scene_Map.prototype.update = function() {
+	this.handleTime();
+	JTIME_Scene_Map_update.call(this);
+};
+
+// if the window on the map doesn't exist, make it.
+// if it does exist, update it.
+// if there is stuff going on, hide window.
+Scene_Map.prototype.handleTime = function() {
+	if (this._TimeWindow) { this._TimeWindow.update; } 
+	else {
+		this._TimeWindow = new Window_Time(Graphics.width-timeWidth,0);
+		this.addWindow(this._TimeWindow);
+		//this._TimeWindow.opacity = J.HUD.HUDopacity;
+	};
+	if (J.HUD.visibility == false || this.hideExtras()) {
+		this._TimeWindow.close();
+	}
+	else {
+		this._TimeWindow.open();
+	}
+};
 
 /* -------------------------------------------------------------------------- */
 //  Window_Time [NEW]
@@ -33,7 +52,7 @@ Window_Time.prototype = Object.create(Window_Base.prototype);
 Window_Time.prototype.constructor = Window_Time;
 
 Window_Time.prototype.initialize = function(x, y) {
-	Window_Base.prototype.initialize.call(this, x, y, 176, 48);
+	Window_Base.prototype.initialize.call(this, x, y, timeWidth, timeHeight);
 	this._updateWait = 0;
 	this.refresh();
 	this.activate();
