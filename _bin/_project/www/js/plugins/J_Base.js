@@ -237,7 +237,7 @@ IconManager.textForIcon = function (text) {
     case TextManager.continue_: return 342;
     case TextManager.weapon: return 501;
     case TextManager.armor: return 548;
-    case TextManager.keyItem: return 195;
+    case TextManager.keyItem: return 352;
     case "Allocate": return 457;
     case J.AddOns.Difficulty.getDifficultyName(0): return 497;
     case J.AddOns.Difficulty.getDifficultyName(1): return 498;

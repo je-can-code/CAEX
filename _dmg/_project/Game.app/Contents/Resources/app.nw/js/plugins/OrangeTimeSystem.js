@@ -1178,6 +1178,7 @@ var DayPeriods = {
   };
 
   $._onUpdateTime = function() {
+    //console.log("on update time");
     $.checkEventsToRun(this._timeEvents, false);
     $.checkEventsToRun(this._afterTimeEvents, true);
   };

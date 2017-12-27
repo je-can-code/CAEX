@@ -30,11 +30,13 @@
 // Gauges attacker's crit damage boost vs target's crit damage reduction
 Game_Action.prototype.applyCritical = function(damage) {
   var attacker = this.subject();
-  if (attacker.cdm > 0)
+  if (attacker.cdm > 0) {
     var critDamageRatio = attacker.cdm;
-  else
+  } else {
     var critDamageRatio = 1.5;
-  return damage * critDamageRatio;
+  }
+  var theMath = (damage * critDamageRatio);
+  return theMath;
 };
 
 var _Game_Action_jCritDmg_mdv = Game_Action.prototype.makeDamageValue;
@@ -61,7 +63,7 @@ Object.defineProperties(Game_BattlerBase.prototype, {
 Game_BattlerBase.prototype.jparam = function(paramId) {
   switch (paramId) {
     case 0: // cdm: crit damage modifier
-      return 50; // base of 50% damage boost for landing critical hits.
+      return 150; // base of 50% damage boost for landing critical hits.
     case 1: // cdr: crit damage reduction
       return 0; // base of 0% damage reduction vs critical hits.
     default: return 0; // just in case.
