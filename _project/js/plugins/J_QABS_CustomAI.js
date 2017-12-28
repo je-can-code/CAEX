@@ -149,9 +149,15 @@ Game_Event.prototype.hasTarget = function() {
 		return true;
 	} else {
 		if (!this._endWait && this.inCombat()) {
+			console.log("lost target!");
+			// TODO: Add goto last known location
+			var lostX = Math.floor(bestTarget.x);
+			var lostY = Math.floor(bestTarget.y);
+			// TODO: ^^
 			bestTarget.removeAgro(this.charaId());
 			if (this._aiPathfind) { this.clearPathfind();	}
 			this._endWait = this.wait(90).then(function() {
+				console.log("resetting.");
 				this._endWait = null;
 				this._aiMode = null;
 				this.requestBalloon(2);
@@ -269,9 +275,6 @@ Game_Event.prototype.basicAIattack = function() {
 	skill._target = this.bestTarget();
 	this.useSkill(skill);
 	this._aiMode = 'START';
-
-
-	
 };
 
 // if the difference in levels between target and self is too great, flee!
