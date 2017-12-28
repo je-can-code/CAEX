@@ -1,6 +1,6 @@
 [
 null,
-{"id":1,"animationId":6,"description":"A regular sword.","etypeId":1,"traits":[{"code":31,"dataId":1,"value":0},{"code":21,"dataId":2,"value":1.02},{"code":22,"dataId":2,"value":0.5}],"iconIndex":502,"name":"Short Sword","note":"<skillKeys>\n1: 1\n</skillKeys>","params":[0,0,10,0,0,0,0,0],"price":0,"wtypeId":1},
+{"id":1,"animationId":6,"description":"A regular sword.","etypeId":1,"traits":[{"code":31,"dataId":1,"value":0},{"code":21,"dataId":2,"value":1.02}],"iconIndex":502,"name":"Short Sword","note":"<skillKeys>\n1: 1\n</skillKeys>","params":[0,0,10,0,0,0,0,0],"price":0,"wtypeId":1},
 {"id":2,"animationId":6,"description":"A durable sword, crafted of iron.","etypeId":1,"traits":[{"code":31,"dataId":1,"value":0},{"code":21,"dataId":2,"value":1.05}],"iconIndex":507,"name":"Iron Blade","note":"<skillKeys>\n1: 1\n</skillKeys>","params":[0,0,14,0,0,0,0,0],"price":0,"wtypeId":1},
 {"id":3,"animationId":6,"description":"An elegant blade designed for whipping and smacking.","etypeId":1,"traits":[{"code":31,"dataId":1,"value":0},{"code":21,"dataId":2,"value":1.1}],"iconIndex":499,"name":"Saber","note":"<skillKeys>\n1: 1\n</skillKeys>","params":[0,0,19,0,0,0,0,0],"price":0,"wtypeId":1},
 {"id":4,"animationId":6,"description":"A regular sword.","etypeId":1,"traits":[{"code":31,"dataId":1,"value":0},{"code":21,"dataId":2,"value":1.02}],"iconIndex":502,"name":"Short Sword","note":"<skillKeys>\n1: 1\n</skillKeys>","params":[0,0,10,0,0,0,0,0],"price":0,"wtypeId":1},
