@@ -488,6 +488,16 @@ Scene_Map.prototype.hideExtras = function() {
   return false;
 };
 
+// a custom variant of the drawGauge function.
+// allows for also drawing the height of the gauge.
+Window_Base.prototype.drawGaugeMod = function(x, y, width, height, rate, color1, color2) {
+  var fillW = Math.floor(width * rate);
+  var gaugeY = y + height;
+  this.contents.fillRect(x-2, gaugeY-2, width+4, height+4, this.gaugeBackColor());
+  this.contents.fillRect(x, gaugeY, width, height, this.gaugeBackColor());
+  this.contents.gradientFillRect(x, gaugeY, fillW, height, color1, color2);
+};
+
 /* -------------------------------------------------------------------------- */
 //    NOTE READING
 // Rather than blitz through the notes multiple times, I opted to put much of the
