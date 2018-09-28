@@ -3,7 +3,7 @@ Chef Adventure! EX
 ### How do I play?
  - First first, enter the _project directory above (not _exe / _project !).
  - Then, download the game like this:  
-![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "Logo Title Text 1")
+![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "how to download 101")
 - Second, open the zip, and drop the files into a directory of your choice.
 - Third, open the project in RPG Maker MV, and just hit run to play!
 - Alternatively, if you do not have RPG Maker MV, access the CAEX/ _exe/ _project folder, and run Game.exe. (this might not be as up to date as the rest of the project, it is basically like, milestones.)
@@ -15,81 +15,148 @@ __If you want to see it, just hit the little arrow to open the spoiler.__
 
 <details>
 
-GOAL: Collect the 4 sentient crystals, somehow.  
-======
-All locations: Caves, Forest, Mountains, Lakes, Volcano, Marshlands, Prairie, Castle, Subterranean, Heaven
+## Index of Contents:
+- [Locations and Pathing](#locations-and-pathing)
+- [Crystals](#crystals)
+- [Quests](#quests)
+- [Characters](#characters)
+- [Plot Progression](#plot-progression)
+
+---
+---
+---
+
+# Locations and Pathing
+
+## List of locations
+- Caves
+- Forest
+- Mountains
+- Lakes
+- Volcano
+- Marshlands
+- Prairie
+- Castle
+- Subterranean
+- Heaven
+
+
+## Pathing:
 Caves > Forest > Caves > Mountains > Forest > Lakes > Caves > Volcano > Mountains //
-Alex’s Path:	 Marshlands > Prairie > Castle // Caves > Mountains > Heaven
-Alice’s Path: Forest > Lakes > Castle // Caves > Volcano > Subterranean
+> The path splits after the second crystal is obtained from the mountains.
+
+### Alex’s Path:
+Marshlands > Prairie > Castle // 
+Caves > Mountains > Heaven
+
+### Alice’s Path:
+Forest > Lakes > Castle // 
+Caves > Volcano > Subterranean
+
+
+### Trials:
+> From the castle, the player is put through a trial which varies by leader.
+
 Path(Caves) > Trial(Mountains)  > Course(Lakes)  > Gauntlet(Volcano)
 
-4 crystal locations:
-------
+---
+---
+---
+
+# Crystals
+## Crystal Locations
  - The Caves; The initial crystal of distribution included in the intro dungeon.
  - The Forest; Protected by trolls and their chieftain, several waves of trolls help the chief.
  - The Mountains; Protected by a flock of Harpies, led by a Siren.
  - The Ruins(castle); Tons of traps, deep in the dungeon of the Castle, guarded by 1st boss Vampire.
 
-What do the crystals do?:
-------
- - Distribute;
- > Allows distribution of points after levelup. __+unlocks higher and lower difficulty levels__
- - Create; 
- > Enables Treis to create nanobot accesories. __+unlocks accessories that will teach skills__
- - Empower;
-  > Enables Xavier to create passive bonus skills. __+unlocks equipment that can be leveled up__
- - Destroy;
-  > Breaks the seal on the final dungeon. __+unlocks the other final dungeon and access to Alice/Alex__
+## Crystal Functions
+_NOTE: Each crystal has a miniquest you can take to “feed” it and level it up, giving it __+additional abilities.___
+- Distribute;
+> Allows distribution of points after levelup.<br/>
+__+unlocks higher and lower difficulty levels__
+- Create; 
+> Enables Treis to create nanobot accesories.<br/>
+__+unlocks accessories that will teach skills__
+- Empower;
+> Enables Xavier to create passive bonus skills.<br/>
+__+unlocks equipment that can be leveled up__
+- Destroy;
+> Breaks the seal on the final dungeon.<br/>
+__+unlocks the other final dungeon and access to Alice/Alex__
 
-_Each crystal has a miniquest you can take to “feed” it and level it up, giving it __+additional abilities.___
+---
+---
+---
 
-***
+# Quests
+## The Caravan/Town
+Rebuilding the town is an optional side quest that becomes available after the player collects the second crystal and the pair split. Depending on who the player chose to follow determines which of the carpenters will be found. The player can choose to NOT build the Town, and all the people found will simply hang out in The Mainstay.
 
-Other storylines(all done AFTER the pair split):
-------
-The Caravan/Town; Rebuilding the town is an optional side quest that becomes available after the player collects the second crystal and the pair split. Depending on who the player chose to follow determines which of the carpenters will be found. The player can choose to NOT build the Town, and all the people found will simply hang out in The Mainstay.
+## Treis/Xavier-love interest
+The player has the optional opportunity to further/develop a love interest with either Treis(Alex) or Xavier(Alice). The interest is developed through a series of “date”-type quests with the designated partner, and can have varying results. These quests are time sensitive, and CAN BE MISSED. If too many are missed, the game will cease the continuation of the quests. If the dates go extremely poorly, the game will cease the continuation of the quests.
 
-Treis/Xavier-love interest; The player has the optional opportunity to further/develop a love interest with either Treis(Alex) or Xavier(Alice). The interest is developed through a series of “date”-type quests with the designated partner, and can have varying results. These quests are time sensitive, and CAN BE MISSED. If too many are missed, the game will cease the continuation of the quests. If the dates go extremely poorly, the game will cease the continuation of the quests.
+## “Sidequest” chain
+Claiming the forest crystal(#2) unlocks a wave of anomalies across the island the story takes place on. These anomalies are caused by a disturbance in the balance of things from the crystals, which result in mini “hives” of monsters being loosed in various areas where a “king” monster dwells. Defeating the king of each hive unlocks a different type of passive to be leveled up. The clearing of these hives is not integral to the completion of the main story quest, but helps the player greatly and impacts the ending of the game.
 
-“Sidequest” chain; Claiming the forest crystal(#2) unlocks a wave of anomalies across the island the story takes place on. These anomalies are caused by a disturbance in the balance of things from the crystals, which result in mini “hives” of monsters being loosed in various areas where a “king” monster dwells. Defeating the king of each hive unlocks a different type of passive to be leveled up. The clearing of these hives is not integral to the completion of the main story quest, but helps the player greatly and heavily impacts the ending of the game.
+---
+---
+---
 
-***
+# Characters
+## Alex the Fighter
+The male protagonist of the story. Specializes in melee type weapons, though is also capable of utilizing Bows and various ranged tools.
 
-## Characters:
-- Alex the Fighter,
- > The male protagonist of the story. Specializes in melee type weapons, though is also capable of utilizing Bows and various ranged tools.
-- Alice the Acolyte, 
- > The female protagonist of the story. Specializes in using magic staves to launch projectiles. Is also capable of a wide arsenal of spells based on the equipment being worn.
-- Gilbert the Merchant, 
- > Gilbert is the primary merchant that does traveling and peddles his wares to the protagonists. He starts as a merchant of many types, selling weapons/armor/items/etc… but after acquiring the blacksmith he stops selling weapons/armor.
-- Leo the Alchemist,
- > Leo is the only one who is capable of creating potions for the protagonists, for a fee. Later, he will also be able to help you craft useful potions for in-battle effects, like rage potions or shielding potions. Leo has 2 nameless assistants that can be rescued who will fetch ingredients for him.
- - Treis the Engineer,
- > Treis is the upbeat inventor/engineer that builds tools for the protagonists, and eventually after the pair splits, develops a love interest in Alex. Her abilities in creating tools is unmatched, and eventually evolves into creating explosives and various accessories that enable unique passives to be learned over time by the protagonists. You can also rescue 1 nameless assistant, one who does the mindless work.
- - Silus-Innkeeper,
- > Silus is the silent innkeeper. He almost never talks, but is the one who originally ran the inn before it was attacked by monsters. He is also the only one that is NOT a part of the caravan, and eventually will open up and allow the Inn to expand and go over details and pricing for rebuilding the town with you and the carpenter you save. You can also rescue 2 nameless assistants, his bartender and cleaning maid.
- - Viktor/Viskor-Blacksmith(s),
- > Viktor and Viskor are twin blacksmiths. They work together on everything and may as well be considered a single person as far as seamless teamwork and functionality is concerned. They will take over selling weapons/armors to you after you save them. After you complete their quests, they will also be able to assist you in upgrading your weaponry given you provide the proper materials.
- - Xavier the Enchanter,
- > Xavier is a dark and mysterious gentleman who specializes in dark magic and binding enchantments. He is also the love interest that Alice falls for after the pair splits. Rescuing him will unlock Leo’s capability to create magical potions that heighten your abilities and do other random things. Completing his various quests will reward you with learnable passives through slaying of monsters and other events. 
- - Tac(or)Mill-Carpenter,
+## Alice the Acolyte, 
+The female protagonist of the story. Specializes in using magic staves to launch projectiles. Is also capable of a wide arsenal of spells based on the equipment being worn.
+
+## Gilbert the Merchant
+ Gilbert is the primary merchant that does traveling and peddles his wares to the protagonists. He starts as a merchant of many types, selling weapons/armor/items/etc… but after acquiring the blacksmith he stops selling weapons/armor.
+
+## Leo the Alchemist
+Leo is the only one who is capable of creating potions for the protagonists, for a fee. Later, he will also be able to help you craft useful potions for in-battle effects, like rage potions or shielding potions. Leo has 2 nameless assistants that can be rescued who will fetch ingredients for him.
+
+## Treis the Engineer
+Treis is the upbeat inventor/engineer that builds tools for the protagonists, and eventually after the pair splits, develops a love interest in Alex. Her abilities in creating tools is unmatched, and eventually evolves into creating explosives and various accessories that enable unique passives to be learned over time by the protagonists. You can also rescue 1 nameless assistant, one who does the mindless work.
+
+## Silus-Innkeeper
+Silus is the silent innkeeper. He almost never talks, but is the one who originally ran the inn before it was attacked by monsters. He is also the only one that is NOT a part of the caravan, and eventually will open up and allow the Inn to expand and go over details and pricing for rebuilding the town with you and the carpenter you save. You can also rescue 2 nameless assistants, his bartender and cleaning maid.
+
+## Viktor/Viskor-Blacksmith(s)
+Viktor and Viskor are twin blacksmiths. They work together on everything and may as well be considered a single person as far as seamless teamwork and functionality is concerned. They will take over selling weapons/armors to you after you save them. After you complete their quests, they will also be able to assist you in upgrading your weaponry given you provide the proper materials.
+
+## Xavier the Enchanter
+Xavier is a dark and mysterious gentleman who specializes in dark magic and binding enchantments. He is also the love interest that Alice falls for after the pair splits. Rescuing him will unlock Leo’s capability to create magical potions that heighten your abilities and do other random things. Completing his various quests will reward you with learnable passives through slaying of monsters and other events.
+
+## Tac(or)Mill-Carpenter
  > (not yet implemented or details planned out).
+
+---
+---
+---
 
-***
+# Plot Progression
+## Chapter 1: The First Steps
+The duo begins the story in the initial cave where they battle and earn the first of four crystals allowing the primary element of gameplay: Distribution. The crystal then guides the player into the first Cave, where the caravan members are scattered about. Lack of tools push the player to explore the Forest where the player discovers the “wreckage”, and can save the engineer from the caravan.
 
-Idea for plot progression:
- > [0] The duo begins the story in the initial cave where they battle and earn the first of four crystals allowing the primary element of gameplay: Distribution. The crystal then guides the player into the first Cave, where the caravan members are scattered about. Lack of tools push the player to explore the Forest where the player discovers the “wreckage”, and can save the engineer from the caravan.
+## Chapter 2: The Split
+Alice begins to hunger more for the power of the crystals and what they are, thinking Alex is becoming too soft and unmotivated to continue, and Alex thinks Alice is becoming too intense about the crystals, the pair split, allowing the player to follow either Alex or Alice. (will permit for a love-interest to develop, and the type of town to develop) This happens after the acquisition of the second crystal. Whomever is the leader will take the two crystals, while the other party member will encounter the player at the third and final crystals.
 
- > [1] Alice begins to hunger more for the power of the crystals and what they are, thinking Alex is becoming too soft and unmotivated to continue, and Alex thinks Alice is becoming too intense about the crystals, the pair split, allowing the player to follow either Alex or Alice. (will permit for a love-interest to develop, and the type of town to develop) This happens after the acquisition of the second crystal. Whomever is the leader will take the two crystals, while the other party member will encounter the player at the third and final crystals.
+## Chapter 3: The Trials
+The third crystal is located in the Castle, the second crystal will guide the player on a different path depending on who the player chooses to follow. The caravan members have seemed to be hiding something and all too willing to help Alex/Alice in their quest. The ultimate goal for the caravan is protecting the crystals, whether it is returning these crystals to the kingdom from which they came, or giving these crystals to the deity of the Subterrain/Heaven. Their goal is not made apparent until the pair split, in which case the town will take the side of the one that the player controls. 
 
- > [2] The third crystal is located in the Castle, the second crystal will guide the player on a different path depending on who the player chooses to follow. The caravan members have seemed to be hiding something and all too willing to help Alex/Alice in their quest. The ultimate goal for the caravan is protecting the crystals, whether it is returning these crystals to the kingdom from which they came, or giving these crystals to the deity of the Subterrain/Heaven. Their goal is not made apparent until the pair split, in which case the town will take the side of the one that the player controls. 
+## Chapter 4a: Alice is a Force
+If Alice is the leader, then the town will seek to go to Heaven and amplify the powers of the crystals by destroying the deity up there in the name of the deity in the Subterrain, and absorbing its power into the final crystal. Doing this will enable Alice to recruit Alex back into service via mind control from the crystals.
 
- > [3a] If Alice is the leader, then the town will seek to go to Heaven and amplify the powers of the crystals by destroying the deity up there in the name of the deity in the Subterrain, and absorbing its power into the final crystal. Doing this will enable Alice to recruit Alex back into service via mind control from the crystals.
+## Chapter 4b: Alex Brings Justice
+If Alex is the leader, then the town will seek to go to the Subterrain and protect the power of the crystals by destroying the deity down there, and preventing the deity from laying waste with the crystals. Afterwards, Alex will deliver the 4 crystals to the kingdom to finish the main storyline. Doing this will free Alice from the grip of the magical attunement link to the crystals. 
 
- > [3b] If Alex is the leader, then the town will seek to go to the Subterrain and protect the power of the crystals by destroying the deity down there, and preventing the deity from laying waste with the crystals. Afterwards, Alex will deliver the 4 crystals to the kingdom to finish the main storyline. Doing this will free Alice from the grip of the magical attunement link to the crystals. 
+## Chapter 5: The Aftermath
+After the player reunites with the partner, there will be a small quest that will basically reunite the two on the same playing ground (to enable further content creation). Then the player will have control to proceed into doing the post-game dungeons. These dungeons are unlocked by doing the miniquest for the 4th crystal. Multiple quests will be available, though they will be sequentially unlocked to encourage progression.
 
-***
+---
 
+(original plot from VX Ace)
 - Chapter 1:	The Cave; A Den of Monsters
 	Gotta get that Tasty Stew, and other recipes learned.
 	Learn how to use a new weapon type: The Bow
@@ -127,5 +194,5 @@ Idea for plot progression:
 - Chapter 7:	The Prairie; Land of Titans
 
 - Chapter 8:	The Castle; Wicked Demons of Tyranny
-</details>
 
+</details>
