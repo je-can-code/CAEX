@@ -1,12 +1,12 @@
 {
-    "name": "",
-    "main": "index.html",
-    "js-flags": "--expose-gc",
-    "window": {
-        "title": "",
-        "toolbar": false,
-        "width": 816,
-        "height": 624,
-        "icon": "icon/icon.png"
-    }
+  "js-flags": "--expose-gc",
+  "main": "index.html",
+  "name": "",
+  "window": {
+    "height": 720,
+    "icon": "icon/icon.png",
+    "title": "",
+    "toolbar": false,
+    "width": 1280
+  }
 }
