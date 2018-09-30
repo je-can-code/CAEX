@@ -3,27 +3,27 @@
 //=============================================================================
 
 /*:
- * @plugindesc (v1.3) Sistema de arremessar os eventos.
+ * @plugindesc (v1.3) System of throwing the events.
  * @author Moghunter
  *
  * @param Character Height
- * @desc Definição da altura do personagem.
+ * @desc Setting the height of the character.
  * @default 22
  *
  * @param Character Pose
- * @desc Ativar pose de carregar objeto.
+ * @desc Activate pose of loading object.
  * @default true
  *
  * @param Hold Direction
- * @desc Ativar botão de segurar a direção.
+ * @desc Activate hold direction button.
  * @default true
  *
  * @param Hold Direction Button
- * @desc Definição do botão que segura a direção.
+ * @desc Definition of the button that holds the steering.
  * @default pagedown
  * 
  * @param Sound File
- * @desc Definição do arquivo de som.
+ * @desc Sound file definition.
  * @default Jump1
  *
  * @help  
@@ -37,17 +37,16 @@
  * =============================================================================
  * EVENT COMMENTS
  * =============================================================================
- * Para definir o objecto a ser arremessado coloque este comentário no evento.
+ * To set the object to be thrown, place this comment in the event.
  *
  * throw : X
  *
- * X - Distância a ser arremessado.
+ * X - Distance to be thrown.
  *
  * =============================================================================
  * CHARACTER POSES
  * =============================================================================
- * Para definir o nome da imagem da pose do personagem, nomeie a imagem da 
- * seguinte forma.
+ * To set the name of the character pose image, name the image as follows.
  *
  * ORIGINAL_FILE_NAME + _pick.png
  *
@@ -58,7 +57,7 @@
  * =============================================================================
  * PLUGIN COMMAND
  * =============================================================================
- * Para ativar ou desativar o sistema use o plugin abaixo.
+ * To enable or disable the system use the plugin below.
  *
  * pickup_enable
  * 
@@ -67,9 +66,9 @@
  * =============================================================================
  * HISTÓRICO
  * =============================================================================
- * v1.3 - Compatibilidade com Char Poses plugin. 
- * v1.2 - Mudança da noteTag para padronizar a forma de comandos.
- * v1.1 - Adição do plugin command de ativar e desativar o sistema.
+ * v1.3 - Compatibility with Char Poses plugin.
+ * v1.2 - Change noteTag to standardize the form of commands.
+ * v1.1 - Adding the plugin command to enable and disable the system.
  */
 
 //=============================================================================
@@ -172,26 +171,31 @@ Game_CharacterBase.prototype.updatePickUp = function() {
 // * can Pass Throw
 //==============================
 Game_CharacterBase.prototype.canPassThrow = function(x, y, d) {
-    var x2 = $gameMap.roundXWithDirection(x, d);
-    var y2 = $gameMap.roundYWithDirection(y, d);
+  var x2 = $gameMap.roundXWithDirection(x, d);
+  var y2 = $gameMap.roundYWithDirection(y, d);
 	if (d === 2) {x3 = x; y3 = y + 1;	
 	} else if (d === 4) {x3 = x - 1;y3 = y;		
 	} else if (d === 6) {x3 = x + 1;y3 = y;	
 	} else {x3 = x;y3 = y - 1;
 	};
     if (!$gameMap.isValid(x2, y2)) {
-        return false;
+      console.log("cant throw invalid");
+      return false;
     };
     if (this.isThrough() || this.isDebugThrough()) {
-        return true;
+      console.log("can throw debug/regular ok through");
+      return true;
     };
     if (!$gameMap.isPassable(x3, y3)) {
-        return false;
+      console.log("cant throw impassible");
+      return true;
     };
     if (this.isCollidedWithCharacters(x2, y2)) {
-        return false;
+      console.log("cant throw collision");
+      return false;
     };
-    return true;
+      console.log("can throw ok")
+      return true;
 };
 
 //=============================================================================
@@ -329,7 +333,8 @@ Game_Player.prototype.throwTarget = function() {
 // * throw Event
 //==============================
 Game_Player.prototype.throwEvent = function(event) {
-	var r = event._throw.range;	var xr = 0;	var yr = 0;	
+  var r = event._throw.range;	var xr = 0;	var yr = 0;
+  let ox = this._x; let oy = this._y;
 	if (this._direction === 2) {
 		x = this._x; y = this._y + r - 1; x2 = 0; y2 = +r;
 		for (var i = 0; i < r; i++) {
@@ -337,9 +342,15 @@ Game_Player.prototype.throwEvent = function(event) {
 			y--;y2--;
 		};	
     } else if (this._direction === 4) {
+      console.log(r);
 		x = this._x - r + 1; y = this._y; x2 = -r; y2 = 0;
 		for (var i = 0; i < r; i++) {
-	    	if (this.canPassThrow(x,y,this._direction)) {xr = x2; yr = y2;break};
+	    	if (this.canPassThrow(x,y,this._direction)) {
+          console.log("can pass");
+          xr = x2; 
+          yr = y2;
+          break
+        };
 			x++;x2++;
 		};	    
     } else if (this._direction === 6) {
@@ -354,15 +365,18 @@ Game_Player.prototype.throwEvent = function(event) {
 	    	if (this.canPassThrow(x,y,this._direction)) {xr = x2; yr = y2;break};
 			y++;y2++;
 		};
-	};
+  };
+  console.log("xr/yr: " + xr + ", " + yr);
 	if (xr === 0 && yr ===0) {return};
-	event.jump(xr,yr)
+  //event.jump(xr,yr)
+  event.jump(xr, yr);
 	event._throw.enabled = false
     event._throw.wait = 30;
 	event._through = this._throw.through;
 	event._directionFix = this._throw._directionFix;	
 	this._pickup.check = true;
 };
+
 
 //==============================
 // * clear Transfer Info
