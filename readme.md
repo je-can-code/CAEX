@@ -1,13 +1,11 @@
-Chef Adventure! EX
----
-### How do I play?
-**NOTE: if you have or use GitHub, then feel free to go ahead and clone the develop branch or fork off and play on your own! Otherwise...**
-- First, download the game like this from the main repository folder:  
-![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "how to download 101")
-- Second, extract the .zip into a directory of your choice.
-- Third, open the project in RPG Maker MV, and just hit run to play!
+# Chef Adventure! EX
+### `devCORE` branch
+## Welcome!
+> 30/09/2018 - readme updated and branching done
 
-> Alternatively, if you do not have RPG Maker MV, change over to the _releases_ branch, download that instead, and jump into your corresponding OS's folder, and run the `Game.exe` file to play. This may not be as up-to-date as the rest of the project, as this is updated only when I make major milestones.
+You found your way to the devCORE branch!<br/>
+This is where the first major section of the game is being developed.<br/>
+If you were just clicking around and stumbled into this, this is probably not where you want to start your `**Chef Adventure**` journeys.<br/>
 
 ---
 
