@@ -1,0 +1,6 @@
+#VS(code) things
+/.vs
+
+# RMMV things
+/save
+file*.rpgsave
