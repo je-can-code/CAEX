@@ -1,17 +1,18 @@
 Chef Adventure! EX
-======
+---
 ### How do I play?
- - First first, enter the _project directory above (not _exe / _project !).
- - Then, download the game like this:  
+**NOTE: if you have or use GitHub, then feel free to go ahead and clone the develop branch or fork off and play on your own! Otherwise...**
+- First, download the game like this from the main repository folder:  
 ![how2dl](https://github.com/jragyn/CAEX/raw/master/_project/img/how2download.png "how to download 101")
-- Second, open the zip, and drop the files into a directory of your choice.
+- Second, extract the .zip into a directory of your choice.
 - Third, open the project in RPG Maker MV, and just hit run to play!
-- Alternatively, if you do not have RPG Maker MV, access the CAEX/ _exe/ _project folder, and run Game.exe. (this might not be as up to date as the rest of the project, it is basically like, milestones.)
 
-***
+> Alternatively, if you do not have RPG Maker MV, change over to the _releases_ branch, download that instead, and jump into your corresponding OS's folder, and run the `Game.exe` file to play. This may not be as up-to-date as the rest of the project, as this is updated only when I make major milestones.
 
-__Please note: the below content is literally the planned out content of the game.__  
-__If you want to see it, just hit the little arrow to open the spoiler.__
+---
+
+_Please note: the below content is literally the planned out content of the game._<br/>
+_If you want to see it, just hit the little arrow to open the spoiler._
 
 <details>
 
