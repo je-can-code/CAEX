@@ -1,0 +1,12 @@
+{
+  "js-flags": "--expose-gc",
+  "main": "index.html",
+  "name": "",
+  "window": {
+    "height": 720,
+    "icon": "icon/icon.png",
+    "title": "",
+    "toolbar": false,
+    "width": 1280
+  }
+}
