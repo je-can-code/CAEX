@@ -5,7 +5,7 @@
 
 You found your way to the devCORE branch!<br/>
 This is where the first major section of the game is being developed.<br/>
-If you were just clicking around and stumbled into this, this is probably not where you want to start your `**Chef Adventure**` journeys.<br/>
+If you were just clicking around and stumbled into this, this is probably not where you want to start your `Chef Adventure` journeys.<br/>
 
 ---
 
