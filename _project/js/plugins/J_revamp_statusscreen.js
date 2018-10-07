@@ -223,7 +223,8 @@ Window_Param_Choice.prototype.drawAllElements = function (actor) {
     var a = actor;
     var elems = actor.traitsSet(11);
     var x = Graphics.width - 160;
-    for (var i = 0; i < $dataSystem.elements.length-1; i++) {
+    var elems = $dataSystem.elements.length-1 < 10 ? $dataSystem.elements.length-1 : 10;
+    for (var i = 0; i < elems; i++) {
         var y = (lh+4) * i;
         var icon = IconManager.elemIcons(i + 1);
         this.drawIcon(icon, x, y);

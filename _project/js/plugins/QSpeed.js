@@ -267,6 +267,7 @@ if (!Imported.QPlus || !QPlus.versionCheck(Imported.QPlus, '1.4.0')) {
     if (match) {
       this.setMoveSpeed(Number(match[1]) || 4);
     }
+    console.log(this._battler);
     this._realMoveSpeed = this._moveSpeed;
   };
 
