@@ -69,5 +69,5 @@ var $plugins =
 {"name":"J_HUD_Item","status":true,"description":"Shows an item in the lower right corner","parameters":{"visible":"101"}},
 {"name":"J_HUD_Time","status":true,"description":"Shows the current time in the upper right corner.","parameters":{"visible":"102"}},
 {"name":"========================","status":true,"description":"","parameters":{}},
-{"name":"J_SDP","status":true,"description":"Stat Distribution Panels","parameters":{}}
+{"name":"J_SDP","status":false,"description":"Stat Distribution Panels","parameters":{"cmdName":"Distribute"}}
 ];
