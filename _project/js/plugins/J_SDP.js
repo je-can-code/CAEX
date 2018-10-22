@@ -9,6 +9,22 @@
 
   Just let me know if you plan on using it for anything serious :)
 
+  I designed it for use with the script command rather than a plugin command
+  for adding new panels. It will let you see clearer what you're doing rather
+  than just one long line:
+
+    let panel = {
+    name:"Life Boost I",
+    symbol:"hp001",
+    description:"Tier 01: Raises base maximum HP by 10 per rank.",
+    category:0,
+    flatOrPercent:"flat",
+    base:100, perRank:10, rankMax:10, rankCur:0,
+    growMult:1.2, growCost:50
+    }
+    $gameActors._data.forEach((i)=>{i.SDP_addPanel(panel);})
+
+
 @param cmdName
 @text Command Name
 @desc Designates the name of the command in the menu screen.
@@ -21,7 +37,7 @@ J.SD = J.SD || {};
 
 Imported = Imported || {};
 Imported["JE Stat Distribution Panels"] = "0.1.0";
-
+J.SD.pluginParams = PluginManager.parameters('J_SDP');
 /* -------------------------------------------------------------------------- */
 
 // Creates and returns a "panel" for use to upgrade with points.
@@ -34,26 +50,23 @@ J.SD.MakePanel = (na = "default name", sy = "def", desc = "", cat = 0, fp = "fla
     description: desc,  // the description of the panel
     category: cat,      // some parameter like HP or critchance
     flatOrPercent: fp,  // flat/percent increase/decrease decision.
+    base: base,         // the cost starts (base + (perRank * rank))
     perRank: ea,        // how much the increase/decrease is.
     rankMax: max,       // some number that defines how high it can go; 0 if infinite.
     rankCur: cur,       // always 0; increments +1 per rank up.
-    cost: function() { // the cost formula, based on rankCur.
-      if (this.rankCur === this.rankMax) return 0;
-      return Math.floor(cmult * (cgrow * (this.rankCur + 1)));
-    },
+    growMult: cmult,
+    growCost: cgrow,
   }; 
   return panel;
 };
 
 J.SD.GetCommandName = function() {
-  //var p = PluginManager.parameters('J_SDP');
-  //return p['cmdName'];
-  let name = "P A N E L S";
+  let name = J.SD.pluginParams['cmdName']
+  //let name = "P A N E L S";
   return name;
 };
 
 J.SD.GetPtsIcon = function() {
-
   let icon = 100;
   return icon;
 };
@@ -84,41 +97,71 @@ J.SD.TranslateParam = function(p, a) {
   return obj;
 };
 
+J.SD.Cost = function(panel) {
+  let cost = 0;
+  if (panel.rankCur === panel.rankMax) {
+    cost = 0;
+  }
+  else {
+    let growth = Math.floor(panel.growMult * (panel.growCost * (panel.rankCur + 1)))
+    cost += panel.base + growth;
+  }
+  return cost;
+};
+
 J.SD.visibility = true;
 
 /* -------------------------------------------------------------------------- */
 (function(_) { "use strict"; console.log("Beginning setup of SDP.");
+  /* -------------------------------------------------------------------------- */
+  //  Game_Interpreter Modifications
+  //    deals with the extra pluginCommand stuff for manually doing things
+  //    within the game (using the pluginCommand event command).
+  /* -------------------------------------------------------------------------- */
+  var _Game_Interpreter_jSDP_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+  Game_Interpreter.prototype.pluginCommand = function(command, args) {
+    _Game_Interpreter_jSDP_pluginCommand.call(this, command, args);
+    if (command === 'J_SDP') {
+      switch (args[0].toLowerCase()) {
+        case 'open':
+          SceneManager.push(Scene_SDP);
+          break;
+        case 'add':
+          try {
+            if (args[1] === 'all') { // if it's all actors, iterate.
+              $gameActors._data.forEach((i) => {
+                i.SDP_modPoints(args[2]);
+              })
+            }
+            else { // if it's a single actor, add to the one.
+              $gameActors._data[args[1]].SDP_modPoints(args[2]);
+            }
+          } catch (err) { console.warn("the data provided in the plugin command didn't work."); }
+          break;
+        case 'show': J.SD.visibility = true; break;
+        case 'hide': J.SD.visibility = false; break;
+
+        default: console.warn("you didn't use a scripted command."); break;
+      }
+    }
+  };
+
   // initializes the SDP process.
   var _Game_Actor_sdp_Init = Game_Actor.prototype.initMembers
   Game_Actor.prototype.initMembers = function() {
     _Game_Actor_sdp_Init.call(this, this);
-    this.initSDP();
+    if (!this._sdpCollection || !this._sdpPts) this.initSDP();
   };
 
-  // handles initiation of panel collections.
-  // TEST: added panels for test purposes.
+  // handles initiation of panel collections and points
   Game_Actor.prototype.initSDP = function() {
     this._sdpCollection = [];   // the collection of panels will be in here.
     this._sdpPts = 0;           // how many points you have to be distributed across your panels.
-    
-    // test panels
-    this.SDP_addPanel(_.MakePanel()); // default panel
-    this.SDP_addPanel(_.MakePanel(
-      "Power I", "pwr01", "a panel full of power",  2, "flat", 7, 20, 20, 1.3, 20
-      ));
-    this.SDP_addPanel(_.MakePanel(
-      "EXP+ IV", "exp04", "sum xperienced boi", 17, "perc", 5, 10, 7, 3.6, 50
-      ));
-    this.SDP_addPanel(_.MakePanel(
-      "HRG+ II", "hrg02", "improves health regen i guess", 25, "flat", 1,  5, 0, 2.1, 30
-      ));
   };
   
   // add/subtract distribution points.
   Game_Actor.prototype.SDP_modPoints = function(pts) {
-    // add the points, negative or positive, to the current amount.
-    this._sdpPts += pts;
-    // make sure points are never lower than zero by this function.
+    this._sdpPts += Number(pts);
     if (this._sdpPts < 0) this._sdpPts = 0;
   };
 
@@ -148,7 +191,7 @@ J.SD.visibility = true;
   Game_Actor.prototype.sparam = function(sparamId) {
     let base = _Game_Actor_sdp_SparamIntercept.call(this, sparamId);
     this._sdpCollection.forEach((elem) => {
-      if (elem.category === sparamId) {
+      if (elem.category === (sparamId+10)) {
         if (elem.flatOrPercent === 'flat')
           base += (elem.perRank * elem.rankCur) / 100;
         else {
@@ -164,10 +207,10 @@ J.SD.visibility = true;
   Game_Actor.prototype.xparam = function(xparamId) {
     let base = _Game_Actor_sdp_XparamIntercept.call(this, xparamId);
     this._sdpCollection.forEach((elem) => {
-      if (elem.category === xparamId) {
-        if (elem.flatOrPercent === 'flat')
+      if (elem.category === (xparamId+8+10)) {
+        if (elem.flatOrPercent === 'flat') {
           base += (elem.perRank * elem.rankCur) / 100;
-        else {
+        } else {
           base += (base * (elem.perRank * elem.rankCur)) / 100;
         }
       }
@@ -175,6 +218,59 @@ J.SD.visibility = true;
     return base;
   }
 
+  Game_Enemy.prototype.getSDPPts = function() {
+    var structure = /<sdpPts: (\d+)>/i;
+    var x = 0;
+    var notedata = this.enemy().note.split(/[\r\n]+/);
+    for (var n = 0; n < notedata.length; n++) {
+      var line = notedata[n];
+      if (line.match(structure)) { x = Number(RegExp.$1); }    
+    }
+    return x;
+  };
+
+  var j_Game_Enemy_initMembers = Game_Enemy.prototype.initMembers;
+  Game_Enemy.prototype.initMembers = function() {
+    j_Game_Enemy_initMembers.call(this);
+    this._sdpPts = 0;
+  };
+
+  var j_Game_Enemy_setup = Game_Enemy.prototype.setup; 
+  Game_Enemy.prototype.setup = function(enemyId, x, y) {
+    j_Game_Enemy_setup.call(this, enemyId, x, y);
+    this._sdpPts = this.getSDPPts();
+  };
+
+  /* -------------------------------------------------------------------------- */
+  // intercept the onDeath event and run the gainSDP, too.
+  var j_gainSDPPtsonDeath = Game_Event.prototype.onDeath;
+  Game_Event.prototype.onDeath = function() {
+    this.gainSDPpts();
+    j_gainSDPPtsonDeath.call(this);
+  };
+
+  // the actual gaining of the points
+  Game_Event.prototype.gainSDPpts = function() {
+    let player = $gamePlayer.battler();
+    let pts = this.battler()._sdpPts;
+    let sdpIcon = 0;
+    if (Imported.J_Base) {
+      sdpIcon = J.Icon.SDP_icon;
+    }
+    let icon = '\\I[' + sdpIcon + ']';
+    console.log(icon + pts);
+    if (Imported.J_Base) {
+      sdpIcon = J.Icon.SDP_icon;
+    }
+    player.SDP_modPoints(pts);
+    if (pts > 0) {
+      QABSManager.startPopup('QABS-SDP', {
+        x: $gamePlayer.cx(), y: $gamePlayer.cy(),
+        //string: 'SDP ' + pts
+        string: icon + pts
+      });
+    }
+  };
   /* -------------------------------------------------------------------------- */
 
   // adds in a new handler for Scene_SDP.
@@ -230,20 +326,29 @@ J.SD.visibility = true;
     this.createCommandWindow();   // the list of distribution panels.
     this.createPointsWindow();    // the display of points for the actor.
     this._index = this._sdpWindow.index();
+    this._actor = null;
   };
 
   // assists in the panel tracking.
+  // assists in the actor tracking.
   Scene_SDP.prototype.update = function() {
     Scene_MenuBase.prototype.update.call(this);
-    if (this._index != this._sdpWindow.index())
-      this.updateIndex();
+    if (this._index != this._sdpWindow.index()) this.updateIndex();
+    if (this._actor != this._sdpDetails.getActor()) this.updateActor();
+  };
+
+  // refreshes all the windows of the system at once.
+  Scene_SDP.prototype.refreshWindows = function() {
+    this._sdpWindow.refresh();
+    this._sdpDetails.refresh();
+    this._sdpPoints.refresh();
   };
 
   // tracks the index for keeping panel up to date.
   Scene_SDP.prototype.updateIndex = function() {
     this._index = this._sdpWindow.index();
     this._sdpDetails.changePanel(this._index);
-    console.log(this._index);
+    //console.log(this._index);
   };
 
   // the list of distribution panels based on the character.
@@ -251,8 +356,6 @@ J.SD.visibility = true;
     this._sdpWindow = new Window_SDP_List();
     this._sdpWindow.setHandler('ok',        this.onSDPok.bind(this));
     this._sdpWindow.setHandler('cancel',    this.popScene.bind(this));
-    this._sdpWindow.setHandler('increment', this.tryInc.bind(this));
-    this._sdpWindow.setHandler('decrement', this.tryDec.bind(this));
     this.addWindow(this._sdpWindow);
   };
 
@@ -262,26 +365,37 @@ J.SD.visibility = true;
     this.addWindow(this._sdpDetails);
   };
 
+  // creates the window for drawing points.
   Scene_SDP.prototype.createPointsWindow = function() {
     this._sdpPoints = new Window_SDP_Points();
     this.addWindow(this._sdpPoints);
   };
-
-  Scene_SDP.prototype.tryInc = function() {
-    // handle the OK button press.
-  };
-
-  Scene_SDP.prototype.tryDec = function() {
-    // handle the OK button press.
-  };
   
+  // when you hit OK on an enabled panel, it executes this
   Scene_SDP.prototype.onSDPok = function() {
     // handle the OK button press.
+    this._sdpWindow.activate();
+    this.incrementPanel();
+    this.refreshWindows();
   };
 
+  // on OK, execute this.
+  Scene_SDP.prototype.incrementPanel = function() {
+    // handle the OK button press.
+    let actor = this._actor;
+    let panel = actor._sdpCollection[this._index];
+    if (panel.rankCur < panel.rankMax) {
+      actor._sdpPts -= J.SD.Cost(panel);
+      panel.rankCur++;
+    };
+
+  };
+
+  // L/R will swap actors.
   Scene_SDP.prototype.onActorChange = function() {
     // handle L - R input to swap actors.
     // update all windows.
+    console.log("tried to swap actors!");
   };
 
   /* -------------------------------------------------------------------------- */
@@ -295,12 +409,10 @@ J.SD.visibility = true;
     let x = 0;
     let y = 0;
     this._list = [];
-    this._listMod = [];
-    this._tempCost = [];
     this._actor = null;
     this.setActor($gameParty.members()[0]);
-    this.refresh();
     Window_Command.prototype.initialize.call(this, x, y);
+    this.refresh();
   };
 
   Window_SDP_List.prototype.windowWidth = function() {
@@ -321,6 +433,7 @@ J.SD.visibility = true;
 
   Window_SDP_List.prototype.refresh = function() {
     console.log("refreshing!");
+    if (this.contents) this.contents.clear();
     this.clearCommandList();
     this.makeCommandList();
     this.drawAllItems();
@@ -332,10 +445,11 @@ J.SD.visibility = true;
 
   Window_SDP_List.prototype.makeCommandList = function() {
     this._actor._sdpCollection.forEach((SDPS) => {
-      let tooPoor = this._actor._sdpPts < SDPS.cost();
+      let tooPoor = this._actor._sdpPts < J.SD.Cost(SDPS);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
-      this.addCommand(SDPS.name, SDPS.symbol, enabled);
+      let commandName = SDPS.name;
+      this.addCommand(commandName, SDPS.symbol, enabled);
     }, this);
   };
 
@@ -345,28 +459,6 @@ J.SD.visibility = true;
     this.resetTextColor();
     this.changePaintOpacity(this.isCommandEnabled(index));
     this.drawText(this.commandName(index), rect.x, rect.y, rect.width, align);
-  };
-
-  Window_SDP_List.prototype.modifyActive = function() {
-    return this._listMod.length > 0;
-  }
-
-  Window_SDP_List.prototype.allocateIncrement = function() {
-    // ? (cost - temp cost) - this level cost > 0 ?
-    // push to temp cost array
-    // increment temp level
-  };
-
-  Window_SDP_List.prototype.allocateDecrement = function() {
-    // ? temp list length > 0 ?
-    // pop temp cost array
-    // decrement temp level
-  };
-
-  Window_SDP_List.prototype.confirmChanges = function() {
-    // _listMod = _list
-    // reduce points
-    // empty temp variables
   };
   
   /* -------------------------------------------------------------------------- */
@@ -434,6 +526,10 @@ J.SD.visibility = true;
     }
   };
 
+  Window_SDP_Details.prototype.getActor = function() {
+    return this._actor;
+  };
+
   Window_SDP_Details.prototype.refresh = function() {
     this.contents.clear();
     this.drawSDPDetails(this._currentPanel);
@@ -454,7 +550,6 @@ J.SD.visibility = true;
     this.detailsType(panel);
     this.detailsLevel(panel);
     this.detailsCost(panel);
-    
   };
 
   // draws the name and description of the panel.
@@ -486,7 +581,7 @@ J.SD.visibility = true;
     this.changeTextColor(this.systemColor());
     this.drawText("Cost: ", 200, row, 255);
     this.resetTextColor();
-    this.drawText(p.cost(), 220, row+lh, 255);
+    this.drawText(J.SD.Cost(p), 220, row+lh, 255);
   };
 
   // draws the details about the parameter of the panel.

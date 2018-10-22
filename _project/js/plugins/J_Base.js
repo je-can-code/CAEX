@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------------- */
 // J_Base
-// V: 1.2
+// V: 1.3
 //
 /*:@plugindesc The core plugin that basically handles setup, icons, text, etc. This should go above any other plugins of mine you use!
 @author J
@@ -40,6 +40,10 @@
 @param EXP-icon
 @desc This is the icon ID for the EXP stat to be displayed.
 @default 125
+
+@param SDP-icon
+@desc This is the icon ID for the SDP points when earned.
+@default 447
 
 @param GOLD-icon
 @desc This is the icon ID for the GOLD stat to be displayed.
@@ -238,6 +242,7 @@
         is/will-be handled within this too, like my J_DropItem or J_XPGPvariance.
 
 Changelog:
+  v1.3: Added definition for enemies and SDP drop value.
   v1.2: Added in the function that uses text-to-icon function,
             also added the note-reading to this plugin.
 
@@ -336,6 +341,7 @@ J.Icon.MDF_icon = Number(J.Parameters['MDF-icon']);
 J.Icon.AGI_icon = Number(J.Parameters['AGI-icon']);
 J.Icon.LUK_icon = Number(J.Parameters['LUK-icon']);
 J.Icon.EXP_icon = Number(J.Parameters['EXP-icon']);
+J.Icon.SDP_icon = Number(J.Parameters['SDP-icon']);
 J.Icon.GOLD_icon = Number(J.Parameters['GOLD-icon']);
 J.Icon.DROP_icon = Number(J.Parameters['DROP-icon']);
 

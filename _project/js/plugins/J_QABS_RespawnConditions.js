@@ -68,7 +68,6 @@ Game_Event.prototype.canRespawn = function() {
             case "true":
               if (thisSwitch) return true;
               else return false;
-              break;
             case "false":
               if (!thisSwitch) return true;
               else return false;
