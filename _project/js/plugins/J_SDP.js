@@ -67,7 +67,7 @@ J.SD.GetCommandName = function() {
 };
 
 J.SD.GetPtsIcon = function() {
-  let icon = 100;
+  const icon = J.Icon.SDP_icon;
   return icon;
 };
 
@@ -168,7 +168,40 @@ J.SD.visibility = true;
   // add panel to an actor of a type
   Game_Actor.prototype.SDP_addPanel = function(panel) {
     this._sdpCollection.push(panel);
+    this.SDP_Sort();
   };
+
+  Game_Actor.prototype.SDP_Sort = function() {
+    // sort ascending based on symbol
+    this._sdpCollection.sort((a, b) => {
+      let catA = a.category;
+      let catB = b.category;
+      let symA = a.symbol.toLowerCase();
+      let symB = b.symbol.toLowerCase();
+      if (catA === catB) {
+        if (symA < symB) { return -1; }
+        if (symA > symB) { return 1; }
+      } else {
+        return catA - catB;
+      }
+      return 0;
+
+      console.log(b);
+      let first = (a.rankCur === a.rankMax) ? "a" : "z";
+      let second = (b.rankcur === b.rankMax) ? "a" : "z";
+      let x = a.symbol.toLowerCase();
+      let y = b.symbol.toLowerCase();
+      if (first === "a" || second == "a") {
+        console.log("maxed!");
+        if (first < second) { return 1; }
+        if (first > second) { return 0; }
+      } else {
+        if (x < y) { return -1; }
+        if (x > y) { return 1; }
+      }
+      return 0;
+    });
+  }
 
   // intercept and modify the base parameters by panel.
   var _Game_Actor_sdp_BparamIntercept = Game_Actor.prototype.paramBase;
@@ -179,7 +212,7 @@ J.SD.visibility = true;
         if (elem.flatOrPercent === 'flat')
           base += (elem.perRank * elem.rankCur);
         else {
-          base += Math.floor(base * (elem.perRank * elem.rankCur));
+          base += Math.floor(base * (elem.perRank * elem.rankCur) / 100);
         }
       }
     });
@@ -266,7 +299,6 @@ J.SD.visibility = true;
     if (pts > 0) {
       QABSManager.startPopup('QABS-SDP', {
         x: $gamePlayer.cx(), y: $gamePlayer.cy(),
-        //string: 'SDP ' + pts
         string: icon + pts
       });
     }
@@ -388,6 +420,7 @@ J.SD.visibility = true;
       actor._sdpPts -= J.SD.Cost(panel);
       panel.rankCur++;
     };
+    actor.SDP_Sort();
 
   };
 
@@ -469,9 +502,9 @@ J.SD.visibility = true;
 
   Window_SDP_Points.prototype.initialize = function() {
     var x = 0;
-    var y = 260;
+    var y = 251;
     var width = Graphics.boxWidth - x;
-    var height = 100;
+    var height = 110;
     this._actor = null;
     this.setActor($gameParty.members()[0]);
     Window_Base.prototype.initialize.call(this, x, y, width, height);
