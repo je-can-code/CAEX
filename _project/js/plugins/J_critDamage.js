@@ -48,7 +48,6 @@ Game_Action.prototype.makeDamageValue = function(target, critical) {
    return Math.round(originalDmg);
 };
 
-
 /* -------------------------------------------------------------------------- */
 // The core for defining new parameters and how they are handled.
 //   0 = CDM aka Crit Damage Modifier
@@ -191,4 +190,11 @@ Game_Enemy.prototype.jparam = function(paramId) {
   var bonus = Game_Battler.prototype.jParamFromState.call(this, paramId);
   total = (base + bonus) / 100; // divide by 100 to get decimal multiplier.
   return total;
+};
+
+TextManager.jparam = function (jParamId) {
+  switch (jParamId) {
+      case 0: return "CritDMG Multiplier";
+      case 1: return "CritDMG Reduction";
+  }
 };

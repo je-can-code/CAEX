@@ -92,6 +92,9 @@ J.SD.TranslateParam = function(p, a) {
     case 27: 
       obj.name = TextManager.xparam(p-18);
       obj.param = a.xparam(p-18) * 100;
+    case 28:
+      obj.name = TextManager.jparam(p-28);
+      obj.param = a.jparam(p-28);
     default: break;
   }
   return obj;
