@@ -311,7 +311,9 @@ J.SD.visibility = true;
     if (Imported.J_Base) {
       sdpIcon = J.Icon.SDP_icon;
     }
-    player.SDP_modPoints(pts);
+    $gameParty.members().forEach(function(actor) {
+      actor.SDP_modPoints(pts);
+    });
     if (pts > 0) {
       QABSManager.startPopup('QABS-SDP', {
         x: $gamePlayer.cx(), y: $gamePlayer.cy(),
