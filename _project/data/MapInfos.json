@@ -1,7 +1,7 @@
 [
 null,
 {"id":1,"expanded":false,"name":"TEST","order":1,"parentId":0,"scrollX":1103.142857142857,"scrollY":738.8571428571428},
-{"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":3,"parentId":0,"scrollX":1245,"scrollY":893},
+{"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":3,"parentId":0,"scrollX":1103.142857142857,"scrollY":738.8571428571428},
 {"id":3,"expanded":true,"name":"Jaws of the Beast","order":4,"parentId":2,"scrollX":1103.142857142857,"scrollY":738.8571428571428},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":15,"parentId":0,"scrollX":1103.142857142857,"scrollY":738.8571428571428},
 {"id":5,"expanded":true,"name":"The Mainstay v2","order":19,"parentId":18,"scrollX":1728,"scrollY":1094.3999999999999},
