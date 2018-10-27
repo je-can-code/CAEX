@@ -132,12 +132,10 @@ J.SD.visibility = true;
         case 'add':
           try {
             if (args[1] === 'all') { // if it's all actors, iterate.
-              $gameActors._data.forEach((i) => {
-                i.SDP_modPoints(args[2]);
-              })
+              $gameParty.SDP_modPoints(args[2]);
             }
             else { // if it's a single actor, add to the one.
-              $gameActors._data[args[1]].SDP_modPoints(args[2]);
+            $gameParty.SDP_modPoints(args[2]);
             }
           } catch (err) { console.warn("the data provided in the plugin command didn't work."); }
           break;
@@ -161,6 +159,15 @@ J.SD.visibility = true;
     this._sdpCollection = [];   // the collection of panels will be in here.
     this._sdpPts = 0;           // how many points you have to be distributed across your panels.
   };
+
+  let _Game_Event_sdp_initialize = Game_Party.prototype.initialize;
+  Game_Party.prototype.initialize = function() {
+    _Game_Event_sdp_initialize.call(this);
+    if (!this._sdpCollection || !this._sdpPts) {
+      this._sdpCollection = [];
+      this._sdpPts = 0;      
+    }
+  };
   
   // add/subtract distribution points.
   Game_Actor.prototype.SDP_modPoints = function(pts) {
@@ -168,8 +175,18 @@ J.SD.visibility = true;
     if (this._sdpPts < 0) this._sdpPts = 0;
   };
 
+  Game_Party.prototype.SDP_modPoints = function(pts) {
+    this._sdpPts += Number(pts);
+    if (this._sdpPts < 0) this._sdpPts = 0;
+  };
+
   // add panel to an actor of a type
   Game_Actor.prototype.SDP_addPanel = function(panel) {
+    this._sdpCollection.push(panel);
+    this.SDP_Sort();
+  };
+
+  Game_Party.prototype.SDP_addPanel = function(panel) {
     this._sdpCollection.push(panel);
     this.SDP_Sort();
   };
@@ -188,19 +205,21 @@ J.SD.visibility = true;
         return catA - catB;
       }
       return 0;
+    });
+  };
 
-      console.log(b);
-      let first = (a.rankCur === a.rankMax) ? "a" : "z";
-      let second = (b.rankcur === b.rankMax) ? "a" : "z";
-      let x = a.symbol.toLowerCase();
-      let y = b.symbol.toLowerCase();
-      if (first === "a" || second == "a") {
-        console.log("maxed!");
-        if (first < second) { return 1; }
-        if (first > second) { return 0; }
+  Game_Party.prototype.SDP_Sort = function() {
+    // sort ascending based on symbol
+    this._sdpCollection.sort((a, b) => {
+      let catA = a.category;
+      let catB = b.category;
+      let symA = a.symbol.toLowerCase();
+      let symB = b.symbol.toLowerCase();
+      if (catA === catB) {
+        if (symA < symB) { return -1; }
+        if (symA > symB) { return 1; }
       } else {
-        if (x < y) { return -1; }
-        if (x > y) { return 1; }
+        return catA - catB;
       }
       return 0;
     });
@@ -210,7 +229,8 @@ J.SD.visibility = true;
   var _Game_Actor_sdp_BparamIntercept = Game_Actor.prototype.paramBase;
   Game_Actor.prototype.paramBase = function(paramId) {
     let base = _Game_Actor_sdp_BparamIntercept.call(this, paramId);
-    this._sdpCollection.forEach((elem) => {
+    if (!$gameParty) return base;
+    $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === paramId) {
         if (elem.flatOrPercent === 'flat')
           base += (elem.perRank * elem.rankCur);
@@ -225,8 +245,9 @@ J.SD.visibility = true;
   // intercept and modify the secondary parameters by panel.
   var _Game_Actor_sdp_SparamIntercept = Game_Actor.prototype.sparam;
   Game_Actor.prototype.sparam = function(sparamId) {
+    if (!$gameParty) return base;
     let base = _Game_Actor_sdp_SparamIntercept.call(this, sparamId);
-    this._sdpCollection.forEach((elem) => {
+    $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (sparamId+10)) {
         if (elem.flatOrPercent === 'flat')
           base += (elem.perRank * elem.rankCur) / 100;
@@ -242,7 +263,8 @@ J.SD.visibility = true;
   var _Game_Actor_sdp_XparamIntercept = Game_Actor.prototype.xparam;
   Game_Actor.prototype.xparam = function(xparamId) {
     let base = _Game_Actor_sdp_XparamIntercept.call(this, xparamId);
-    this._sdpCollection.forEach((elem) => {
+    if (!$gameParty) return base;
+    $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (xparamId+8+10)) {
         if (elem.flatOrPercent === 'flat') {
           base += (elem.perRank * elem.rankCur) / 100;
@@ -259,7 +281,8 @@ J.SD.visibility = true;
   var _Game_Actor_sdp_JparamIntercept = Game_Actor.prototype.jparam;
   Game_Actor.prototype.jparam = function(jparamId) {
     let base = _Game_Actor_sdp_JparamIntercept.call(this, jparamId);
-    this._sdpCollection.forEach((elem) => {
+    if (!$gameParty) return base;
+    $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (jparamId+8+10+10)) {
         if (elem.flatOrPercent === 'flat') {
           base += (elem.perRank * elem.rankCur) / 100;
@@ -434,13 +457,12 @@ J.SD.visibility = true;
   // on OK, execute this.
   Scene_SDP.prototype.incrementPanel = function() {
     // handle the OK button press.
-    let actor = this._actor;
-    let panel = actor._sdpCollection[this._index];
+    let panel = $gameParty._sdpCollection[this._index];
     if (panel.rankCur < panel.rankMax) {
-      actor._sdpPts -= J.SD.Cost(panel);
+      $gameParty._sdpPts -= J.SD.Cost(panel);
       panel.rankCur++;
     };
-    actor.SDP_Sort();
+    $gameParty.SDP_Sort();
 
   };
 
@@ -496,8 +518,10 @@ J.SD.visibility = true;
   };
 
   Window_SDP_List.prototype.makeCommandList = function() {
-    this._actor._sdpCollection.forEach((SDPS) => {
-      let tooPoor = this._actor._sdpPts < J.SD.Cost(SDPS);
+    $gameParty._sdpCollection.forEach((SDPS) => {
+      let tooPoor = $gameParty._sdpPts < J.SD.Cost(SDPS);
+      console.log(J.SD.Cost(SDPS));
+      console.log($gameParty._sdpPts);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
       let commandName = SDPS.name;
@@ -521,9 +545,9 @@ J.SD.visibility = true;
 
   Window_SDP_Points.prototype.initialize = function() {
     var x = 0;
-    var y = 251;
+    var y = 283;
     var width = Graphics.boxWidth - x;
-    var height = 110;
+    var height = 78;
     this._actor = null;
     this.setActor($gameParty.members()[0]);
     Window_Base.prototype.initialize.call(this, x, y, width, height);
@@ -549,7 +573,7 @@ J.SD.visibility = true;
     let lh = this.lineHeight();
     this.drawIcon(i, 0, 0);
     this.drawText("Panel Pts.: ", 40, 0, 255);
-    this.drawText(a._sdpPts, 60, lh*1, 255);
+    this.drawText($gameParty._sdpPts, 140, 0, 255, 'left');
   };
 
   /* -------------------------------------------------------------------------- */
@@ -596,7 +620,7 @@ J.SD.visibility = true;
 
   Window_SDP_Details.prototype.drawSDPDetails = function() {
     let lh = this.lineHeight();
-    let panel = this._actor._sdpCollection[this._currentPanel];
+    let panel = $gameParty._sdpCollection[this._currentPanel];
     
     this.detailsHeader(panel);
     this.detailsType(panel);
