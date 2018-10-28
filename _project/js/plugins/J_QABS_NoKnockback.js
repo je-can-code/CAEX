@@ -39,7 +39,9 @@ Game_Enemy.prototype.isHeavy = function(id) {
       dy = final.y - y1;
       var lastDirectionFix = targets[i].isDirectionFixed();
       var prevRadian = targets[i]._radian;
+
       if (targets[i]._battler) { if (targets[i]._battler.isHeavy(targets[i]._battlerId)) {
+        
           // do nothing
         } else {
           targets[i].setDirectionFix(true);

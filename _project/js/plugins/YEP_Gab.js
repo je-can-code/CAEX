@@ -683,8 +683,8 @@ Window_Gab.prototype.dimColor2 = function() {
 };
 
 Window_Gab.prototype.drawBackground = function(wx, wy, ww, wh) {
-    var color1 = this.dimColor1();
-    var color2 = this.dimColor2();
+    var color1 = 'rgba(0, 0, 0, 0.6)';//this.dimColor1();
+    var color2 = 'rgba(0, 0, 0, 0.3)';//this.dimColor2();
     var ww1 = Math.ceil(ww * 0.25)
     var ww2 = Math.ceil(ww * 0.75)
     this.contents.gradientFillRect(wx, wy, ww1, wh, color1, color1);
