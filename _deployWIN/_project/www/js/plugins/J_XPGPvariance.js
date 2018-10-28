@@ -94,7 +94,7 @@ J.AddOns.XPGPvariance.getXPmult = function(a, e) { // a = actor, e = enemy
     case -7: return 0.3;
     case -8: return 0.2;
     case -9: return 0.1;
-    case (diff<-9): return 0.05; // 10 or more levels higher than the enemy.
+    case (diff < -9): return 0.05; // 10 or more levels higher than the enemy.
     default: return 1.0; // if no notetag is set, use only base experience.
   }
 }

@@ -1,43 +1,58 @@
 /* -------------------------------------------------------------------------- */
 // J_Base
-// V: 1.2
+// V: 1.3
 //
 /*:@plugindesc The core plugin that basically handles setup, icons, text, etc. This should go above any other plugins of mine you use!
 @author J
 
 @param MHP-icon
 @desc This is the icon ID for the MHP stat to be displayed.
-@default 247
+@default 391
+
 @param MMP-icon
 @desc This is the icon ID for the MMP stat to be displayed.
-@default 248
+@default 392
+
 @param ATK-icon
 @desc This is the icon ID for the ATK stat to be displayed.
-@default 250
+@default 394
+
 @param DEF-icon
 @desc This is the icon ID for the DEF stat to be displayed.
-@default 251
+@default 395
+
 @param MAT-icon
 @desc This is the icon ID for the MAT stat to be displayed.
-@default 252
+@default 396
+
 @param MDF-icon
 @desc This is the icon ID for the MDF stat to be displayed.
-@default 253
+@default 397
+
 @param AGI-icon
 @desc This is the icon ID for the AGI stat to be displayed.
-@default 254
+@default 398
+
 @param LUK-icon
 @desc This is the icon ID for the LUK stat to be displayed.
-@default 255
+@default 399
+
 @param EXP-icon
 @desc This is the icon ID for the EXP stat to be displayed.
 @default 125
+
+@param SDP-icon
+@desc This is the icon ID for the SDP points when earned.
+@default 447
+
 @param GOLD-icon
 @desc This is the icon ID for the GOLD stat to be displayed.
-@default 313
+@default 457
+
 @param DROP-icon
 @desc This is the icon ID for the 182 stat to be displayed.
-@default 182
+@default 352
+
 @param ---SPARAM---
 @param TGR-text
 @desc This is the text displayed for the TGR stat.
@@ -45,60 +60,70 @@
 @param TGR-icon
 @desc This is the icon ID for the TGR stat to be displayed.
 @default 14
+
 @param GRD-text
 @desc This is the text displayed for the GRD stat.
 @default Guard Rate
 @param GRD-icon
 @desc This is the icon ID for the GRD stat to be displayed.
 @default 12
+
 @param REC-text
 @desc This is the text displayed for the REC stat.
 @default Recovery Rate
 @param REC-icon
 @desc This is the icon ID for the REC stat to be displayed.
 @default 7
+
 @param PHA-text
 @desc This is the text displayed for the PHA stat.
 @default Item Amp
 @param PHA-icon
 @desc This is the icon ID for the PHA stat to be displayed.
-@default 176
+@default 320
+
 @param MCR-text
 @desc This is the text displayed for the MCR stat.
 @default MP Reduce
 @param MCR-icon
 @desc This is the icon ID for the MCR stat to be displayed.
 @default 79
+
 @param TCR-text
 @desc This is the text displayed for the TCR stat.
 @default TP Charge
 @param TCR-icon
 @desc This is the icon ID for the TCR stat to be displayed.
 @default 76
+
 @param PDR-text
 @desc This is the text displayed for the PDR stat.
 @default PhysDMG%
 @param PDR-icon
 @desc This is the icon ID for the PDR stat to be displayed.
 @default 51
+
 @param MDR-text
 @desc This is the text displayed for the MDR stat.
 @default MagiDMG%
 @param MDR-icon
 @desc This is the icon ID for the MDR stat to be displayed.
 @default 53
+
 @param FDR-text
 @desc This is the text displayed for the FDR stat.
 @default FloorDMG%
 @param FDR-icon
 @desc This is the icon ID for the FDR stat to be displayed.
 @default 54
+
 @param EXR-text
 @desc This is the text displayed for the EXR stat.
 @default EXPboost%
 @param EXR-icon
 @desc This is the icon ID for the EXR stat to be displayed.
-@default 249
+@default 125
+
 @param ---XPARAM---
 @param HIT-text
 @desc This is the text displayed for the HIT stat.
@@ -106,87 +131,106 @@
 @param HIT-icon
 @desc This is the icon ID for the HIT stat to be displayed.
 @default 102
+
 @param EVA-text
 @desc This is the text displayed for the EVA stat.
 @default Evade%
 @param EVA-icon
 @desc This is the icon ID for the EVA stat to be displayed.
 @default 6
+
 @param CRI-text
 @desc This is the text displayed for the CRI stat.
 @default Critical%
 @param CRI-icon
 @desc This is the icon ID for the CRI stat to be displayed.
 @default 78
+
 @param CEV-text
 @desc This is the text displayed for the CEV stat.
 @default Crit Evade
 @param CEV-icon
 @desc This is the icon ID for the CEV stat to be displayed.
 @default 74
+
 @param MEV-text
 @desc This is the text displayed for the MCR stat.
 @default M-Evade%
 @param MEV-icon
 @desc This is the icon ID for the MCR stat to be displayed.
 @default 9
+
 @param MRF-text
 @desc This is the text displayed for the MRF stat.
 @default M-Reflect%
 @param MRF-icon
 @desc This is the icon ID for the MRF stat to be displayed.
-@default 222
+@default 366
+
 @param CNT-text
 @desc This is the text displayed for the CNT stat.
 @default Counter%
 @param CNT-icon
 @desc This is the icon ID for the CNT stat to be displayed.
 @default 15
+
 @param HRG-text
 @desc This is the text displayed for the HRG stat.
 @default HP Regen%
 @param HRG-icon
 @desc This is the icon ID for the HRG stat to be displayed.
 @default 84
+
 @param MRG-text
 @desc This is the text displayed for the MRG stat.
 @default MP Regen%
 @param MRG-icon
 @desc This is the icon ID for the MRG stat to be displayed.
-@default 302
+@default 446
+
 @param TRG-text
 @desc This is the text displayed for the TRG stat.
 @default TP Regen
 @param TRG-icon
 @desc This is the icon ID for the TRG stat to be displayed.
 @default 70
+
 @param EL01-icon
 @desc This is the icon ID for element#1 (default: Physical-Slash).
 @default 123
+
 @param EL02-icon
 @desc This is the icon ID for element#2 (default: Physical-Pierce).
 @default 107
+
 @param EL03-icon
 @desc This is the icon ID for element#3 (default: Physical-Blunt).
 @default 110
+
 @param EL04-icon
 @desc This is the icon ID for element#4 (default: Fire).
 @default 64
+
 @param EL05-icon
 @desc This is the icon ID for element#5 (default: Water).
 @default 67
+
 @param EL06-icon
 @desc This is the icon ID for element#6 (default: Earth).
 @default 68
+
 @param EL07-icon
 @desc This is the icon ID for element#7 (default: Air).
 @default 69
+
 @param EL08-icon
 @desc This is the icon ID for element#8 (default: Holy).
 @default 70
+
 @param EL09-icon
 @desc This is the icon ID for element#9 (default: Darkness).
 @default 71
+
 @param EL10-icon
 @desc This is the icon ID for element#10 (default: Nonelemental).
 @default 118
@@ -198,6 +242,7 @@
         is/will-be handled within this too, like my J_DropItem or J_XPGPvariance.
 
 Changelog:
+  v1.3: Added definition for enemies and SDP drop value.
   v1.2: Added in the function that uses text-to-icon function,
             also added the note-reading to this plugin.
 
@@ -225,7 +270,7 @@ IconManager.textForIcon = function (text) {
   switch (text) {
     case TextManager.item: return 372;
     case TextManager.skill: return 78;
-    case TextManager.equip: return 550;
+    case TextManager.equip: return 137;
     case TextManager.optimize: return 90;
     case TextManager.clear: return 91;
     case TextManager.status: return 84;
@@ -233,15 +278,15 @@ IconManager.textForIcon = function (text) {
     case TextManager.options: return 83;
     case TextManager.save: return 79;
     case TextManager.gameEnd: return 91;
-    case TextManager.newGame: return 480;
-    case TextManager.continue_: return 342;
+    case TextManager.newGame: return 369;
+    case TextManager.continue_: return 79;
     case TextManager.weapon: return 501;
     case TextManager.armor: return 548;
     case TextManager.keyItem: return 352;
     case "Allocate": return 457;
-    case J.AddOns.Difficulty.getDifficultyName(0): return 497;
-    case J.AddOns.Difficulty.getDifficultyName(1): return 498;
-    case J.AddOns.Difficulty.getDifficultyName(2): return 501;
+    case J.AddOns.Difficulty.getDifficultyName(0): return 161;
+    case J.AddOns.Difficulty.getDifficultyName(1): return 163;
+    case J.AddOns.Difficulty.getDifficultyName(2): return 177;
     case "Load": return 342;
     case "Delete": return 91;
 
@@ -296,6 +341,7 @@ J.Icon.MDF_icon = Number(J.Parameters['MDF-icon']);
 J.Icon.AGI_icon = Number(J.Parameters['AGI-icon']);
 J.Icon.LUK_icon = Number(J.Parameters['LUK-icon']);
 J.Icon.EXP_icon = Number(J.Parameters['EXP-icon']);
+J.Icon.SDP_icon = Number(J.Parameters['SDP-icon']);
 J.Icon.GOLD_icon = Number(J.Parameters['GOLD-icon']);
 J.Icon.DROP_icon = Number(J.Parameters['DROP-icon']);
 
