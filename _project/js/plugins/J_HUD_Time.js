@@ -87,7 +87,7 @@ Window_Time.prototype.drawTime = function(x, y) {
 	} else { ampm = "AM";	}
 	hours = this.pad(hours, 2);
 	var timeString = hours + ":" + minutes + ":" + seconds + " " + ampm;
-	this.drawIcon(392, x,y);
+	this.drawIcon(364, x,y);
 	this.drawTextEx(timeString, x + 36, y);
 };
 

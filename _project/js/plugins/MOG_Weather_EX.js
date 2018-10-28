@@ -127,7 +127,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 	if (command === "clear_weather") {$gameSystem.clearWeatherEX();}; 
 	if (command === "weather")  {
 		var mode = Math.min(Math.max(Number(args[1]), 0),20);
-		var power = Math.min(Math.max(Number(args[3]), 1),2000);
+		var power = Math.min(Math.max(Number(args[3]), 1),5000);
 		var blendType = Math.min(Math.max(Number(args[5]), 0),1);
 		$gameSystem._weatherData.mode = mode;
 		$gameSystem._weatherData.power = power;
