@@ -132,7 +132,7 @@ J.SD.visibility = true;
         case 'add':
           try {
             if (args[1] === 'all') { // if it's all actors, iterate.
-              $gameParty.SDP_modPoints(args[2]);
+              $gameParty.SDP_modSDP_modPoints(args[2]);
             }
             else { // if it's a single actor, add to the one.
             $gameParty.SDP_modPoints(args[2]);
@@ -147,19 +147,6 @@ J.SD.visibility = true;
     }
   };
 
-  // initializes the SDP process.
-  var _Game_Actor_sdp_Init = Game_Actor.prototype.initMembers
-  Game_Actor.prototype.initMembers = function() {
-    _Game_Actor_sdp_Init.call(this, this);
-    if (!this._sdpCollection || !this._sdpPts) this.initSDP();
-  };
-
-  // handles initiation of panel collections and points
-  Game_Actor.prototype.initSDP = function() {
-    this._sdpCollection = [];   // the collection of panels will be in here.
-    this._sdpPts = 0;           // how many points you have to be distributed across your panels.
-  };
-
   let _Game_Event_sdp_initialize = Game_Party.prototype.initialize;
   Game_Party.prototype.initialize = function() {
     _Game_Event_sdp_initialize.call(this);
@@ -169,21 +156,9 @@ J.SD.visibility = true;
     }
   };
   
-  // add/subtract distribution points.
-  Game_Actor.prototype.SDP_modPoints = function(pts) {
-    this._sdpPts += Number(pts);
-    if (this._sdpPts < 0) this._sdpPts = 0;
-  };
-
   Game_Party.prototype.SDP_modPoints = function(pts) {
     this._sdpPts += Number(pts);
     if (this._sdpPts < 0) this._sdpPts = 0;
-  };
-
-  // add panel to an actor of a type
-  Game_Actor.prototype.SDP_addPanel = function(panel) {
-    this._sdpCollection.push(panel);
-    this.SDP_Sort();
   };
 
   Game_Party.prototype.SDP_addPanel = function(panel) {
@@ -327,7 +302,6 @@ J.SD.visibility = true;
 
   // the actual gaining of the points
   Game_Event.prototype.gainSDPpts = function() {
-    let player = $gamePlayer.battler();
     let pts = this.battler()._sdpPts;
     let sdpIcon = 0;
     if (Imported.J_Base) {
@@ -337,9 +311,7 @@ J.SD.visibility = true;
     if (Imported.J_Base) {
       sdpIcon = J.Icon.SDP_icon;
     }
-    $gameParty.members().forEach(function(actor) {
-      actor.SDP_modPoints(pts);
-    });
+    $gameParty.SDP_modPoints(pts);
     if (pts > 0) {
       QABSManager.startPopup('QABS-SDP', {
         x: $gamePlayer.cx(), y: $gamePlayer.cy(),
