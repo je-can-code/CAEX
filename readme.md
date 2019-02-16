@@ -56,7 +56,7 @@ Caves > Volcano > Subterranean
 
 
 ### Trials:
-> From the castle, the player is put through a trial which varies by leader.
+> From the castle, the player is put through a trial which leties by leader.
 
 Path(Caves) > Trial(Mountains)  > Course(Lakes)  > Gauntlet(Volcano)
 
@@ -95,10 +95,10 @@ __+unlocks the other final dungeon and access to Alice/Alex__
 Rebuilding the town is an optional side quest that becomes available after the player collects the second crystal and the pair split. Depending on who the player chose to follow determines which of the carpenters will be found. The player can choose to NOT build the Town, and all the people found will simply hang out in The Mainstay.
 
 ## Treis/Xavier-love interest
-The player has the optional opportunity to further/develop a love interest with either Treis(Alex) or Xavier(Alice). The interest is developed through a series of “date”-type quests with the designated partner, and can have varying results. These quests are time sensitive, and CAN BE MISSED. If too many are missed, the game will cease the continuation of the quests. If the dates go extremely poorly, the game will cease the continuation of the quests.
+The player has the optional opportunity to further/develop a love interest with either Treis(Alex) or Xavier(Alice). The interest is developed through a series of “date”-type quests with the designated partner, and can have letying results. These quests are time sensitive, and CAN BE MISSED. If too many are missed, the game will cease the continuation of the quests. If the dates go extremely poorly, the game will cease the continuation of the quests.
 
 ## “Sidequest” chain
-Claiming the forest crystal(#2) unlocks a wave of anomalies across the island the story takes place on. These anomalies are caused by a disturbance in the balance of things from the crystals, which result in mini “hives” of monsters being loosed in various areas where a “king” monster dwells. Defeating the king of each hive unlocks a different type of passive to be leveled up. The clearing of these hives is not integral to the completion of the main story quest, but helps the player greatly and impacts the ending of the game.
+Claiming the forest crystal(#2) unlocks a wave of anomalies across the island the story takes place on. These anomalies are caused by a disturbance in the balance of things from the crystals, which result in mini “hives” of monsters being loosed in letious areas where a “king” monster dwells. Defeating the king of each hive unlocks a different type of passive to be leveled up. The clearing of these hives is not integral to the completion of the main story quest, but helps the player greatly and impacts the ending of the game.
 
 ---
 ---
@@ -106,7 +106,7 @@ Claiming the forest crystal(#2) unlocks a wave of anomalies across the island th
 
 # Characters
 ## Alex the Fighter
-The male protagonist of the story. Specializes in melee type weapons, though is also capable of utilizing Bows and various ranged tools.
+The male protagonist of the story. Specializes in melee type weapons, though is also capable of utilizing Bows and letious ranged tools.
 
 ## Alice the Acolyte, 
 The female protagonist of the story. Specializes in using magic staves to launch projectiles. Is also capable of a wide arsenal of spells based on the equipment being worn.
@@ -118,7 +118,7 @@ The female protagonist of the story. Specializes in using magic staves to launch
 Leo is the only one who is capable of creating potions for the protagonists, for a fee. Later, he will also be able to help you craft useful potions for in-battle effects, like rage potions or shielding potions. Leo has 2 nameless assistants that can be rescued who will fetch ingredients for him.
 
 ## Treis the Engineer
-Treis is the upbeat inventor/engineer that builds tools for the protagonists, and eventually after the pair splits, develops a love interest in Alex. Her abilities in creating tools is unmatched, and eventually evolves into creating explosives and various accessories that enable unique passives to be learned over time by the protagonists. You can also rescue 1 nameless assistant, one who does the mindless work.
+Treis is the upbeat inventor/engineer that builds tools for the protagonists, and eventually after the pair splits, develops a love interest in Alex. Her abilities in creating tools is unmatched, and eventually evolves into creating explosives and letious accessories that enable unique passives to be learned over time by the protagonists. You can also rescue 1 nameless assistant, one who does the mindless work.
 
 ## Silus-Innkeeper
 Silus is the silent innkeeper. He almost never talks, but is the one who originally ran the inn before it was attacked by monsters. He is also the only one that is NOT a part of the caravan, and eventually will open up and allow the Inn to expand and go over details and pricing for rebuilding the town with you and the carpenter you save. You can also rescue 2 nameless assistants, his bartender and cleaning maid.
@@ -127,7 +127,7 @@ Silus is the silent innkeeper. He almost never talks, but is the one who origina
 Viktor and Viskor are twin blacksmiths. They work together on everything and may as well be considered a single person as far as seamless teamwork and functionality is concerned. They will take over selling weapons/armors to you after you save them. After you complete their quests, they will also be able to assist you in upgrading your weaponry given you provide the proper materials.
 
 ## Xavier the Enchanter
-Xavier is a dark and mysterious gentleman who specializes in dark magic and binding enchantments. He is also the love interest that Alice falls for after the pair splits. Rescuing him will unlock Leo’s capability to create magical potions that heighten your abilities and do other random things. Completing his various quests will reward you with learnable passives through slaying of monsters and other events.
+Xavier is a dark and mysterious gentleman who specializes in dark magic and binding enchantments. He is also the love interest that Alice falls for after the pair splits. Rescuing him will unlock Leo’s capability to create magical potions that heighten your abilities and do other random things. Completing his letious quests will reward you with learnable passives through slaying of monsters and other events.
 
 ## Tac(or)Mill-Carpenter
  > (not yet implemented or details planned out).
