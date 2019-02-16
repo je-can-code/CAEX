@@ -1,7 +1,9 @@
 # Chef Adventure! EX
-### `devCORE` branch
+### `devUPDT` branch
 ## Welcome!
 > 30/09/2018 - readme updated and branching done
+> 26-28/10/2018 - demo ran for devCORE package
+> 16/02/2019 - work begins on devUPDT package
 
 You found your way to the devCORE branch!<br/>
 This is where the first major section of the game is being developed.<br/>
