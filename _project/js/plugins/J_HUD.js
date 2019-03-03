@@ -5,17 +5,25 @@
 /*:@plugindesc Stemmed from Mr. Wriggles' SimpleHUD, but added more things.
 @author J (+ mr wiggles)
 
-@param HUD_width
-@desc width of HUD
-@default 420
-
-@param HUD_height
-@desc height of HUD
-@default 128
-
 @param HUD_opacity
 @desc The visibility (0 being invis, 255 being solid) of the HUD.
 @default 255
+
+@param HUD_width
+@desc The width of the HUD.
+@default 420
+
+@param HUD_height
+@desc The height of the HUD.
+@default 128
+
+@param HUD_x
+@desc The horizontal coordinate where the HUD will be placed.
+@default 0
+
+@param HUD_y
+@desc The vertical coordinate where the HUD will be placed.
+@default 0
 
 @help This is a generic HUD plugin. It accomplishes the goal of displaying
       things like HP/MP/TP while on the map.
@@ -33,6 +41,8 @@ J.HUD.Parameters = PluginManager.parameters('J_HUD');
 J.HUD.width = Number(J.HUD.Parameters['HUD_width']);
 J.HUD.height = Number(J.HUD.Parameters['HUD_height']);
 J.HUD.HUDopacity = Number(J.HUD.Parameters['HUD_opacity']);
+J.HUD.x = Number(J.HUD.Parameters['HUD_x']);
+J.HUD.y = Number(J.HUD.Parameters['HUD_y']);
 J.HUD.visibility = true;
 
 (function() { // start plugin.
@@ -75,7 +85,7 @@ J.HUD.visibility = true;
     if (this._HUDWindow) {
       this._HUDWindow.update;
     } else {
-      this._HUDWindow = new Window_HUD(0,0);
+      this._HUDWindow = new Window_HUD(J.HUD.x, J.HUD.y);
       this.addWindow(this._HUDWindow);
       this._HUDWindow.opacity = J.HUD.HUDopacity;
     };
@@ -199,10 +209,14 @@ J.HUD.visibility = true;
       var states = actor.states();
       var icons = actor.stateIcons().slice(0, Math.floor(width / Window_Base._iconWidth));
       for (var i = 0; i < icons.length; i++) {
+        let thisState = actor._states[i];
+        let remainingTurns = actor._stateTurns[thisState] ? actor._stateTurns[thisState] : null;
+        let remainingSteps = actor._stateSteps[thisState] ? actor._stateSteps[thisState] : null;
         this.drawIcon(icons[i], x + Window_Base._iconWidth * i, y + 2);
         var oldSize = this.contentsHeight.fontSize;
         this.contents.fontSize = 12;
-        var timer = Number(actor._stateDuration[states[i].id] / 60).toFixed(1);
+        //var timer = Number(actor._stateDuration[states[i].id] / 60).toFixed(1);
+        let timer = Number(remainingSteps / 60).toFixed(1);
         this.drawText(timer, x + Window_Base._iconWidth * i, y + 2)
         this.contents.fontSize = oldSize;
       }

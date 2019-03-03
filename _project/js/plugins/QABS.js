@@ -1660,6 +1660,8 @@ function Skill_Sequencer() {
 
   Skill_Sequencer.prototype.userPose = function(action) {
     if (Imported.QSprite) {
+      console.log("played pose!");
+      console.log(action);
       this._character.playPose(action[0]);
       this._waitForUserPose = action[1] === 'true';
     }

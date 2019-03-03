@@ -485,8 +485,6 @@ J.SD.visibility = true;
   Window_SDP_List.prototype.makeCommandList = function() {
     $gameParty._sdpCollection.forEach((SDPS) => {
       let tooPoor = $gameParty._sdpPts < J.SD.Cost(SDPS);
-      console.log(J.SD.Cost(SDPS));
-      console.log($gameParty._sdpPts);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
       let commandName = SDPS.name;

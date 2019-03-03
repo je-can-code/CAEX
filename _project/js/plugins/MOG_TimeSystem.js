@@ -3,7 +3,7 @@
 //=============================================================================
 
 /*:
- * @plugindesc (v1.5) Sistema dinámico de tempo. 
+ * @plugindesc (v1.5) Dynamic time system.
  * @author Moghunter
  *
  * @param >> MAIN ===================
@@ -11,7 +11,7 @@
  * @default 
  *
  * @param Active Time
- * @desc Ativar o sistema de tempo em tempo real.
+ * @desc Enable the real time system.
  * @default true
  *
  * @param Stop During EventRunning
