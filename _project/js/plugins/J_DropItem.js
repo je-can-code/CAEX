@@ -72,5 +72,6 @@ Game_Enemy.prototype.makeDropItems = function() {
       }
     }
   }
+  console.log(itemsFound);
   return itemsFound;
 };

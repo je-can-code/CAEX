@@ -2637,7 +2637,7 @@ Game_CharacterBase.prototype.setDeadEnemy = function(char,battler) {
    this.prepareDeadSprite(char,battler);
    if (!char._user.treasure[0]) {
 	   this.executeCollapse(char,battler)
-   } else {;
+   } else {
       if ($gameSystem.isChronoMode()) {char.jump(0,0)};
    };
    char._chrono.deadChecked = true;
@@ -2657,14 +2657,14 @@ Game_CharacterBase.prototype.executeCollapse = function(char,battler) {
 //==============================
 Game_CharacterBase.prototype.makeTreasure = function(char,battler) {
 	var treasures = battler.makeDropItems();
-    if (treasures.length > 0) {
-		var rt = Math.randomInt(treasures.length);
-		var item = treasures[rt]
-		char._user.treasure = [item,false,0,0,20];		
-		char._characterName = 'treasurebattlertool'
-		$gameMap._treasureEvents.push(char);
-		char._user.collapse = [true,0];
-	};
+  if (treasures.length > 0) {
+    var rt = Math.randomInt(treasures.length);
+    var item = treasures[rt]
+    char._user.treasure = [item,false,0,0,20];		
+    char._characterName = 'treasurebattlertool'
+    $gameMap._treasureEvents.push(char);
+    char._user.collapse = [true,0];
+  };
 };
 
 //==============================
@@ -7771,15 +7771,15 @@ Game_CharacterBase.prototype.updateMove = function() {
 // * update Character Treasures
 //==============================
 Game_CharacterBase.prototype.updateCharacterTreasures = function() {
-	for (var i = 0; i < $gameMap._treasureEvents.length; i++) {
-		var event = $gameMap._treasureEvents[i];
+	for (let i = 0; i < $gameMap._treasureEvents.length; i++) {
+		const event = $gameMap._treasureEvents[i];
 		if (this.isTouchOnTreasure(event)) {
 			this.getTreasure(event);
-			var se = String(Moghunter.ras_treasureSE);
-			if (se) {SoundManager.playSoundMX(se)};
+			const se = String(Moghunter.ras_treasureSE);
+			if (se) { SoundManager.playSoundMX(se); };
 			$gameMap._treasureEvents.splice(i,1);
 		};
-	};
+  };
 };
 
 //==============================
@@ -8672,8 +8672,8 @@ Game_CharacterBase.prototype.jumpOrg = function() {
 // * teleport Org
 //==============================
 Game_CharacterBase.prototype.teleportOrg = function() {
-    if (this._user.orgX === 0 && this._user.orgY === 0) {return};
-    this.locate(this._user.orgX, this._user.orgY)
+  if (this._user.orgX === 0 && this._user.orgY === 0) {return};
+  this.locate(this._user.orgX, this._user.orgY)
 };
 
 //==============================
@@ -8681,8 +8681,8 @@ Game_CharacterBase.prototype.teleportOrg = function() {
 //==============================
 Game_CharacterBase.prototype.shieldMode = function(value) {
 	if (!this.battler()) {return}; 
-    var enable = String(value) == "true" ? true : false;
-    this.battler()._ras.invunerable = enable
+  var enable = String(value) == "true" ? true : false;
+  this.battler()._ras.invunerable = enable
 };
 
 //==============================
@@ -8690,8 +8690,8 @@ Game_CharacterBase.prototype.shieldMode = function(value) {
 //==============================
 Game_CharacterBase.prototype.collision = function(value) {
 	if (!this.battler()) {return}; 
-    var enable = String(value) == "true" ? true : false;
-    this._user.collision = enable
+  var enable = String(value) == "true" ? true : false;
+  this._user.collision = enable
 };
 
 //==============================
@@ -11516,35 +11516,35 @@ Sprite_Character.prototype.updateDamagePopup = function() {
 // * setup Damage Popup
 //==============================
 Sprite_Character.prototype.setupDamagePopup = function() {
-    if (this.battler().isDamagePopupRequested()) {
-            var sprite = new Sprite_Damage();
-            sprite.x = this.x;
-            sprite.y = this.y;
-			sprite.z = 500;
-            sprite.setup(this.battler());
-            this._damages.push(sprite);
-            this.parent.addChild(sprite);
-        this.battler().clearDamagePopup();
-        this.battler().clearResult();
-    };
+  if (this.battler().isDamagePopupRequested()) {
+    var sprite = new Sprite_Damage();
+    sprite.x = this.x;
+    sprite.y = this.y;
+    sprite.z = 500;
+    sprite.setup(this.battler());
+    this._damages.push(sprite);
+    this.parent.addChild(sprite);
+    this.battler().clearDamagePopup();
+    this.battler().clearResult();
+  };
 };
 
 //==============================
 // * set Character Bitmap Treas
 //==============================
 Sprite_Character.prototype.setCharacterBitmapTreasure = function() {
-	   if (!this._imgIcon) {this._imgIcon = ImageManager.loadSystem("IconSet")};
-        this.removeChild(this._upperBody);
-		this.removeChild(this._lowerBody);
-       this.bitmap = this._imgIcon;
-	   var iconIndex = this._character._user.treasure[0].iconIndex;
-	   var sx = iconIndex % 16 * 32;
-	   var sy = Math.floor(iconIndex / 16) * 32;
-	   this.setFrame(sx,sy,32,32);
-	   this.scale.x = 0.70;
-	   this.scale.y = 0.70;
-	   this.scale.rotation = 0;
-	   this._character._through = true;
+  if (!this._imgIcon) { this._imgIcon = ImageManager.loadSystem("IconSet") };
+  this.removeChild(this._upperBody);
+  this.removeChild(this._lowerBody);
+  this.bitmap = this._imgIcon;
+  var iconIndex = this._character._user.treasure[0].iconIndex;
+  var sx = iconIndex % 16 * 32;
+  var sy = Math.floor(iconIndex / 16) * 32;
+  this.setFrame(sx,sy,32,32);
+  this.scale.x = 0.70;
+  this.scale.y = 0.70;
+  this.scale.rotation = 0;
+  this._character._through = true;
 };
 
 //==============================
