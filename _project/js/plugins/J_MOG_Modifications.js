@@ -18,6 +18,20 @@
       use <instaskill:number> to provide an action in place of picking up loot.
       example usage: health pickup.
 
+  Previous features from VXAce:
+      --Agility Move Variance [agi_move_var]
+      --Death Self-Switch [death_selfsw]
+    X --EXP Factor && Gold Variance [expgp_variance]
+    X --Slip HP/MP Damage [hpmp_slipdmg]
+      --Heal on Level-Up [heal_on_levelup]
+      --No Leader Changing [no_leader_chg]
+      --Clear Equipped Skills [clear_skill]
+    X --Alternative touch_attack Formula [alt_touchatk]
+      --Parry FX [parry_fx]
+    X --Timely Active Regen [timely_regen]
+      --Record Keeping [the_records]
+      --Confusion State [state_confu]
+      --Throw Equip Requirements [throw_reqs]
 */
 /* -------------------------------------------------------------------------- */
 
