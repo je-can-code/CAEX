@@ -1963,7 +1963,8 @@ Sprite_StateIcon.prototype.updateTurnAndCounter = function() {
 };
 
 Sprite_StateIcon.prototype.textColor = function(n) {
-    return SceneManager._scene._statusWindow.textColor(n);
+    //return SceneManager._scene._statusWindow.textColor(n) || Window_Base.textColor(0);
+    return 0;//SceneManager._scene._statusWindow.textColor(n) || Window_Base.textColor(0);
 };
 
 Sprite_StateIcon.prototype.drawStateTurns = function(state) {

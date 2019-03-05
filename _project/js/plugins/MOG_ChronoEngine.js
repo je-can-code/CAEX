@@ -1871,11 +1871,11 @@ Game_Map.prototype.targetsOnScreen = function() {
 // * clear All Battler Actions
 //==============================
 Game_Map.prototype.clearAllBattlerActions = function() {	 
-     this.targetsOnScreen();
-	 for (var i = 0; i < this._battlersOnScreen.length; i++) {
-		 var battler = this._battlersOnScreen[i];
-		 battler.clearActing();		
-	 };
+  this.targetsOnScreen();
+  for (let i = 0; i < this._battlersOnScreen.length; i++) {
+    let battler = this._battlersOnScreen[i];
+    battler.clearActing();		
+  };
 };
 
 //==============================
@@ -1889,15 +1889,15 @@ Game_Map.prototype.enemiesF = function() {
 // * All Enemies On Map
 //==============================
 Game_Map.prototype.allEnemiesOnMap = function() {	
-     var allenemies = [];
-     for (var i = 0; i < this._events.length; i++) {
-		 var character = this._events[i];
-		 if (character) {
-			 if (this.isBattlerOnScreen(character,false,false)) {
-				 allenemies.push(character);
-			 };
-		 };
-	};
+  let allenemies = [];
+  for (let i = 0; i < this._events.length; i++) {
+    let character = this._events[i];
+    if (character) {
+      if (this.isBattlerOnScreen(character,false,false)) {
+        allenemies.push(character);
+      };
+    };
+  };
 	return allenemies;
 };
 

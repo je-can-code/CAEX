@@ -79,18 +79,51 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
 
   // handles the countdown of time for a state.
   Game_Map.prototype.handleStates = function() {
-    // for each member of the party
-    // for each state
-    // reduce _stateSteps by 1
-    if ($gameParty.exists()) {
-      $gameParty.members().forEach((actor) => {
-        actor._states.forEach((state) => {
-          let stateTimeLeft = actor._stateSteps[state];
-          if (stateTimeLeft <= 0) actor.eraseState(state);
-          else actor._stateSteps[state]--;
-        })
-      })
-    }
+    if ($gameParty.exists())    this.handleAllyStates();
+    if ($gameMap.hasEnemies())  this.handleEnemyStates();
+  };
+
+  // iterates over and counts down states for allies.
+  Game_Map.prototype.handleAllyStates = () => {
+    $gameParty.members().forEach((actor) => {
+      let ally = actor;
+      ally._states.forEach((state) => {
+        let stateTimeLeft = ally._stateSteps[state];
+        if (stateTimeLeft <= 0) ally.eraseState(state);
+        else ally._stateSteps[state]--;
+      });
+    });
+  };
+
+  // iterates over and counts down states for enemies.
+  Game_Map.prototype.handleEnemyStates = () => {
+    $gameMap.allEnemiesOnMap().forEach((e) => {
+      let enemy = e._user.battler;
+      enemy._states.forEach((state) => {
+        let stateTimeLeft = enemy._stateSteps[state];
+        if (stateTimeLeft <= 0) enemy.eraseState(state);
+        else enemy._stateSteps[state]--;
+      });
+    });
+  };
+
+  // returns boolean based on whether or not the current map has any alive enemies on it.
+  Game_Map.prototype.hasEnemies = () => $gameMap.allEnemiesOnMap().length > 0;
+
+  // adds in these three methods because natively, Game_Enemy class doesn't have them.
+  Game_Enemy.prototype.clearStates = function() {
+    Game_Battler.prototype.clearStates.call(this);
+    this._stateSteps = {};
+  };
+
+  Game_Enemy.prototype.eraseState = function(stateId) {
+    Game_Battler.prototype.eraseState.call(this, stateId);
+    delete this._stateSteps[stateId];
+  };
+
+  Game_Enemy.prototype.resetStateCounts = function(stateId) {
+    Game_Battler.prototype.resetStateCounts.call(this, stateId);
+    this._stateSteps[stateId] = $dataStates[stateId].stepsToRemove;
   };
 
   //#region TODO: alter .canMove() by state notetags.
@@ -139,6 +172,15 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
     if (actor) {
       if (this._timingHPMP <= 0) {
         this.doHPMPregen(actor);
+        if (this.hasEnemies()) {
+          $gameMap.allEnemiesOnMap().forEach((e) => {
+            let enemy = e.battler();
+            this.doHPMPregen(enemy);
+            if (enemy.isDead()) {
+              e.setDeadEnemy(e, e.battler());
+            }
+          });
+        };
         this._timingHPMP = 30;
       }
       else { this._timingHPMP--; }
@@ -153,43 +195,44 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
         }
       }
     }
+
   };
 
   // Here, HP/MP regeneration is handled based on HRG/MRG.
   // It is significantly slower than TP Regeneration.
   // if "poisoned" state is inflicted, natural regen stops.
-  Game_Map.prototype.doHPMPregen = function(actor) {
-    var hRegen, mRegen = 0;
-    var details = this.isPoisoned(actor);
+  Game_Map.prototype.doHPMPregen = function(target) {
+    let hRegen, mRegen = 0;
+    const details = this.isPoisoned(target);
     if (J.mapTime.flatHealing) {
-      hRegen = ((actor.hrg * 100) / 2) / 5;
-      mRegen = ((actor.mrg * 100) / 2) / 5;  
+      hRegen = ((target.hrg * 100) / 2) / 5;
+      mRegen = ((target.mrg * 100) / 2) / 5;  
     } else {
       if (details && details[0] == "HP") {
         hRegen = (details[1] * 100 / 2 / 5);
       } else {
-        hRegen = ((actor.hrg * actor.mhp) / 2) / 5;
+        hRegen = ((target.hrg * target.mhp) / 2) / 5;
       }
       if (details && details[0] == "MP") {
         mRegen = ((details[1] * 100) / 2) / 5;
       } else {
-        mRegen = ((actor.mrg * actor.mmp) / 2) / 5;
+        mRegen = ((target.mrg * target.mmp) / 2) / 5;
       }
       if (details && details[0] == "BOTH") {
         hRegen = ((details[1] * 100) / 2) / 5;
         mRegen = ((details[1] * 100) / 2) / 5;
       }
     }
-    actor.gainHp(hRegen);
-    if (hRegen < 0) actor.startDamagePopup();
-    actor.gainMp(mRegen);
-    if (mRegen < 0) actor.startDamagePopup();
+    target.gainHp(hRegen);
+    if (hRegen < 0) target.startDamagePopup();
+    target.gainMp(mRegen);
+    if (mRegen < 0) actargettor.startDamagePopup();
   };
 
   // reads notes and determines if the actor is poisoned based on state.
-  Game_Map.prototype.isPoisoned = function(actor) {
+  Game_Map.prototype.isPoisoned = function(target) {
     var structure = /<poison:(HP|MP|BOTH)>/i;
-    var aStates = actor.states();
+    var aStates = target.states();
     var details = [];
     if (aStates.length <= 0) return false;
     for (var i = 0; i < aStates.length; i++) {
