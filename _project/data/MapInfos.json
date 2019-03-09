@@ -1,6 +1,6 @@
 [
 null,
-{"id":1,"expanded":true,"name":"TEST","order":1,"parentId":0,"scrollX":1385,"scrollY":804},
+{"id":1,"expanded":true,"name":"TEST","order":1,"parentId":0,"scrollX":1050.6666666666667,"scrollY":524.6666666666666},
 {"id":2,"expanded":false,"name":"Chapter 0: Initiation","order":4,"parentId":0,"scrollX":1385,"scrollY":804},
 {"id":3,"expanded":false,"name":"Jaws of the Beast","order":5,"parentId":2,"scrollX":1385,"scrollY":804},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":16,"parentId":0,"scrollX":1385,"scrollY":804},
@@ -89,5 +89,5 @@ null,
 {"id":87,"expanded":false,"name":"Forever Flat","order":88,"parentId":85,"scrollX":0,"scrollY":0},
 {"id":88,"expanded":false,"name":"Devil's Eye","order":89,"parentId":85,"scrollX":0,"scrollY":0},
 {"id":89,"expanded":false,"name":"Rift Castle","order":90,"parentId":85,"scrollX":0,"scrollY":0},
-{"id":90,"expanded":true,"name":"Tool Map","order":2,"parentId":1,"scrollX":1369,"scrollY":1116}
+{"id":90,"expanded":true,"name":"Tool Map","order":2,"parentId":1,"scrollX":1040,"scrollY":1087.3333333333333}
 ]

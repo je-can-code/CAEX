@@ -2517,20 +2517,20 @@ Game_CharacterBase.prototype.canExecuteAction = function(toolID) {
 // * Act
 //==============================
 Game_CharacterBase.prototype.act = function(toolID) {
-    if (!this.canExecuteAction(toolID)) {return};
-    if (!$gameSystem._eventDataTool) {$gameSystem._eventDataTool = []};
-    var action = $gameMap.toolEvent(toolID);
+  if (!this.canExecuteAction(toolID)) { return; };
+  if (!$gameSystem._eventDataTool) { $gameSystem._eventDataTool = []; };
+  const action = $gameMap.toolEvent(toolID);
 	this._user.spcShoot[0] = action._tool.spcShootTool[0];
 	this._user.spcShoot[1] = action._tool.spcShootTool[1];
 	this._user.spcShoot[2] = action._tool.spcShootTool[2];
 	this._user.spcShoot[3] = this._user.autoTarget;
 	if (this._user.spcShoot[2] != 0 && this._user.spcShoot[1] > 0) {
 		this._user.spcShoot[0] = true;
-	   for (var i = 0; i < this._user.spcShoot[1]; i++) {
-	        $gameSystem._eventDataTool.push([toolID,this]);
-	   };
-    } else {
-       $gameSystem._eventDataTool.push([toolID,this]);
+	  for (var i = 0; i < this._user.spcShoot[1]; i++) {
+	    $gameSystem._eventDataTool.push([toolID,this]);
+	  };
+  } else {
+    $gameSystem._eventDataTool.push([toolID,this]);
 	};
 };
 
@@ -2538,53 +2538,54 @@ Game_CharacterBase.prototype.act = function(toolID) {
 // * is Auto Target
 //==============================
 Game_CharacterBase.prototype.isAutoTarget = function(toolID) {
-	if (this._user.autoTarget) {return false};
-	if (this._user.actionTimes[0]) {return false};
+	if (this._user.autoTarget) { return false; };
+	if (this._user.actionTimes[0]) { return false; };
 	var action = $gameMap.toolEvent(toolID);
-	if (!action) {return false};
-	if (!action._tool.autoTarget) {return false};
-	if (!action.item()) {return false};
-    return true;
+	if (!action) { return false; };
+	if (!action._tool.autoTarget) { return false; };
+	if (!action.item()) { return false; };
+  
+  return true;
 };
 
 //==============================
 // * execute Auto Target
 //==============================
 Game_CharacterBase.prototype.executeAutoTarget = function(toolID) {
-	if (this._user.isLeader) {$gameTemp.clearToolCursor()};
-	var action = $gameMap.toolEvent(toolID);
-	var item = action.item();	
+	if (this._user.isLeader) { $gameTemp.clearToolCursor(); };
+	const action = $gameMap.toolEvent(toolID);
+	const item = action.item();	
 	this._user.autoTarget = null;
 	$gameMap.targetsOnScreen();
-	var sOpponent = [1, 2, 3, 4, 5, 6];
-	var sFriend = [7, 8, 9, 10, 11];
-	var scope = item.scope;		
+	const sOpponent = [1, 2, 3, 4, 5, 6];
+	const sFriend = [7, 8, 9, 10, 11];
+	const scope = item.scope;		
 	var scopeOpponent = sOpponent.contains(scope) ? true : false;
-	var scopeFriend = sFriend.contains(scope) ? true : false;	
-	var battler = [];
+	const scopeFriend = sFriend.contains(scope) ? true : false;	
+	let battler = [];
     if (this.battler().isEnemy()) {
 		if (scopeFriend) {
-		   var battler = $gameMap._enemiesOnScreen;
+		   battler = $gameMap._enemiesOnScreen;
 		} else {
-		   var battler = $gameMap._actorsOnScreen;
+		   battler = $gameMap._actorsOnScreen;
 	    }
 	} else {
 		if (scopeFriend) {
-		   var battler = $gameMap._actorsOnScreen;
+		   battler = $gameMap._actorsOnScreen;
 		   $gameTemp._autoTarget.targetType = 1;
 		} else {
-		   var battler = $gameMap._enemiesOnScreen;
+		   battler = $gameMap._enemiesOnScreen;
 		   $gameTemp._autoTarget.targetType = 0;
-	    };
+	  };
 	};
 	if (this._user.isLeader) {
-	    SoundManager.playEquip();
-	    $gameTemp._autoTarget.actionID = toolID;
-	    $gameTemp._autoTarget.enabled = true;
+    SoundManager.playEquip();
+    $gameTemp._autoTarget.actionID = toolID;
+    $gameTemp._autoTarget.enabled = true;
 	} else {
 		var rb = Math.randomInt(battler.length)
-		var battler = battler[rb];
-		if (battler) {this._user.autoTarget = battler};
+		battler = battler[rb];
+		if (battler) { this._user.autoTarget = battler; };
 	};
 };
 
@@ -2592,24 +2593,25 @@ Game_CharacterBase.prototype.executeAutoTarget = function(toolID) {
 // * is Required Cast
 //==============================
 Game_CharacterBase.prototype.isRequiredCast = function(toolID) {
-	if (this._user.autoTarget) {return false};
-	if (this.battler()._ras.cast.item) {return false};
-	var action = $gameMap.toolEvent(toolID);
-	if (!action) {return false};
-	if (!action.item()) {return false};
-	if (Math.abs(action.item().speed) === 0) {return false};
-    return true;
+	if (this._user.autoTarget) { return false; };
+	if (this.battler()._ras.cast.item) { return false; };
+	const action = $gameMap.toolEvent(toolID);
+	if (!action) { return false; };
+	if (!action.item()) { return false; };
+	if (Math.abs(action.item().speed) === 0) { return false; };
+  
+  return true;
 };
 
 //==============================
 // * prepare Cast
 //==============================
 Game_CharacterBase.prototype.prepareCast = function(toolID) {
-	var action = $gameMap.toolEvent(toolID);
-	var item = action.item();
+	const action = $gameMap.toolEvent(toolID);
+	const item = action.item();
 	if (!item) {return};
-	var duration = Math.abs(item.speed)
-	var actionID = action._tool.id;
+	const duration = Math.abs(item.speed)
+	const actionID = action._tool.id;
 	this.battler()._ras.cast.actionID = actionID;
 	this.battler()._ras.cast.item = item;
 	this.battler()._ras.cast.duration = duration;
@@ -2620,8 +2622,7 @@ Game_CharacterBase.prototype.prepareCast = function(toolID) {
 		this.battler()._ras.cast.animationMax = animation.frames.length * 4 + 1;
 		this.battler()._ras.cast.animationDuration = 1;
 	} else {
-
-	    this.battler()._ras.cast.animationMax = 0;
+	  this.battler()._ras.cast.animationMax = 0;
 		this.battler()._ras.cast.animationDuration = 0;
 	};		
 };
@@ -5915,7 +5916,7 @@ ToolEvent.prototype.checkToolNotes = function() {
 					} else if (area === "cross") {
 						this._tool.area = 6;																
 					} else {
-		               this._tool.area = 0;
+		        this._tool.area = 0;
 					};
     			};
 				if (comment[0].toLowerCase() == "tool_position"){					

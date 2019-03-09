@@ -17,7 +17,7 @@
 @type boolean
 @default true
 
-@param flatHealing
+@param useFlatHealing
 @text Flat(true) or Percent(false) healing per HRG/MRG/TRG.
 @desc HRG/MRG/TRG are naturally %-based, but this can be flat healing, instead.
 @type boolean
@@ -53,9 +53,9 @@ J.mapTime = J.mapTime || {};
 J.mapTime.Parameters = PluginManager.parameters('J_MapTime');
 J.mapTime.useTPregen = String(J.mapTime.Parameters['useTPregen']).toLowerCase() == 'true';
 J.mapTime.useTPforDash = String(J.mapTime.Parameters['useTPforDash']).toLowerCase() == 'true';
-J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase() == 'true';
+J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowerCase() == 'true';
 
-(function() { // start plugin.
+(() => { // start plugin.
 /* -------------------------------------------------------------------------- */
 //  Game_Map Modifications
 //    Handles all the extra variables and adds functionality for the xRG stuff.
@@ -204,17 +204,17 @@ J.mapTime.flatHealing = String(J.mapTime.Parameters['flatHealing']).toLowerCase(
   Game_Map.prototype.doHPMPregen = function(target) {
     let hRegen, mRegen = 0;
     const details = this.isPoisoned(target);
-    if (J.mapTime.flatHealing) {
+    if (J.mapTime.useFlatHealing) {
       hRegen = ((target.hrg * 100) / 2) / 5;
       mRegen = ((target.mrg * 100) / 2) / 5;  
     } else {
-      if (details && details[0] == "HP") {
-        hRegen = (details[1] * 100 / 2 / 5);
+      if ((details && details[0] == "HP")) {
+        hRegen = (details[1] * target.mhp / 2 / 5);
       } else {
         hRegen = ((target.hrg * target.mhp) / 2) / 5;
       }
       if (details && details[0] == "MP") {
-        mRegen = ((details[1] * 100) / 2) / 5;
+        mRegen = ((details[1] * target.mmp) / 2) / 5;
       } else {
         mRegen = ((target.mrg * target.mmp) / 2) / 5;
       }
