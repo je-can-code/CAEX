@@ -300,17 +300,11 @@ J.SD.visibility = true;
     if (Imported.J_Base) {
       sdpIcon = J.Icon.SDP_icon;
     }
-    let icon = '\\I[' + sdpIcon + ']';
+    //let icon = '\\I[' + sdpIcon + ']';
     if (Imported.J_Base) {
       sdpIcon = J.Icon.SDP_icon;
     }
     $gameParty.SDP_modPoints(pts);
-    if (pts > 0) {
-      QABSManager.startPopup('QABS-SDP', {
-        x: $gamePlayer.cx(), y: $gamePlayer.cy(),
-        string: icon + pts
-      });
-    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -539,7 +533,7 @@ J.SD.visibility = true;
     let lh = this.lineHeight();
     this.drawIcon(i, 0, 0);
     this.drawText("Panel Pts.: ", 40, 0, 255);
-    this.drawText($gameParty._sdpPts, 140, 0, 255, 'left');
+    this.drawText($gameParty._sdpPts, 280, 0, 255, 'left');
   };
 
   /* -------------------------------------------------------------------------- */

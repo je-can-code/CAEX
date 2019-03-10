@@ -219,8 +219,8 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
         mRegen = ((target.mrg * target.mmp) / 2) / 5;
       }
       if (details && details[0] == "BOTH") {
-        hRegen = ((details[1] * 100) / 2) / 5;
-        mRegen = ((details[1] * 100) / 2) / 5;
+        hRegen = ((details[1] * target.mhp) / 2) / 5;
+        mRegen = ((details[1] * target.mmp) / 2) / 5;
       }
     }
     target.gainHp(hRegen);
