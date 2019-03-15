@@ -173,19 +173,19 @@ var _mog_dmgpop_sprdmg_setup = Sprite_Damage.prototype.setup;
 Sprite_Damage.prototype.setup = function(target) {
 	_mog_dmgpop_sprdmg_setup.call(this,target);
 	var result = target.result();
-	if (result.counter) {this.createCounter()
-    } else if (result.reflection) {this.createReflection()};
+  if (result.counter) { this.createCounter() }
+  else if (result.reflection) { this.createReflection() };
 };
 
 //==============================
 // ** Create Miss
 //==============================
 Sprite_Damage.prototype.createMiss = function() {
-    var w = this.digitWidth();
-    var h = this.digitHeight();
-    var sprite = this.createChildSprite();
-    sprite.setFrame(0, 4 * h, 10 * w, h);
-    sprite.dy = 0;
+  var w = this.digitWidth();
+  var h = this.digitHeight();
+  var sprite = this.createChildSprite();
+  sprite.setFrame(0, 4 * h, 10 * w, h);
+  sprite.dy = 0;
 	sprite.x = (6 * w) / 2;
 };
 
@@ -194,14 +194,14 @@ Sprite_Damage.prototype.createMiss = function() {
 //==============================
 Sprite_Damage.prototype.createCritical = function() {
 	var w = this.digitWidth();
-    var h = this.digitHeight();
-    var sprite = this.createChildSprite();
-    sprite.setFrame(0, 5 * h, 10 * w, h);
-    sprite.dy = 0;
+  var h = this.digitHeight();
+  var sprite = this.createChildSprite();
+  sprite.setFrame(0, 5 * h, 10 * w, h);
+  sprite.dy = 0;
 	sprite.yf2 = h + 5;
 	if (this._zoomEffect && this._animeType === 1) {
 		sprite.yf3 = 16;
-	    sprite.rotation = 0.1;
+    sprite.rotation = 0.1;
 	};
 	sprite.x = (5 * w) / 2;
 };
@@ -246,9 +246,9 @@ Sprite_Damage.prototype.createChildSprite = function() {
 Sprite_Damage.prototype.setBaseData = function(sprite) {
 	sprite.anchor.x = 0.5;
 	sprite.anchor.y = 1;
-    sprite.y = -40;	
+  sprite.y = -40;	
 	sprite.zt = 0;
-    sprite.ry = sprite.y;
+  sprite.ry = sprite.y;
 	sprite.yf = 0;
 	sprite.yf2 = 0;
 	sprite.yf3 = 0;
@@ -260,18 +260,18 @@ Sprite_Damage.prototype.setBaseData = function(sprite) {
 // ** createDigits
 //==============================
 Sprite_Damage.prototype.createDigits = function(baseRow, value) {
-    var string = Math.abs(value).toString();
-    var row = baseRow + (value < 0 ? 1 : 0);
-    var w = this.digitWidth();
-    var h = this.digitHeight();
-    for (var i = 0; i < string.length; i++) {
-        var sprite = this.createChildSprite();
-        var n = Number(string[i]);
-        sprite.setFrame(n * w, row * h, w, h);
-        sprite.x = (i - (string.length - 1) / 2) * w;		 
-        sprite.dy = -i;
-		if (this._zoomEffect) {this.setZoomEffect(sprite,string.length * 2,i)};
-    };
+  var string = Math.abs(value).toString();
+  var row = baseRow + (value < 0 ? 1 : 0);
+  var w = this.digitWidth();
+  var h = this.digitHeight();
+  for (var i = 0; i < string.length; i++) {
+    var sprite = this.createChildSprite();
+    var n = Number(string[i]);
+    sprite.setFrame(n * w, row * h, w, h);
+    sprite.x = (i - (string.length - 1) / 2) * w;		 
+    sprite.dy = -i;
+    if (this._zoomEffect) {this.setZoomEffect(sprite,string.length * 2,i)};
+  };
 	this._damage = [value,string.length];
 };
 

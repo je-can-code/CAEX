@@ -71,75 +71,160 @@
  * 
  * @param Attack Button
  * @desc Define the attack button.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default ok
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Shield Button
  * @desc Define the shield button.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
- * @default d
+ * @default cancel
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Skill Button
  * @desc Define the skill button.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default s
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Item Button
  * @desc Define the item button.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default a
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Dash Button
  * @desc Define the dash button.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default shift
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Skill Menu Button
  * @desc Skill menu button definition.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default pagedown
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Item Menu Button
  * @desc Item menu button definition.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default pageup
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Escape Button
  * @desc Definition of escape button in Chrono mode.
- * ( x , c , a , s , d , ok , pagedown , pageup , shift )
  * @default shift
+ * @type select
+ * @option x
+ * @option c
+ * @option a
+ * @option s
+ * @option cancel
+ * @option ok
+ * @option q
+ * @option w
+ * @option shift
  * 
  * @param Shield Animation ID
  * @desc Definition of the animation ID for the shield effect.
  * @default 142
+ * @type animation
  * 
  * @param Cast Animation ID
  * @desc Definition of the animation ID for the cast effect.
  * @default 138
+ * @type animation
  * 
  * @param Level UP Animation ID
  * @desc Definition of level-up animation ID.
  * @default 143
+ * @type animation
  *  
  * @param Treasure SE
  * @desc Definition of sound when picking up loot.
  * @default Item3
- * 
+ * @type file
+ * @dir audio/se/
+ *  
  * @param Turn SE
  * @desc Definition of the sound in the selection of commands.
  * @default Ice1
+ * @type file
+ * @dir audio/se/
  * 
  * @param Charging SE
  * @desc Definition of sound in charge mode.
  * @default Up1
+ * @type file
+ * @dir audio/se/
  * 
  * @param Charged SE
  * @desc Definition of sound when the charge is at the maximum.
  * @default Saint3
+ * @type file
+ * @dir audio/se/
  * 
  * @param Action Cost SE
  * @desc Setting the sound when the action can not be activated.
  * @default Cancel1
+ * @type file
+ * @dir audio/se/
  * 
  * @param Hookshot X-Axis Offset
  * @desc Definição X-Axis Offset da corrente em relação ao character

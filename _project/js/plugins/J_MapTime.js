@@ -62,7 +62,7 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
 /* -------------------------------------------------------------------------- */
 
   // adds in timing variables for monitoring when to tick the regenerations.
-  const _Game_Map_jRegen_initialize = Game_Map.prototype.initialize;
+  let _Game_Map_jRegen_initialize = Game_Map.prototype.initialize;
   Game_Map.prototype.initialize = function() {
     _Game_Map_jRegen_initialize.call(this);
     this._timingHPMP = 0;
@@ -70,12 +70,45 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
   };
 
   // processes the function that provides HRG/MRG/TRG on the map.
-  const _Game_Map_jRegen_update = Game_Map.prototype.update;
+  let _Game_Map_jRegen_update = Game_Map.prototype.update;
   Game_Map.prototype.update = function(sceneActive) {
       _Game_Map_jRegen_update.call(this, sceneActive);
       this.regenOnMap();
       this.handleStates();
+      this.testInputs();
   };
+
+  Game_Map.prototype.testInputs = () => {
+    console.log(Input.getPressedGamepadButton());
+  }
+
+  Input.getPressedGamepadButton = function() {
+    if (navigator.getGamepads) {
+      var gamepads = navigator.getGamepads();
+      if (gamepads) {
+        for (var i = 0; i < gamepads.length; i++) {
+          var gamepad = gamepads[i];
+          if (gamepad && gamepad.connected) {
+            let ID = this.gamepadButtonId(gamepad);
+            return this.getButton(ID);
+          }
+        }
+      }
+    }
+    return -1;
+  };
+  
+  Input.gamepadButtonId = function(gamepad) {
+    var buttons = gamepad.buttons;
+    for (var i = 0; i < buttons.length; i++) {
+      if (buttons[i].pressed) return i;
+    }
+    return -1;
+  };
+
+  Input.getButton = function(ID) {
+    return Input.gamepadMapper[ID];
+  }
 
   // handles the countdown of time for a state.
   Game_Map.prototype.handleStates = function() {
@@ -204,29 +237,31 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
   Game_Map.prototype.doHPMPregen = function(target) {
     let hRegen, mRegen = 0;
     const details = this.isPoisoned(target);
+    const rate = 0.1; // reduced to this percentage of the actual value.
     if (J.mapTime.useFlatHealing) {
-      hRegen = ((target.hrg * 100) / 2) / 5;
-      mRegen = ((target.mrg * 100) / 2) / 5;  
+      hRegen = (target.hrg * 100);
+      mRegen = (target.mrg * 100);  
     } else {
       if ((details && details[0] == "HP")) {
-        hRegen = (details[1] * target.mhp / 2 / 5);
+        hRegen = (details[1] * target.mhp);
       } else {
-        hRegen = ((target.hrg * target.mhp) / 2) / 5;
+        hRegen = (target.hrg * target.mhp);
       }
       if (details && details[0] == "MP") {
-        mRegen = ((details[1] * target.mmp) / 2) / 5;
+        mRegen = (details[1] * target.mmp);
       } else {
-        mRegen = ((target.mrg * target.mmp) / 2) / 5;
+        mRegen = (target.mrg * target.mmp);
       }
       if (details && details[0] == "BOTH") {
-        hRegen = ((details[1] * target.mhp) / 2) / 5;
-        mRegen = ((details[1] * target.mmp) / 2) / 5;
+        hRegen = (details[1] * target.mhp);
+        mRegen = (details[1] * target.mmp);
       }
     }
+    hRegen *= rate; mRegen *= rate;
     target.gainHp(hRegen);
     if (hRegen < 0) target.startDamagePopup();
     target.gainMp(mRegen);
-    if (mRegen < 0) actargettor.startDamagePopup();
+    if (mRegen < 0) target.startDamagePopup();
   };
 
   // reads notes and determines if the actor is poisoned based on state.
@@ -264,7 +299,7 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
 
   // this forces the player to be unable to run while out of TP.
   // note: hopefully this is okay since only actor's can dash (?).
-  var _Game_CharacterBase_jqmt_realMoveSpeed = Game_CharacterBase.prototype.realMoveSpeed;
+  let _Game_CharacterBase_jqmt_realMoveSpeed = Game_CharacterBase.prototype.realMoveSpeed;
   Game_CharacterBase.prototype.realMoveSpeed = function() {
     let actor = null;
     if (J.mapTime.useTPforDash === "true") {

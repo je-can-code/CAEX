@@ -17,6 +17,12 @@
   3. instant pickups
       use <instaskill:number> to provide an action in place of picking up loot.
       example usage: health pickup.
+  
+  4. no decimal popups
+      removes the displaying of decimal damage popups (gets obnoxious).
+
+  5. add extra gamepad inputs
+      Tracks the additional inputs of L2/3 & R2/3 & start/select.
 
   Previous features from VXAce:
       --Agility Move Variance [agi_move_var]
@@ -34,7 +40,11 @@
       --Throw Equip Requirements [throw_reqs]
 */
 /* -------------------------------------------------------------------------- */
-
+J = J || {};
+J.MOG = J.MOG || {};
+Imported = Imported || {};
+Imported["JE-MOG-ALTERATIONS"] = "1.0.0";
+J.MOG.pluginParams = PluginManager.parameters('J_MOG_Modifications');
 //#region attackSkillId - enemies can have a different skillID than 1.
 /* 
   NEW!
@@ -43,35 +53,30 @@
     use <atk_id:#> to adapt it. 
 */
 Game_Enemy.prototype.attackSkillId = function() {
-  console.log(this._enemyId);
   const ID = this._enemyId;
-  var structure = /<atk_id:(\d+)>/i;
-  var enemy = $dataEnemies[ID];
-  var notedata = enemy.note.split(/[\r\n]+/);
+  const structure = /<atk_id:(\d+)>/i;
+  const enemy = $dataEnemies[ID];
+  const notedata = enemy.note.split(/[\r\n]+/);
   let skillID = 40;
   notedata.forEach((line) => {
     if (line.match(structure)) { 
       skillID = Number(RegExp.$1);
     }
   });
-  console.log(skillID); 
   return skillID;
 };
 //#endregion
 
 //#region multiple drops - enemies can now drop multiple items at once.
 // modified drops to be an array instead of a single item.
-Game_CharacterBase.prototype.makeTreasure = function(char, battler) {
-  char.gainSDPpts();
+Game_CharacterBase.prototype.makeTreasure = (char, battler) => {
+  if (Imported["JE-SDP"]) char.gainSDPpts();
   const dropList = battler.makeDropItems();
   if (dropList.length > 0) {
     char._user.treasure = [dropList,false,0,0,20];
     char._characterName = 'treasurebattlertool';
   }
-  else {
-    char._user.treasure = [null,false,0,0,0];
-    char._characterName = '';
-  }
+  else { char._user.treasure = [null,false,0,0,0]; char._characterName = ''; }
   $gameMap._treasureEvents.push(char);
   char._user.collapse = [true,0];
 };
@@ -112,7 +117,7 @@ Sprite_Character.prototype.setCharacterBitmapTreasure = function() {
 //#endregion
 
 //#region instant pickups - loot can now trigger tool ID effects.
-var j_Game_Party_gainItem = Game_Party.prototype.gainItem;
+let j_Game_Party_gainItem = Game_Party.prototype.gainItem;
 Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
   if (item == null) return;
   const structure = /<instaskill:(\d+)>/i;
@@ -127,3 +132,30 @@ Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
 };
 //#endregion
 
+//#region no decimal damage popups - no longer displays fractional/decimal damage popups.
+let j_Sprite_Damage_createDigits = Sprite_Damage.prototype.createDigits;
+Sprite_Damage.prototype.createDigits = function(baseRow, value) {
+  const fixedValue = Number(value).toFixed(0);
+  j_Sprite_Damage_createDigits.call(this, baseRow, fixedValue);
+};
+//#endregion
+
+//#region add extra gamepad inputs
+Game_System_j_addMoreGamepadInputs_initialize = Game_System.prototype.initialize;
+Game_System.prototype.initialize = function() {
+  Game_System_j_addMoreGamepadInputs_initialize.call(this);
+  J.MOG.AddExtraGamepadInputs();
+};
+
+// accounts for additional L/R buttons, and Start/Select for use in development.
+J.MOG.AddExtraGamepadInputs = () => {
+  Input.gamepadMapper[6] = 'L2';
+  Input.gamepadMapper[7] = 'R2';
+  Input.gamepadMapper[8] = 'select';
+  Input.gamepadMapper[9] = 'start';
+  Input.gamepadMapper[10] = 'L3';
+  Input.gamepadMapper[11] = 'R3';
+  Input.update();
+  Input.clear();
+};
+//#endregion

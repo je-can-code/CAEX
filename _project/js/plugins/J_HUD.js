@@ -15,7 +15,7 @@
 
 @param HUD_height
 @desc The height of the HUD.
-@default 128
+@default 160
 
 @param HUD_x
 @desc The horizontal coordinate where the HUD will be placed.
@@ -115,6 +115,7 @@ J.HUD.visibility = true;
     };
 
     // handles the "when i should refresh" functionality.
+    // here we only refresh every three frames, so 20 times per second (@ 60fps)
     Window_HUD.prototype.update = function() {
       Window_Base.prototype.update.call(this);
       if (this._updateWait <= 0) {
@@ -126,45 +127,40 @@ J.HUD.visibility = true;
     };
 
     // the updating of contents within the window.
-    // handled by the .update method.
+    // handled by the .update() method.
     Window_HUD.prototype.refresh = function() {
       if (this.contents) {
         if ($gameParty != null) {
           var actor = $gameParty.leader();
         }
-        var lineHeight = this.lineHeight();
         this.contents.clear();
         if (actor) {
           this.drawHUDstatus(actor, 0, 0, 300);
-          //this.drawVariable();
+          this.drawVariable();
         }
       }
     };
 
     // TODO draw "serum" gauge.
     Window_HUD.prototype.drawVariable = function() {
-      var drawValue = 0;
-      var x = 50;
-      var y = 50;
-      drawValue = $gameVariables.value(1);
-      var active = $gameSwitches.value(10);
-      if (active) {
-        this.drawText(drawValue, x, y, 100, 'right');
-      }
+      const x = 50, y = 50;
+      let drawValue = $gameVariables.value(1) || 0;
+      let active = $gameSwitches.value(10);
+      active ? this.drawText(drawValue, x, y, 100, 'right') : null;
     };
 
     // does all the heavy lifting.
     // all things drawn here.
-    Window_Base.prototype.drawHUDstatus = function(actor, x, y, width) {
+    Window_HUD.prototype.drawHUDstatus = function(actor, x, y, width) {
       this.contents.fontSize = 18;
-      var lh = 18;
-      var x2 = x + 120; var x3 = 264;
-      var barWidth = 200;
+      const lh = 18;
+      const x2 = x + 120; const x3 = 264;
+      const barWidth = 200;
 
       // colors for bars.
-      var hpc1 = this.hpGaugeColor1(); var hpc2 = this.hpGaugeColor2();
-      var mpc1 = this.mpGaugeColor1(); var mpc2 = this.mpGaugeColor2();
-      var tpc1 = this.tpGaugeColor1(); var tpc2 = this.tpGaugeColor2();
+      const hpc1 = this.hpGaugeColor1(); const hpc2 = this.hpGaugeColor2();
+      const mpc1 = this.mpGaugeColor1(); const mpc2 = this.mpGaugeColor2();
+      const tpc1 = this.tpGaugeColor1(); const tpc2 = this.tpGaugeColor2();
 
       // draws name and face
       this.drawFace(actor.faceName(), actor.faceIndex(), x, y, 100, 64);
@@ -184,42 +180,41 @@ J.HUD.visibility = true;
 
       // draws exp and gauge
       this.drawEXPgauge(actor, x + 10, y + 10 + lh * 3, barWidth);
-      this.drawText(actor.nextRequiredExp(), x, y + 10 + lh * 3, 44);
+      this.drawText(actor.nextRequiredExp(), x + 4, y + 10 + lh * 3, 44);
       this.drawActorLevel(actor, x2 + 128, y);
 
       // draws icons for status buff/debuffs
       this.drawActorIcons(actor, x + 298, y);
 
-      // draws the time from the Orange Time System.
-      //this.drawTime(x + 298, y + lh * 4);
+      // draws the SDP points for the party.
+      if (Imported["JE-SDP"]) this.drawPanelPoints(x + 260, y + 10 + lh * 4);
     };
 
-    Window_HUD.prototype.drawTime = function(x, y) {
-      var seconds = $gameVariables.value(21);
-      var minutes = $gameVariables.value(22);
-      var hours   = $gameVariables.value(23);
-      if (hours > 12) hours -= 12;
-      var timeString = hours + ":" + minutes + ":" + seconds;
-      this.drawText(timeString, x, y, 'right');
+    // draws the current amount of Panel Points the party has.
+    Window_HUD.prototype.drawPanelPoints = function(x, y) {
+      const pts = $gameParty._sdpPts;
+      this.drawText(pts, x, y, 'right');
+      const oldSize = this.contents.fontSize;
+      this.contents.fontSize = 10;
+      this.changeTextColor(this.systemColor());
+      this.drawText("SDP Pts", x + 24, y - 14, 'right');
+      this.contents.fontSize = oldSize;
+      this.resetTextColor();
     };
 
-    // modifies for the QABS state timer drawing.
-    Window_Base.prototype.drawActorIcons = function(actor, x, y, width) {
+    // Draws the afflicted states and remaining time for each state in the HUD.
+    Window_HUD.prototype.drawActorIcons = function(actor, x, y, width) {
       width = width || 144;
-      var states = actor.states();
       var icons = actor.stateIcons().slice(0, Math.floor(width / Window_Base._iconWidth));
-      for (var i = 0; i < icons.length; i++) {
-        let thisState = actor._states[i];
-        let remainingTurns = actor._stateTurns[thisState] ? actor._stateTurns[thisState] : null;
-        let remainingSteps = actor._stateSteps[thisState] ? actor._stateSteps[thisState] : null;
-        this.drawIcon(icons[i], x + Window_Base._iconWidth * i, y + 2);
+      actor.states().forEach((state, index) => {
+        let thisState = actor._states[index];
+        let remainingTime = actor._stateSteps[thisState] ? Number(actor._stateSteps[thisState] / 60).toFixed(1) : "passive";
+        this.drawIcon(icons[index], x + Window_Base._iconWidth * index, y + 2);
         var oldSize = this.contentsHeight.fontSize;
         this.contents.fontSize = 12;
-        //var timer = Number(actor._stateDuration[states[i].id] / 60).toFixed(1);
-        let timer = Number(remainingSteps / 60).toFixed(1);
-        this.drawText(timer, x + Window_Base._iconWidth * i, y + 2)
+        this.drawText(remainingTime, x + Window_Base._iconWidth * index, y + 2)
         this.contents.fontSize = oldSize;
-      }
+      })
     };
 
     // custom method for drawing a gauge for the leader's EXP.

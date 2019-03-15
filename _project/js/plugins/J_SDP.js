@@ -41,7 +41,7 @@ Changelog:
 J = J || {};
 J.SD = J.SD || {};
 Imported = Imported || {};
-Imported["JE Stat Distribution Panels"] = "1.2.0";
+Imported["JE-SDP"] = "1.2.0";
 J.SD.pluginParams = PluginManager.parameters('J_SDP');
 /* -------------------------------------------------------------------------- */
 
@@ -118,7 +118,7 @@ J.SD.Cost = function(panel) {
 J.SD.visibility = true;
 
 /* -------------------------------------------------------------------------- */
-(function(_) { "use strict";
+((_) => { "use strict";
   /* -------------------------------------------------------------------------- */
   //  Game_Interpreter Modifications
   //    deals with the extra pluginCommand stuff for manually doing things
@@ -297,10 +297,6 @@ J.SD.visibility = true;
   Game_Event.prototype.gainSDPpts = function() {
     let pts = this.battler()._sdpPts;
     let sdpIcon = 0;
-    if (Imported.J_Base) {
-      sdpIcon = J.Icon.SDP_icon;
-    }
-    //let icon = '\\I[' + sdpIcon + ']';
     if (Imported.J_Base) {
       sdpIcon = J.Icon.SDP_icon;
     }
