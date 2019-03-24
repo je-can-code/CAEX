@@ -24,17 +24,15 @@
   5. add extra gamepad inputs
       Tracks the additional inputs of L2/3 & R2/3 & start/select.
 
-  Previous features from VXAce:
+  6. heal on level-up
+      Fully heals all allies who level up.
+
+  7. remove skills on equipchange
+      When a player's gear is changed, they will have their active skill removed.
+
+  Previous features from VXAce not in here:
       --Agility Move Variance [agi_move_var]
       --Death Self-Switch [death_selfsw]
-    X --EXP Factor && Gold Variance [expgp_variance]
-    X --Slip HP/MP Damage [hpmp_slipdmg]
-      --Heal on Level-Up [heal_on_levelup]
-      --No Leader Changing [no_leader_chg]
-      --Clear Equipped Skills [clear_skill]
-    X --Alternative touch_attack Formula [alt_touchatk]
-      --Parry FX [parry_fx]
-    X --Timely Active Regen [timely_regen]
       --Record Keeping [the_records]
       --Confusion State [state_confu]
       --Throw Equip Requirements [throw_reqs]
@@ -88,7 +86,7 @@ Game_CharacterBase.prototype.getTreasure = function(event) {
     drops.forEach((item) => {
       $gameParty.gainItem(item, 1);
       if (Imported.MOG_TreasurePopup) {
-        $gameSystem._trspupData.push([item,1,event.screenX(),event.screenY()]);
+        $gameSystem._trspupData.push([item, 1, event.screenX(), event.screenY()]);
       };
     })
   };
@@ -140,7 +138,7 @@ Sprite_Damage.prototype.createDigits = function(baseRow, value) {
 };
 //#endregion
 
-//#region add extra gamepad inputs
+//#region add extra gamepad inputs - Extra buttons like L2/3 and start/select are included.
 Game_System_j_addMoreGamepadInputs_initialize = Game_System.prototype.initialize;
 Game_System.prototype.initialize = function() {
   Game_System_j_addMoreGamepadInputs_initialize.call(this);
@@ -158,4 +156,49 @@ J.MOG.AddExtraGamepadInputs = () => {
   Input.update();
   Input.clear();
 };
+//#endregion
+
+//#region heal on level-up - Fully heals the member who levels up.
+ToolEvent.prototype.gainExp = function(thisEvent, enemy) {
+  const exp = enemy.exp();
+  const target = this.user();
+  const partyMember = this.user().battler();
+  if ($gameSystem.isChronoMode()) { $gameTemp._chrono.exp += exp; }
+  else {
+    const oldLevel = partyMember._level;
+	  partyMember.gainExpCN(exp);
+	  if (partyMember._level > oldLevel) {
+      target.requestAnimation(Number(Moghunter.ras_levelAnimationID));
+      J.MOG.HealOnLevelup(partyMember);
+	  }
+	}
+};
+
+// sets hp / mp / tp back to full.
+J.MOG.HealOnLevelup = (battler) => {
+  battler._hp = battler.mhp;
+  battler._mp = battler.mmp;
+  battler._tp = battler.maxTp();
+};
+//#endregion
+
+//#region remove skills on equipchange - removes the currently equipped skill when swapping gear.
+// prevents player from equipping a skill then changing weapons/armor to one without the skill.
+const Game_Actor_changeEquip_removeTools = Game_Actor.prototype.changeEquip;
+Game_Actor.prototype.changeEquip = function(slotId, item) {
+  Game_Actor_changeEquip_removeTools.call(this, slotId, item);
+  this.equipToolSkillID(0);
+};
+//#endregion
+
+//#region enemies self switch on death - enemies now always flip the C switch on death.
+const Game_CharacterBase_makeTreasure_addDeathSelfSwitch = Game_CharacterBase.prototype.makeTreasure;
+Game_CharacterBase.prototype.makeTreasure = function(char, battler)  {
+  Game_CharacterBase_makeTreasure_addDeathSelfSwitch.call(this, char, battler)
+  console.log(char);
+  // [mapID, eventID, letter]
+const key = [char._mapId, char._eventId, 'C'];
+$gameSelfSwitches.setValue(key, true);
+};
+
 //#endregion

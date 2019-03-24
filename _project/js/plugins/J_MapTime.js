@@ -75,11 +75,12 @@ J.mapTime.useFlatHealing = String(J.mapTime.Parameters['useFlatHealing']).toLowe
       _Game_Map_jRegen_update.call(this, sceneActive);
       this.regenOnMap();
       this.handleStates();
-      this.testInputs();
+      //this.testInputs();
   };
 
   Game_Map.prototype.testInputs = () => {
-    console.log(Input.getPressedGamepadButton());
+    let btn = Input.getPressedGamepadButton();
+    if (btn !== undefined) console.log(Input.getPressedGamepadButton());
   }
 
   Input.getPressedGamepadButton = function() {

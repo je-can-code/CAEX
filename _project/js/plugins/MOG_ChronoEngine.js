@@ -4091,13 +4091,13 @@ Game_Chrono.prototype.resultGold = function() {
 // * gain Gold Exp
 //==============================
 Game_Chrono.prototype.gainGoldExp = function() {
-    for (var i = 0; i < $gameMap.players().length; i++) {
+  for (var i = 0; i < $gameMap.players().length; i++) {
 		var char = $gameMap.players()[i];
 		var battler = char.battler();
 		var oldLevel = battler._level;
 		battler.gainExpCN(this.resultExp());
 		if (battler._level > oldLevel) {
-			char.requestAnimation(Number(Moghunter.ras_levelAnimationID));		
+      char.requestAnimation(Number(Moghunter.ras_levelAnimationID));
 		};		
 	};
 	$gameParty.gainGold(this.resultGold());
@@ -6830,7 +6830,7 @@ ToolEvent.prototype.deadEffectEnemy = function(char,battler) {
 // * gain Exp Gold
 //==============================
 ToolEvent.prototype.gainExpGold = function(char,battler) {
-    this.gainExp(char,battler);
+  this.gainExp(char,battler);
 	this.gainGold(char,battler);
 };
 
@@ -6845,7 +6845,7 @@ ToolEvent.prototype.gainExp = function(char,battler) {
 	  var oldLevel = this.user().battler()._level;
 	  this.user().battler().gainExpCN(exp);
 	  if (this.user().battler()._level > oldLevel) {
-		  this.user().requestAnimation(Number(Moghunter.ras_levelAnimationID));		
+      this.user().requestAnimation(Number(Moghunter.ras_levelAnimationID));
 	  };	  
 	};
 };
