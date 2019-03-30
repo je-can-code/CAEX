@@ -3,10 +3,10 @@
   "main": "index.html",
   "name": "",
   "window": {
-    "height": 720,
+    "width": 1600,
+    "height": 900,
     "icon": "icon/icon.png",
     "title": "",
-    "toolbar": false,
-    "width": 1280
+    "toolbar": false
   }
 }
