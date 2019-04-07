@@ -285,23 +285,17 @@ J.SD.visibility = true;
   };
 
   /* -------------------------------------------------------------------------- */
-  // intercept the onDeath event and run the gainSDP, too.
-  let j_gainSDPPtsonDeath = Game_Event.prototype.onDeath;
-  Game_Event.prototype.onDeath = function() {
-    this.gainSDPpts();
-    j_gainSDPPtsonDeath.call(this);
+  // gain points via $gameParty.
+  Game_Enemy.prototype.gainSDPpts = function() {
+    $gameParty.SDP_modPoints(this._sdpPts);
   };
 
-  // the actual gaining of the points
-  // adds in an icon + points style of QABS
-  Game_Event.prototype.gainSDPpts = function() {
-    let pts = this.battler()._sdpPts;
-    let sdpIcon = 0;
-    if (Imported.J_Base) {
-      sdpIcon = J.Icon.SDP_icon;
-    }
-    $gameParty.SDP_modPoints(pts);
-  };
+  // intercept common drop method to gain points.
+  const j_gainSDPpts_MakeDropItems = Game_Enemy.prototype.makeDropItems;
+  Game_Enemy.prototype.makeDropItems = function() {
+    this.gainSDPpts();
+    return j_gainSDPpts_MakeDropItems.call(this);
+  }
 
   /* -------------------------------------------------------------------------- */
   //  Scene_Menu

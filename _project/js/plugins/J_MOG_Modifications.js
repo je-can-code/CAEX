@@ -68,7 +68,6 @@ Game_Enemy.prototype.attackSkillId = function() {
 //#region multiple drops - enemies can now drop multiple items at once.
 // modified drops to be an array instead of a single item.
 Game_CharacterBase.prototype.makeTreasure = (char, battler) => {
-  if (Imported["JE-SDP"]) char.gainSDPpts();
   const dropList = battler.makeDropItems();
   if (dropList.length > 0) {
     char._user.treasure = [dropList,false,0,0,20];
