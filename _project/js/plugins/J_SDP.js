@@ -45,6 +45,7 @@ Imported["JE-SDP"] = "1.2.0";
 J.SD.pluginParams = PluginManager.parameters('J_SDP');
 /* -------------------------------------------------------------------------- */
 
+//#region J.SD method group
 // Creates and returns a "panel" for use to upgrade with points.
 // This panel is pushed into the party's panel list.
 J.SD.MakePanel = (na = "default name", sy = "def", desc = "", cat = 0, fp = "flat",
@@ -117,14 +118,45 @@ J.SD.Cost = function(panel) {
 
 J.SD.visibility = true;
 
+J.SD.PanelCache = [];
+
+J.SD.testFunction = async () => {
+  console.log(`###############################################`);
+  const path = process.mainModule.filename.slice(0, process.mainModule.filename.lastIndexOf("/index.html"));
+  const filename = `J_SDP_Data.json`;
+  let list = {};
+
+  // add to list
+  try {
+    list = JSON.parse(require('fs').readFileSync(`${path}/js/plugins/${filename}`, 'utf-8'));
+  } catch (err) { console.warn(`ERROR LOADING JSON:${err}`); return; };
+
+  console.log(list);
+  for (var panel in list) {
+    console.log(list[panel]); // a single panel
+    if (list[panel].unlocked) J.SD.PanelCache.push(list[panel]);
+  }
+
+  console.log(`###############################################`);
+};
+
+J.SD.UpdateJSON = async () => {
+
+};
+
+
+//#endregion
+
 /* -------------------------------------------------------------------------- */
 ((_) => { "use strict";
+
   /* -------------------------------------------------------------------------- */
   //  Game_Interpreter Modifications
   //    deals with the extra pluginCommand stuff for manually doing things
   //    within the game (using the pluginCommand event command).
   /* -------------------------------------------------------------------------- */
-  let _Game_Interpreter_jSDP_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+//#region Game_Interpreter
+  const _Game_Interpreter_jSDP_pluginCommand = Game_Interpreter.prototype.pluginCommand;
   Game_Interpreter.prototype.pluginCommand = function(command, args) {
     _Game_Interpreter_jSDP_pluginCommand.call(this, command, args);
     if (command === 'J_SDP') {
@@ -134,26 +166,29 @@ J.SD.visibility = true;
           break;
         case 'add':
           try {
-            if (args[1] === 'all') { // if it's all actors, iterate.
-              $gameParty.SDP_modSDP_modPoints(args[2]);
-            }
-            else { // if it's a single actor, add to the one.
             $gameParty.SDP_modPoints(args[2]);
-            }
           } catch (err) { console.warn("the data provided in the plugin command didn't work."); }
           break;
         case 'show': J.SD.visibility = true; break;
         case 'hide': J.SD.visibility = false; break;
-
+        case 'test':
+          J.SD.testFunction();
+          break;
         default: console.warn("you didn't use a scripted command."); break;
       }
     }
   };
+//#endregion
 
+  /* -------------------------------------------------------------------------- */
+  //  Game_Party Modifications
+  //    Handles the management of SD panels and points.
+  /* -------------------------------------------------------------------------- */
+//#region Game_Party
   // initializes the important stuff
-  let _Game_Event_sdp_initialize = Game_Party.prototype.initialize;
+  const _Game_Party_jSDP_initialize = Game_Party.prototype.initialize;
   Game_Party.prototype.initialize = function() {
-    _Game_Event_sdp_initialize.call(this);
+    _Game_Party_jSDP_initialize.call(this);
     if (!this._sdpCollection || !this._sdpPts) {
       this._sdpCollection = [];
       this._sdpPts = 0;      
@@ -188,11 +223,17 @@ J.SD.visibility = true;
       return 0;
     });
   }
+//#endregion
 
+  /* -------------------------------------------------------------------------- */
+  //  Game_Actor Modifications
+  //    Intercepts parameters and injects the bonuses from the SDP system.
+  /* -------------------------------------------------------------------------- */
+//#region Game_Actor
   // intercept and modify the base parameters by panel.
-  let _Game_Actor_sdp_BparamIntercept = Game_Actor.prototype.paramBase;
+  const _Game_Actor_jSDP_BparamIntercept = Game_Actor.prototype.paramBase;
   Game_Actor.prototype.paramBase = function(paramId) {
-    let base = _Game_Actor_sdp_BparamIntercept.call(this, paramId);
+    let base = _Game_Actor_jSDP_BparamIntercept.call(this, paramId);
     if (!$gameParty) return base;
     $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === paramId) {
@@ -207,10 +248,10 @@ J.SD.visibility = true;
   };
 
   // intercept and modify the secondary parameters by panel.
-  let _Game_Actor_sdp_SparamIntercept = Game_Actor.prototype.sparam;
+  const _Game_Actor_jSDP_SparamIntercept = Game_Actor.prototype.sparam;
   Game_Actor.prototype.sparam = function(sparamId) {
     if (!$gameParty) return base;
-    let base = _Game_Actor_sdp_SparamIntercept.call(this, sparamId);
+    let base = _Game_Actor_jSDP_SparamIntercept.call(this, sparamId);
     $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (sparamId+10)) {
         if (elem.flatOrPercent === 'flat')
@@ -224,9 +265,9 @@ J.SD.visibility = true;
   }
 
   // intercept and modify the xtra parameters by panel.
-  let _Game_Actor_sdp_XparamIntercept = Game_Actor.prototype.xparam;
+  const _Game_Actor_jSDP_XparamIntercept = Game_Actor.prototype.xparam;
   Game_Actor.prototype.xparam = function(xparamId) {
-    let base = _Game_Actor_sdp_XparamIntercept.call(this, xparamId);
+    let base = _Game_Actor_jSDP_XparamIntercept.call(this, xparamId);
     if (!$gameParty) return base;
     $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (xparamId+8+10)) {
@@ -239,12 +280,11 @@ J.SD.visibility = true;
     });
     return base;
   }
-
   
   // intercept and modify the j-custom parameters by panel.
-  let _Game_Actor_sdp_JparamIntercept = Game_Actor.prototype.jparam;
+  const _Game_Actor_jSDP_JparamIntercept = Game_Actor.prototype.jparam;
   Game_Actor.prototype.jparam = function(jparamId) {
-    let base = _Game_Actor_sdp_JparamIntercept.call(this, jparamId);
+    let base = _Game_Actor_jSDP_JparamIntercept.call(this, jparamId);
     if (!$gameParty) return base;
     $gameParty._sdpCollection.forEach((elem) => {
       if (elem.category === (jparamId+8+10+10)) {
@@ -257,6 +297,26 @@ J.SD.visibility = true;
     });
     return base;
   }
+//#endregion
+
+  /* -------------------------------------------------------------------------- */
+  //  Game_Enemy Modifications
+  //    Updates the Game_Enemy class to allow points to "drop".
+  /* -------------------------------------------------------------------------- */
+//#region Game_Enemy
+  // defaults their points to 0 if not otherwise stated
+  const _Game_Enemy_jSDP_initMembers = Game_Enemy.prototype.initMembers;
+  Game_Enemy.prototype.initMembers = function() {
+    _Game_Enemy_jSDP_initMembers.call(this);
+    this._sdpPts = 0;
+  };
+
+  // assigns the points to the parameter
+  const _Game_Enemy_jSDP_setup = Game_Enemy.prototype.setup; 
+  Game_Enemy.prototype.setup = function(enemyId, x, y) {
+    _Game_Enemy_jSDP_setup.call(this, enemyId, x, y);
+    this._sdpPts = this.getSDPPts();
+  };
 
   // pulls the points from the enemy's notebox
   Game_Enemy.prototype.getSDPPts = function() {
@@ -270,41 +330,28 @@ J.SD.visibility = true;
     return x;
   };
 
-  // defaults their points to 0 if not otherwise stated
-  let j_Game_Enemy_initMembers = Game_Enemy.prototype.initMembers;
-  Game_Enemy.prototype.initMembers = function() {
-    j_Game_Enemy_initMembers.call(this);
-    this._sdpPts = 0;
-  };
-
-  // assigns the points to the parameter
-  let j_Game_Enemy_setup = Game_Enemy.prototype.setup; 
-  Game_Enemy.prototype.setup = function(enemyId, x, y) {
-    j_Game_Enemy_setup.call(this, enemyId, x, y);
-    this._sdpPts = this.getSDPPts();
-  };
-
-  /* -------------------------------------------------------------------------- */
   // gain points via $gameParty.
   Game_Enemy.prototype.gainSDPpts = function() {
     $gameParty.SDP_modPoints(this._sdpPts);
   };
 
   // intercept common drop method to gain points.
-  const j_gainSDPpts_MakeDropItems = Game_Enemy.prototype.makeDropItems;
+  const _Game_Enemy_jSDP_MakeDropItems = Game_Enemy.prototype.makeDropItems;
   Game_Enemy.prototype.makeDropItems = function() {
     this.gainSDPpts();
-    return j_gainSDPpts_MakeDropItems.call(this);
+    return _Game_Enemy_jSDP_MakeDropItems.call(this);
   }
+//#endregion
 
   /* -------------------------------------------------------------------------- */
   //  Scene_Menu
   //    hooks into the Scene_Menu and adds the command for SDP.
   /* -------------------------------------------------------------------------- */
+//#region Scene_Menu
   // adds in a new handler for Scene_SDP.
-  let _Scene_Menu_sdp_createCommandWindow = Scene_Menu.prototype.createCommandWindow;
+  const _Scene_Menu_jSDP_createCommandWindow = Scene_Menu.prototype.createCommandWindow;
   Scene_Menu.prototype.createCommandWindow = function() {
-    _Scene_Menu_sdp_createCommandWindow.call(this);
+    _Scene_Menu_jSDP_createCommandWindow.call(this);
     if (_.visibility) {
       this._commandWindow.setHandler('SDP', this.commandSDP.bind(this));
     }
@@ -314,9 +361,9 @@ J.SD.visibility = true;
   Scene_Menu.prototype.commandSDP = function() { SceneManager.push(Scene_SDP); };
 
   // adds the commands into the menu
-  let _Scene_Menu_sdp_AddSDP = Window_MenuCommand.prototype.makeCommandList;
+  const _Scene_Menu_jSDP_AddSDP = Window_MenuCommand.prototype.makeCommandList;
   Window_MenuCommand.prototype.makeCommandList = function() {
-    _Scene_Menu_sdp_AddSDP.call(this);
+    _Scene_Menu_jSDP_AddSDP.call(this);
     if (_.visibility) this.AddSDP();
   };
 
@@ -336,11 +383,13 @@ J.SD.visibility = true;
     let obj = { name: name, symbol: symbol, enabled: enabled, ext: ext};
     this._list.splice(index, 0, obj);
   };
+//#endregion
 
   /* -------------------------------------------------------------------------- */
   //  Scene_SDP
   //    the whole SDP scene.
   /* -------------------------------------------------------------------------- */
+//#region Scene_SDP
   function Scene_SDP() { this.initialize.apply(this, arguments); }
   Scene_SDP.prototype = Object.create(Scene_MenuBase.prototype);
   Scene_SDP.prototype.constructor = Scene_Menu;
@@ -417,14 +466,13 @@ J.SD.visibility = true;
     $gameParty.SDP_Sort();
 
   };
+//#endregion
 
   /* -------------------------------------------------------------------------- */
-  //  Window_SDP
-  //    the various windows used within the SDP menu.
-  //  _List
+  //  Window_SDP_List
   //    handles the list of all panels available for the party to rank up.
   /* -------------------------------------------------------------------------- */
-
+//#region Window_SDP_List
   function Window_SDP_List() { this.initialize.apply(this, arguments); }
   Window_SDP_List.prototype = Object.create(Window_Command.prototype);
   Window_SDP_List.prototype.constructor = Window_MenuCommand;
@@ -467,7 +515,8 @@ J.SD.visibility = true;
   };
 
   Window_SDP_List.prototype.makeCommandList = function() {
-    $gameParty._sdpCollection.forEach((SDPS) => {
+    //$gameParty._sdpCollection.forEach((SDPS) => {
+    J.SD.PanelCache.forEach((SDPS) => {
       let tooPoor = $gameParty._sdpPts < J.SD.Cost(SDPS);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
@@ -483,11 +532,13 @@ J.SD.visibility = true;
     this.changePaintOpacity(this.isCommandEnabled(index));
     this.drawText(this.commandName(index), rect.x, rect.y, rect.width, align);
   };
-  
+//#endregion
+
   /* -------------------------------------------------------------------------- */
-  //  _Points
+  //  Window_SDP_Points
   //    displays the SDP Points the party has available.
   /* -------------------------------------------------------------------------- */
+//#region Window_SDP_Points
   function Window_SDP_Points() {this.initialize.apply(this, arguments); }
 
   Window_SDP_Points.prototype = Object.create(Window_Base.prototype);
@@ -525,11 +576,13 @@ J.SD.visibility = true;
     this.drawText("Panel Pts.: ", 40, 0, 255);
     this.drawText($gameParty._sdpPts, 280, 0, 255, 'left');
   };
+//#endregion
 
   /* -------------------------------------------------------------------------- */
   //  _Details
   //    displays the details of the Panel currently highlighted.
   /* -------------------------------------------------------------------------- */
+//#region Window_SDP_Details
   function Window_SDP_Details() {this.initialize.apply(this, arguments); }
 
   Window_SDP_Details.prototype = Object.create(Window_Base.prototype);
@@ -627,8 +680,6 @@ J.SD.visibility = true;
     this.drawText("+(" + p.perRank + forp + ")", 100, row+lh*2, 255);
     this.resetTextColor();
   };
-  
-  /* -------------------------------------------------------------------------- */
-  // END
-  /* -------------------------------------------------------------------------- */
+//#endregion
+
 })(J.SD);

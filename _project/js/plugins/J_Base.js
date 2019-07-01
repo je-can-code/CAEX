@@ -405,9 +405,9 @@ TextManager.param.desc = function (paramId) {
         case 14: return "Provides a percentage chance that magical skills will be avoided entirely.";
         case 17: return "Provides a chance to return a magical skill to the caster while taking no damage!";
         case 20: return "Provides a chance to return a physical skill or attack to the caster!";
-        case 23: return "A percentage of life will be recovered gradually at this rate.";
-        case 26: return "A percentage of magic will be recovered gradually at this rate.";
-        case 29: return "A percentage of technica will be recovered gradually at this rate.";
+        case 23: return "Life will be recovered gradually at this rate.";
+        case 26: return "Magi will be recovered gradually at this rate.";
+        case 29: return "Technica will be recovered gradually at this rate.";
         default: return "";
     }
 }

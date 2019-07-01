@@ -43,13 +43,9 @@ J.MOG = J.MOG || {};
 Imported = Imported || {};
 Imported["JE-MOG-ALTERATIONS"] = "1.0.0";
 J.MOG.pluginParams = PluginManager.parameters('J_MOG_Modifications');
-//#region attackSkillId - enemies can have a different skillID than 1.
-/* 
-  NEW!
-  Game_Enemy.attackSkillId()
-    When using "touchDamage", enemies can have a different skillID than 1.
-    use <atk_id:#> to adapt it. 
-*/
+
+//#region attackSkillId - enemies can have a different skillID than 1 w/ touchDamage().
+// Game_Enemy.attackSkillId(); use <atk_id:#> to adapt it. 
 Game_Enemy.prototype.attackSkillId = function() {
   const ID = this._enemyId;
   const structure = /<atk_id:(\d+)>/i;
@@ -114,7 +110,7 @@ Sprite_Character.prototype.setCharacterBitmapTreasure = function() {
 //#endregion
 
 //#region instant pickups - loot can now trigger tool ID effects.
-let j_Game_Party_gainItem = Game_Party.prototype.gainItem;
+const j_Game_Party_gainItem = Game_Party.prototype.gainItem;
 Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
   if (item == null) return;
   const structure = /<instaskill:(\d+)>/i;
@@ -130,7 +126,7 @@ Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
 //#endregion
 
 //#region no decimal damage popups - no longer displays fractional/decimal damage popups.
-let j_Sprite_Damage_createDigits = Sprite_Damage.prototype.createDigits;
+const j_Sprite_Damage_createDigits = Sprite_Damage.prototype.createDigits;
 Sprite_Damage.prototype.createDigits = function(baseRow, value) {
   const fixedValue = Number(value).toFixed(0);
   j_Sprite_Damage_createDigits.call(this, baseRow, fixedValue);
@@ -138,7 +134,7 @@ Sprite_Damage.prototype.createDigits = function(baseRow, value) {
 //#endregion
 
 //#region add extra gamepad inputs - Extra buttons like L2/3 and start/select are included.
-Game_System_j_addMoreGamepadInputs_initialize = Game_System.prototype.initialize;
+const Game_System_j_addMoreGamepadInputs_initialize = Game_System.prototype.initialize;
 Game_System.prototype.initialize = function() {
   Game_System_j_addMoreGamepadInputs_initialize.call(this);
   J.MOG.AddExtraGamepadInputs();
@@ -190,14 +186,12 @@ Game_Actor.prototype.changeEquip = function(slotId, item) {
 };
 //#endregion
 
-//#region enemies self switch on death - enemies now always flip the C switch on death.
+//#region enemies self switch on death - enemy events now always flip the C switch on death.
 const Game_CharacterBase_makeTreasure_addDeathSelfSwitch = Game_CharacterBase.prototype.makeTreasure;
 Game_CharacterBase.prototype.makeTreasure = function(char, battler)  {
   Game_CharacterBase_makeTreasure_addDeathSelfSwitch.call(this, char, battler)
-  console.log(char);
-  // [mapID, eventID, letter]
-const key = [char._mapId, char._eventId, 'C'];
-$gameSelfSwitches.setValue(key, true);
+  const key = [char._mapId, char._eventId, 'C']; // [mapID, eventID, letter]
+  $gameSelfSwitches.setValue(key, true);
 };
 
 //#endregion
