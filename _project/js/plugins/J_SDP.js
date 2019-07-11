@@ -120,19 +120,23 @@ J.SD.visibility = true;
 
 J.SD.PanelCache = [];
 
-J.SD.testFunction = async () => {
+J.SD.JSONpath = () => process.mainModule.filename.slice(0, process.mainModule.filename.lastIndexOf("/index.html"));
+
+J.SD.DataFileName = () => `J_SDP_Data.json`;
+
+J.SD.InitialDataLoad = async () => {
   console.log(`###############################################`);
-  const path = process.mainModule.filename.slice(0, process.mainModule.filename.lastIndexOf("/index.html"));
-  const filename = `J_SDP_Data.json`;
+  const path = J.SD.JSONpath();
+  const filename = J.SD.DataFileName();
   let list = {};
 
   // add to list
   try {
-    list = JSON.parse(require('fs').readFileSync(`${path}/js/plugins/${filename}`, 'utf-8'));
+    list = JSON.parse(require('fs').readFileSync(`${path}/data/${filename}`, 'utf-8'));
   } catch (err) { console.warn(`ERROR LOADING JSON:${err}`); return; };
 
   console.log(list);
-  for (var panel in list) {
+  for (let panel in list) {
     console.log(list[panel]); // a single panel
     if (list[panel].unlocked) J.SD.PanelCache.push(list[panel]);
   }
@@ -172,7 +176,7 @@ J.SD.UpdateJSON = async () => {
         case 'show': J.SD.visibility = true; break;
         case 'hide': J.SD.visibility = false; break;
         case 'test':
-          J.SD.testFunction();
+          J.SD.InitialDataLoad();
           break;
         default: console.warn("you didn't use a scripted command."); break;
       }
@@ -516,7 +520,7 @@ J.SD.UpdateJSON = async () => {
 
   Window_SDP_List.prototype.makeCommandList = function() {
     //$gameParty._sdpCollection.forEach((SDPS) => {
-    J.SD.PanelCache.forEach((SDPS) => {
+    J.SD.PanelCache.forEach(SDPS => {
       let tooPoor = $gameParty._sdpPts < J.SD.Cost(SDPS);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
