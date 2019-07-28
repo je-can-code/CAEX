@@ -118,34 +118,37 @@ J.SD.Cost = function(panel) {
 
 J.SD.visibility = true;
 
-J.SD.PanelCache = [];
+J.SD.PanelCache = {};
 
 J.SD.JSONpath = () => process.mainModule.filename.slice(0, process.mainModule.filename.lastIndexOf("/index.html"));
 
-J.SD.DataFileName = () => `J_SDP_Data.json`;
+J.SD.BaseDataFileName = () => `J_SDP_BaseData.json`;
+J.SD.UserDataFileName = () => `J_SDP_UserData.json`;
 
 J.SD.InitialDataLoad = async () => {
-  console.log(`###############################################`);
-  const path = J.SD.JSONpath();
-  const filename = J.SD.DataFileName();
   let list = {};
-
-  // add to list
   try {
-    list = JSON.parse(require('fs').readFileSync(`${path}/data/${filename}`, 'utf-8'));
-  } catch (err) { console.warn(`ERROR LOADING JSON:${err}`); return; };
+    // try to load it from the userdata first
+    list = JSON.parse(require('fs').readFileSync(`${J.SD.JSONpath()}/data/${J.SD.UserDataFileName()}`, 'utf-8'));
+  } catch (err) {
+    console.warn(`NO USER DATA FOUND, LOADING BASE DATA INSTEAD.`);
 
-  console.log(list);
-  for (let panel in list) {
-    console.log(list[panel]); // a single panel
-    if (list[panel].unlocked) J.SD.PanelCache.push(list[panel]);
-  }
+    // otherwise load it from the base data
+    try {
+      list = JSON.parse(require('fs').readFileSync(`${J.SD.JSONpath()}/data/${J.SD.BaseDataFileName()}`, 'utf-8'));
+    } catch (innererr) {
+      console.warn(`ERROR LOADING JSON:${innererr}`);
+      console.error(`NO USER OR BASE DATA FOUND, PLEASE BASE ADD TO the /DATA FOLDER.`);
+      return; 
+    }
+  };
 
-  console.log(`###############################################`);
+  for (let panel in list) J.SD.PanelCache[list[panel].symbol] = list[panel];
+  J.SD.UpdateJSON();
 };
 
 J.SD.UpdateJSON = async () => {
-
+  require('fs').writeFileSync(`${J.SD.JSONpath()}/data/${J.SD.UserDataFileName()}`, JSON.stringify(J.SD.PanelCache, null, 2));
 };
 
 
@@ -403,10 +406,11 @@ J.SD.UpdateJSON = async () => {
   // core creation function of the Stat Distribution Panel scene.
   Scene_SDP.prototype.create = function() {
     Scene_MenuBase.prototype.create.call(this);
-    this.createHelpWindow();      // the description of the panel.
+    this.createDetailsWindow();      // the description of the panel.
     this.createCommandWindow();   // the list of distribution panels.
     this.createPointsWindow();    // the display of points for the actor.
     this._index = this._sdpWindow.index();
+    this._currentPanel = this._sdpWindow._list[this._index].symbol;
     this._actor = null;
   };
 
@@ -414,7 +418,9 @@ J.SD.UpdateJSON = async () => {
   // assists in the actor tracking.
   Scene_SDP.prototype.update = function() {
     Scene_MenuBase.prototype.update.call(this);
-    if (this._index != this._sdpWindow.index()) this.updateIndex();
+    if (this._index != this._sdpWindow.index()) {
+      this.updateIndex();
+    }
     if (this._actor != this._sdpDetails.getActor()) this.updateActor();
   };
 
@@ -428,7 +434,8 @@ J.SD.UpdateJSON = async () => {
   // tracks the index for keeping panel up to date.
   Scene_SDP.prototype.updateIndex = function() {
     this._index = this._sdpWindow.index();
-    this._sdpDetails.changePanel(this._index);
+    this._currentPanel = this._sdpWindow._list[this._index].symbol;
+    this._sdpDetails.changePanel(this._currentPanel);
   };
 
   // the list of distribution panels based on the character.
@@ -440,7 +447,7 @@ J.SD.UpdateJSON = async () => {
   };
 
   // handles the details for the selected panel based on index.
-  Scene_SDP.prototype.createHelpWindow = function() {
+  Scene_SDP.prototype.createDetailsWindow = function() {
     this._sdpDetails = new Window_SDP_Details();
     this.addWindow(this._sdpDetails);
   };
@@ -461,15 +468,36 @@ J.SD.UpdateJSON = async () => {
 
   // on OK, execute this.
   Scene_SDP.prototype.incrementPanel = function() {
-    // handle the OK button press.
-    let panel = $gameParty._sdpCollection[this._index];
+    let panel = J.SD.PanelCache[this._currentPanel];
     if (panel.rankCur < panel.rankMax) {
       $gameParty._sdpPts -= J.SD.Cost(panel);
       panel.rankCur++;
+      if (panel.rankCur === panel.rankMax) {
+        this.unlockNextIfAvailable(panel);
+      }
+      J.SD.UpdateJSON();
     };
     $gameParty.SDP_Sort();
-
   };
+
+  // when maxing out a panel, check to see if there is another to unlock.
+  Scene_SDP.prototype.unlockNextIfAvailable = function(panel) {
+    console.log("old panel:");
+    console.log(panel);
+    let sym = panel.symbol.substring(panel.symbol.length-6, 3);
+    let level = parseInt(panel.symbol.substring(panel.symbol.length-3));
+    if (level < 10) { // the level isn't 10, unlock the next!
+      level++;
+      if (level === 10) { // do nothing if its maxed after incrementing.
+      } else { // if its less than 10, there must be more!
+        const nextSymbol = `${sym}00${level}`;
+        if (J.SD.PanelCache[nextSymbol]) J.SD.PanelCache[nextSymbol].unlocked = true;
+      }
+    } else { // level is 10/maxed, so do nothing.
+      console.warn("The panel is maxed and there are none higher than this!");
+    }
+  };
+
 //#endregion
 
   /* -------------------------------------------------------------------------- */
@@ -484,8 +512,10 @@ J.SD.UpdateJSON = async () => {
   Window_SDP_List.prototype.initialize = function() {
     let x = 0;
     let y = 0;
-    this._list = [];
+    this._list = [];    // handles the commands
+    this._panels = [];  // handles the panel list
     this._actor = null;
+    this._currentPanel = "";
     this.setActor($gameParty.members()[0]);
     Window_Command.prototype.initialize.call(this, x, y);
     this.refresh();
@@ -496,7 +526,7 @@ J.SD.UpdateJSON = async () => {
   };
 
   Window_SDP_List.prototype.numVisibleRows = function() {
-    return 6;
+    return 7;
   };
 
   Window_SDP_List.prototype.setActor = function(actor) {
@@ -510,6 +540,7 @@ J.SD.UpdateJSON = async () => {
   Window_SDP_List.prototype.refresh = function() {
     if (this.contents) this.contents.clear();
     this.clearCommandList();
+    this.updateList();
     this.makeCommandList();
     this.drawAllItems();
   };
@@ -519,14 +550,23 @@ J.SD.UpdateJSON = async () => {
   };
 
   Window_SDP_List.prototype.makeCommandList = function() {
-    //$gameParty._sdpCollection.forEach((SDPS) => {
-    J.SD.PanelCache.forEach(SDPS => {
+    this._panels.forEach(SDPS => {
+      if (!SDPS.unlocked) return;
       let tooPoor = $gameParty._sdpPts < J.SD.Cost(SDPS);
       let tooStrong = SDPS.rankCur >= SDPS.rankMax;
       let enabled = !(tooPoor || tooStrong);
       let commandName = SDPS.name;
       this.addCommand(commandName, SDPS.symbol, enabled);
     }, this);
+  };
+
+  Window_SDP_List.prototype.updateList = function() {
+    this._panels = [];
+    for (let key in J.SD.PanelCache) {
+      if (J.SD.PanelCache[key].unlocked) {
+        this._panels.push(J.SD.PanelCache[key]);
+      }
+    }
   };
 
   Window_SDP_List.prototype.drawItem = function(index) {
@@ -598,7 +638,7 @@ J.SD.UpdateJSON = async () => {
     let width = Graphics.boxWidth - x;
     let height = Graphics.boxHeight - y;
     this._actor = null;
-    this._currentPanel = 0;
+    this._currentPanel = "mhp001";
     this.setActor($gameParty.members()[0]);
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
@@ -618,7 +658,7 @@ J.SD.UpdateJSON = async () => {
 
   Window_SDP_Details.prototype.refresh = function() {
     this.contents.clear();
-    this.drawSDPDetails(this._currentPanel);
+    this.drawSDPDetails();
   };
 
   Window_SDP_Details.prototype.changePanel = function(nextPanel) {
@@ -630,7 +670,10 @@ J.SD.UpdateJSON = async () => {
 
   Window_SDP_Details.prototype.drawSDPDetails = function() {
     let lh = this.lineHeight();
-    let panel = $gameParty._sdpCollection[this._currentPanel];
+    console.log(this._currentPanel);
+    let panel = J.SD.PanelCache[this._currentPanel];
+
+    console.log(panel);
     
     this.detailsHeader(panel);
     this.detailsType(panel);
