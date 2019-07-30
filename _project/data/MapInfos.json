@@ -1,6 +1,6 @@
 [
 null,
-{"id":1,"expanded":true,"name":"TEST","order":1,"parentId":0,"scrollX":1030.6666666666667,"scrollY":606.6666666666666},
+{"id":1,"expanded":true,"name":"TEST","order":1,"parentId":0,"scrollX":1325.142857142857,"scrollY":793.7142857142857},
 {"id":2,"expanded":true,"name":"Chapter 0: Initiation","order":5,"parentId":0,"scrollX":1030.6666666666667,"scrollY":617.3333333333334},
 {"id":3,"expanded":false,"name":"Jaws of the Beast","order":6,"parentId":2,"scrollX":1030.6666666666667,"scrollY":617.3333333333334},
 {"id":4,"expanded":true,"name":"Chapter 1: The First Step","order":17,"parentId":0,"scrollX":1030.6666666666667,"scrollY":610},

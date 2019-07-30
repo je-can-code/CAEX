@@ -122,33 +122,64 @@ J.SD.PanelCache = {};
 
 J.SD.JSONpath = () => process.mainModule.filename.slice(0, process.mainModule.filename.lastIndexOf("/index.html"));
 
+// shorthand for the name of the file in the /Data folder that is the name of the base file data.
 J.SD.BaseDataFileName = () => `J_SDP_BaseData.json`;
-J.SD.UserDataFileName = () => `J_SDP_UserData.json`;
 
-J.SD.InitialDataLoad = async () => {
+// loads the data into the game.
+J.SD.InitialDataLoad = () => {
   let list = {};
-  try {
-    // try to load it from the userdata first
-    list = JSON.parse(require('fs').readFileSync(`${J.SD.JSONpath()}/data/${J.SD.UserDataFileName()}`, 'utf-8'));
-  } catch (err) {
-    console.warn(`NO USER DATA FOUND, LOADING BASE DATA INSTEAD.`);
+  let userList = J.SD.GetUserData();
+  let baseList = J.SD.GetBaseData();
 
-    // otherwise load it from the base data
-    try {
-      list = JSON.parse(require('fs').readFileSync(`${J.SD.JSONpath()}/data/${J.SD.BaseDataFileName()}`, 'utf-8'));
-    } catch (innererr) {
-      console.warn(`ERROR LOADING JSON:${innererr}`);
-      console.error(`NO USER OR BASE DATA FOUND, PLEASE BASE ADD TO the /DATA FOLDER.`);
-      return; 
+  if ($gameParty._sdpCollection) {
+    if (Object.keys(userList).length === 0) { 
+      list = baseList;
+      console.warn(`USER HAS NO PREVIOUS DATA.`);
+      console.warn(`LOADING BASE DATA INSTEAD.`);
     }
-  };
+    else { 
+      list = userList;
+      if (Object.keys(userList).length != Object.keys(baseList).length) {
+        console.log(`${Object.keys(userList).length}`);
+        console.log(`${Object.keys(baseList).length}`);
 
-  for (let panel in list) J.SD.PanelCache[list[panel].symbol] = list[panel];
-  J.SD.UpdateJSON();
+        console.warn(`USER PANEL COUNT DOES NOT MATCH BASE PANEL COUNT.`);
+        console.warn(`NEW PANELS MAY HAVE BEEN ADDED.`);
+        console.warn(`OLD PANELS MAY HAVE BEEN REMOVED.`);
+        console.warn(`PANELS PARAMETERS MAY HAVE BEEN MODIFIED.`);
+        console.warn(`TAKE CAUTION.`);
+      }
+    }
+  }
+
+  J.SD.PanelCache = list;
+  J.SD.UpdateSDPData();
 };
 
-J.SD.UpdateJSON = async () => {
-  require('fs').writeFileSync(`${J.SD.JSONpath()}/data/${J.SD.UserDataFileName()}`, JSON.stringify(J.SD.PanelCache, null, 2));
+// get default data from SDP base data JSON.
+J.SD.GetBaseData = () => {
+  try {
+    return JSON.parse(require('fs').readFileSync(`${J.SD.JSONpath()}/data/${J.SD.BaseDataFileName()}`, 'utf-8'));
+  } catch (err) {
+    console.warn(`ERROR LOADING JSON FROM FILE ${J.SD.BaseDataFileName}:${err}`);
+    console.error(`NO BASE DATA FOUND, PLEASE ADD BASE DATA FILE TO the /DATA FOLDER.`);
+    return {}; 
+  } 
+}
+
+// get user's progress from $gameParty.
+J.SD.GetUserData = () => {
+  if ($gameParty._sdpCollection) return $gameParty._sdpCollection;
+  else {
+    console.warn(`NO USER DATA DETECTED.`);
+    return {};
+  }
+}
+
+// update user's progress in $gameParty.
+// happens everytime the user levels up a panel.
+J.SD.UpdateSDPData = () => {
+  $gameParty._sdpCollection = J.SD.PanelCache;
 };
 
 
@@ -188,6 +219,32 @@ J.SD.UpdateJSON = async () => {
 //#endregion
 
   /* -------------------------------------------------------------------------- */
+  //  Game_System Modifications
+  //    Incorporates autoloading of panel user data on-file-load.
+  /* -------------------------------------------------------------------------- */
+//#region Game_System
+const _Game_System_jSDP_onAfterLoad = Game_System.prototype.onAfterLoad;
+Game_System.prototype.onAfterLoad = function() {
+  _Game_System_jSDP_onAfterLoad.call(this);
+  _.InitialDataLoad();
+  console.log(`SDP DATA LOADED.`);
+};
+//#endregion
+
+  /* -------------------------------------------------------------------------- */
+  //  DataManager Modifications
+  //    Initializes panel data on new game.
+  /* -------------------------------------------------------------------------- */
+//#region Game_System
+const _DataManager_jSDP_setupNewGame = DataManager.setupNewGame;
+DataManager.setupNewGame = function() {
+  _DataManager_jSDP_setupNewGame.call(this);
+  _.InitialDataLoad();
+  console.log(`SDP DATA INITIALIZED.`);
+};
+//#endregion
+
+  /* -------------------------------------------------------------------------- */
   //  Game_Party Modifications
   //    Handles the management of SD panels and points.
   /* -------------------------------------------------------------------------- */
@@ -197,7 +254,7 @@ J.SD.UpdateJSON = async () => {
   Game_Party.prototype.initialize = function() {
     _Game_Party_jSDP_initialize.call(this);
     if (!this._sdpCollection || !this._sdpPts) {
-      this._sdpCollection = [];
+      this._sdpCollection = {};
       this._sdpPts = 0;      
     }
   };
@@ -206,12 +263,6 @@ J.SD.UpdateJSON = async () => {
   Game_Party.prototype.SDP_modPoints = function(pts) {
     this._sdpPts += Number(pts);
     if (this._sdpPts < 0) this._sdpPts = 0;
-  };
-
-  // adds a new panel into the collection
-  Game_Party.prototype.SDP_addPanel = function(panel) {
-    this._sdpCollection.push(panel);
-    this.SDP_Sort();
   };
 
   // sorts based on symbol
@@ -241,33 +292,33 @@ J.SD.UpdateJSON = async () => {
   const _Game_Actor_jSDP_BparamIntercept = Game_Actor.prototype.paramBase;
   Game_Actor.prototype.paramBase = function(paramId) {
     let base = _Game_Actor_jSDP_BparamIntercept.call(this, paramId);
-    if (!$gameParty) return base;
-    $gameParty._sdpCollection.forEach((elem) => {
-      if (elem.category === paramId) {
-        if (elem.flatOrPercent === 'flat')
-          base += (elem.perRank * elem.rankCur);
+    for (let i in J.SD.PanelCache) {
+      let panel = J.SD.PanelCache[i];
+      if (panel.category === paramId) {
+        if (panel.flatOrPercent === 'flat')
+          base += (panel.perRank * panel.rankCur);
         else {
-          base += Math.floor(base * (elem.perRank * elem.rankCur) / 100);
+          base += Math.floor(base * (panel.perRank * panel.rankCur) / 100);
         }
       }
-    });
+    }
     return base;
   };
 
   // intercept and modify the secondary parameters by panel.
   const _Game_Actor_jSDP_SparamIntercept = Game_Actor.prototype.sparam;
   Game_Actor.prototype.sparam = function(sparamId) {
-    if (!$gameParty) return base;
     let base = _Game_Actor_jSDP_SparamIntercept.call(this, sparamId);
-    $gameParty._sdpCollection.forEach((elem) => {
-      if (elem.category === (sparamId+10)) {
-        if (elem.flatOrPercent === 'flat')
-          base += (elem.perRank * elem.rankCur) / 100;
+    for (let i in J.SD.PanelCache) {
+      let panel = J.SD.PanelCache[i];
+      if (panel.category === (sparamId+10)) {
+        if (panel.flatOrPercent === 'flat')
+          base += (panel.perRank * panel.rankCur) / 100;
         else {
-          base += (base * (elem.perRank * elem.rankCur)) / 100;
+          base += (base * (panel.perRank * panel.rankCur)) / 100;
         }
       }
-    });
+    };
     return base;
   }
 
@@ -275,16 +326,16 @@ J.SD.UpdateJSON = async () => {
   const _Game_Actor_jSDP_XparamIntercept = Game_Actor.prototype.xparam;
   Game_Actor.prototype.xparam = function(xparamId) {
     let base = _Game_Actor_jSDP_XparamIntercept.call(this, xparamId);
-    if (!$gameParty) return base;
-    $gameParty._sdpCollection.forEach((elem) => {
-      if (elem.category === (xparamId+8+10)) {
-        if (elem.flatOrPercent === 'flat') {
-          base += (elem.perRank * elem.rankCur) / 100;
+    for (let i in J.SD.PanelCache) {
+      let panel = J.SD.PanelCache[i];
+      if (panel.category === (xparamId+8+10)) {
+        if (panel.flatOrPercent === 'flat') {
+          base += (panel.perRank * panel.rankCur) / 100;
         } else {
-          base += (base * (elem.perRank * elem.rankCur)) / 100;
+          base += (base * (panel.perRank * panel.rankCur)) / 100;
         }
       }
-    });
+    };
     return base;
   }
   
@@ -292,16 +343,16 @@ J.SD.UpdateJSON = async () => {
   const _Game_Actor_jSDP_JparamIntercept = Game_Actor.prototype.jparam;
   Game_Actor.prototype.jparam = function(jparamId) {
     let base = _Game_Actor_jSDP_JparamIntercept.call(this, jparamId);
-    if (!$gameParty) return base;
-    $gameParty._sdpCollection.forEach((elem) => {
-      if (elem.category === (jparamId+8+10+10)) {
-        if (elem.flatOrPercent === 'flat') {
-          base += (elem.perRank * elem.rankCur) / 100;
+    for (let i in J.SD.PanelCache) {
+      let panel = J.SD.PanelCache[i];
+      if (panel.category === (jparamId+8+10+10)) {
+        if (panel.flatOrPercent === 'flat') {
+          base += (panel.perRank * panel.rankCur) / 100;
         } else {
-          base += (base * (elem.perRank * elem.rankCur)) / 100;
+          base += (base * (panel.perRank * panel.rankCur)) / 100;
         }
       }
-    });
+    };
     return base;
   }
 //#endregion
@@ -418,9 +469,8 @@ J.SD.UpdateJSON = async () => {
   // assists in the actor tracking.
   Scene_SDP.prototype.update = function() {
     Scene_MenuBase.prototype.update.call(this);
-    if (this._index != this._sdpWindow.index()) {
-      this.updateIndex();
-    }
+    this._sdpDetails.changePanel(this._currentPanel);
+    this.updateIndex();
     if (this._actor != this._sdpDetails.getActor()) this.updateActor();
   };
 
@@ -435,10 +485,9 @@ J.SD.UpdateJSON = async () => {
   Scene_SDP.prototype.updateIndex = function() {
     this._index = this._sdpWindow.index();
     this._currentPanel = this._sdpWindow._list[this._index].symbol;
-    this._sdpDetails.changePanel(this._currentPanel);
   };
 
-  // the list of distribution panels based on the character.
+  // the list of distribution panels.
   Scene_SDP.prototype.createCommandWindow = function() {
     this._sdpWindow = new Window_SDP_List();
     this._sdpWindow.setHandler('ok',        this.onSDPok.bind(this));
@@ -473,31 +522,39 @@ J.SD.UpdateJSON = async () => {
       $gameParty._sdpPts -= J.SD.Cost(panel);
       panel.rankCur++;
       if (panel.rankCur === panel.rankMax) {
-        this.unlockNextIfAvailable(panel);
+        this.unlockNextIfAvailable(panel.symbol);
       }
-      J.SD.UpdateJSON();
+      J.SD.UpdateSDPData();
     };
-    $gameParty.SDP_Sort();
+    //$gameParty.SDP_Sort();
   };
 
   // when maxing out a panel, check to see if there is another to unlock.
-  Scene_SDP.prototype.unlockNextIfAvailable = function(panel) {
-    console.log("old panel:");
-    console.log(panel);
-    let sym = panel.symbol.substring(panel.symbol.length-6, 3);
-    let level = parseInt(panel.symbol.substring(panel.symbol.length-3));
-    if (level < 10) { // the level isn't 10, unlock the next!
-      level++;
-      if (level === 10) { // do nothing if its maxed after incrementing.
-      } else { // if its less than 10, there must be more!
-        const nextSymbol = `${sym}00${level}`;
-        if (J.SD.PanelCache[nextSymbol]) J.SD.PanelCache[nextSymbol].unlocked = true;
-      }
-    } else { // level is 10/maxed, so do nothing.
-      console.warn("The panel is maxed and there are none higher than this!");
+  Scene_SDP.prototype.unlockNextIfAvailable = function(symbol) {
+    let sym = symbol.substring(symbol.length-6, 3);
+    let tier = parseInt(symbol.substring(symbol.length-3));
+    let nextSymbol = "";
+    tier++;
+    switch (tier.toString().length) {
+      case 1: nextSymbol = `${sym}00${tier}`; break;
+      case 2: nextSymbol = `${sym}0${tier}`; break;
+      case 3: nextSymbol = `${sym}${tier}`; break;
+      default: nextSymbol = `${sym}00${tier}`; break;
     }
+
+    if (J.SD.PanelCache[nextSymbol]) this.executeUnlock(nextSymbol, false);
+    else console.warn("The panel is maxed and there are none higher than this!");
   };
 
+  // execute the unlock, and check for special conditions, or force unlock the panel.
+  Scene_SDP.prototype.executeUnlock = function(symbol, forceUnlock) {
+    if (forceUnlock) {
+      J.SD.PanelCache[symbol].unlocked = true;
+    } else { // check for specialUnlock
+      if (J.SD.PanelCache[symbol].unlockable) J.SD.PanelCache[symbol].unlocked = true;
+      else console.warn(`NEXT TIER REQUIRES SPECIAL CONDITIONS TO UNLOCK.`);
+    }
+  };
 //#endregion
 
   /* -------------------------------------------------------------------------- */
@@ -521,13 +578,9 @@ J.SD.UpdateJSON = async () => {
     this.refresh();
   };
 
-  Window_SDP_List.prototype.windowWidth = function() {
-    return Graphics.boxWidth;
-  };
+  Window_SDP_List.prototype.windowWidth = () => Graphics.boxWidth;
 
-  Window_SDP_List.prototype.numVisibleRows = function() {
-    return 7;
-  };
+  Window_SDP_List.prototype.numVisibleRows = () => 7;
 
   Window_SDP_List.prototype.setActor = function(actor) {
     if (this._actor === null) this._actor = $gameParty.members()[0];
@@ -567,6 +620,26 @@ J.SD.UpdateJSON = async () => {
         this._panels.push(J.SD.PanelCache[key]);
       }
     }
+    this.sortPanels();
+  };
+
+  Window_SDP_List.prototype.sortPanels = function() {
+    this._panels.sort((a, b) => {
+      let catA = a.category;
+      let catB = b.category;
+      let symA = a.symbol.toLowerCase();
+      let symB = b.symbol.toLowerCase();
+      if (a.rankCur == a.rankMax && b.rankCur != b.rankMax) {
+        return 1;
+      }
+      else if (catA === catB) {
+        if (symA < symB) { return -1; }
+        if (symA > symB) { return 1; }
+      } else {
+        return catA - catB;
+      }
+      return 0;
+    });
   };
 
   Window_SDP_List.prototype.drawItem = function(index) {
@@ -583,7 +656,7 @@ J.SD.UpdateJSON = async () => {
   //    displays the SDP Points the party has available.
   /* -------------------------------------------------------------------------- */
 //#region Window_SDP_Points
-  function Window_SDP_Points() {this.initialize.apply(this, arguments); }
+  function Window_SDP_Points() { this.initialize.apply(this); }
 
   Window_SDP_Points.prototype = Object.create(Window_Base.prototype);
   Window_SDP_Points.prototype.constructor = Window_Base;
@@ -627,7 +700,7 @@ J.SD.UpdateJSON = async () => {
   //    displays the details of the Panel currently highlighted.
   /* -------------------------------------------------------------------------- */
 //#region Window_SDP_Details
-  function Window_SDP_Details() {this.initialize.apply(this, arguments); }
+  function Window_SDP_Details() { this.initialize.apply(this); }
 
   Window_SDP_Details.prototype = Object.create(Window_Base.prototype);
   Window_SDP_Details.prototype.constructor = Window_Base;
@@ -638,7 +711,7 @@ J.SD.UpdateJSON = async () => {
     let width = Graphics.boxWidth - x;
     let height = Graphics.boxHeight - y;
     this._actor = null;
-    this._currentPanel = "mhp001";
+    this._currentPanel = Object.keys(J.SD.PanelCache)[0]//"mhp001";
     this.setActor($gameParty.members()[0]);
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
@@ -662,19 +735,16 @@ J.SD.UpdateJSON = async () => {
   };
 
   Window_SDP_Details.prototype.changePanel = function(nextPanel) {
-    if (this._currentPanel !== nextPanel) {
+    //if (this._currentPanel !== nextPanel) {
       this._currentPanel = nextPanel;
       this.refresh();
-    }
+    //}
   };
 
   Window_SDP_Details.prototype.drawSDPDetails = function() {
     let lh = this.lineHeight();
-    console.log(this._currentPanel);
     let panel = J.SD.PanelCache[this._currentPanel];
 
-    console.log(panel);
-    
     this.detailsHeader(panel);
     this.detailsType(panel);
     this.detailsLevel(panel);
